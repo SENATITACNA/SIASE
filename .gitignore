@@ -1,0 +1,65 @@
+# Dependencias
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Variables de entorno
+.env
+.env.*
+!.env.example
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de compilación / build
+dist/
+build/
+out/
+
+# Cobertura de tests
+coverage/
+
+# Cachés
+.cache/
+.parcel-cache/
+.vite/
+.next/
+.nuxt/
+
+# Archivos temporales
+tmp/
+temp/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos de sistema operativo
+desktop.ini
+
+# Archivos de base de datos locales
+*.sqlite
+*.sqlite3
+
+# Archivos comprimidos
+*.zip
+*.tar
+*.gz
+
+# Archivos de certificados o claves
+*.pem
+*.key
+
+# Archivos de lock opcionales (si no quieren subirlos)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
