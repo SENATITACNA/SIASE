@@ -3,9 +3,9 @@ const app = express();
 
 app.use(express.json());
 
-const usuarioRoutes = require('./routes/usuario.routes');
+const vigilanteRoutes = require('./routes/vigilante.routes');
 
-app.use('/api/usuario', usuarioRoutes);
+app.use('/api/usuario', vigilanteRoutes);
 
 const PORT = 3000;
 app.listen(PORT, () => {
