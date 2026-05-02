@@ -5,7 +5,7 @@ app.use(express.json());
 
 const vigilanteRoutes = require('./routes/vigilante.routes');
 
-app.use('/api/usuario', vigilanteRoutes);
+app.use("/api", vigilanteRoutes);
 
 const PORT = 3000;
 app.listen(PORT, () => {
