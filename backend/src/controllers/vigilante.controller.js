@@ -9,3 +9,18 @@ const getInstructor = (req, res) => {
         }
     });
 };
+
+const getDispositivoAlumno = (req, res) => {
+    vigilanteService.obtenerDispositivoAlumno((err, data) => {
+        if (err) {
+            res.status(500).json({ error: "Error al obtener dispositivos alumno" });
+        } else {
+            res.json(data);
+        }
+    });
+};
+
+module.exports = {
+  getInstructor,
+  getDispositivoAlumno
+};

@@ -1,4 +1,5 @@
 const db = require("../config/db");
+
 const getInstructores = (callback) => {
     const sql = "SELECT nombre, apellido, estado FROM instructor";
 
