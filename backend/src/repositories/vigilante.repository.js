@@ -13,7 +13,7 @@ const getInstructores = (callback) => {
 };
 
 const getDispositivosAlumno = (callback) => {
-    const sql = "SELECT tipo, marca, modelo, numero_serie FROM dispositivos_x_alumno"
+    const sql = "SELECT tipo, marca, modelo, numero_serie, descripcion FROM dispositivos_x_alumno"
 
     db.query(sql, (err, resultados) => {
         if (err) {
