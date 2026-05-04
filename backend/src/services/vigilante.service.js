@@ -1,9 +1,9 @@
 const vigilanteRepository = require("../repositories/vigilante.repository");
 
-const obtenerVigilantes = (callback) => {
-  vigilanteRepository.getVigilantes(callback);
+const obtenerVigilantePorId = (vigilante_id, callback) => {
+  vigilanteRepository.getVigilantePorId(vigilante_id, callback);
 };
 
 module.exports = {
-  obtenerVigilantes
+  obtenerVigilantePorId
 };

@@ -1,17 +1,18 @@
 const db = require("../config/db");
 
-const getVigilantes = (callback) => {
+const getVigilantePorId = (vigilante_id, callback) => {
   const sql = `
-    SELECT id, vigilante_id, nombre, apellido, turno, estado
+    SELECT vigilante_id, nombre, apellido, turno
     FROM vigilante
+    WHERE vigilante_id = ?
   `;
 
-  db.query(sql, (err, results) => {
+  db.query(sql, [vigilante_id], (err, results) => {
     if (err) return callback(err, null);
     callback(null, results);
   });
 };
 
 module.exports = {
-  getVigilantes
-};
+  getVigilantePorId
+};

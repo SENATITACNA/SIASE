@@ -9,7 +9,22 @@ const obtenerRegistros = (req, res) => {
       });
     }
 
-    res.status(200).json(resultados);
+    const resultadosOrdenados = resultados.map(
+      ({ id, alumno, objeto, observacion, instructor, guardia, estado, fecha_envio, fecha_entrada, fecha_salida }) => ({
+        id,
+        alumno,
+        objeto,
+        observacion,
+        instructor,
+        guardia,
+        estado,
+        fecha_envio,
+        fecha_entrada,
+        fecha_salida,
+      })
+    );
+
+    res.status(200).json(resultadosOrdenados);
   });
 };
 
