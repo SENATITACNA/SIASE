@@ -1,6 +1,6 @@
 const pool = require('../config/db');
 
-class GuardiaRepository {
+class VigilanteRepository {
     async obtenerAlumnosActivos() {
         const query = `
             SELECT 
@@ -29,10 +29,10 @@ class GuardiaRepository {
         );
     }
 
-    async registrarEntradaAsistencia(connection, alumnoId, guardiaId) {
+    async registrarEntradaAsistencia(connection, alumnoId, vigilanteId) {
         await connection.query(
-            'INSERT INTO asistencia (alumno_id, guardia_id) VALUES (?, ?)',
-            [alumnoId, guardiaId]
+            'INSERT INTO asistencia (alumno_id, vigilante_id) VALUES (?, ?)',
+            [alumnoId, vigilanteId]
         );
     }
 
@@ -46,6 +46,16 @@ class GuardiaRepository {
             ORDER BY id DESC LIMIT 1
         `, [alumnoId]);
     }
+
+    async getVigilantePorId(vigilanteId) {
+        const query = `
+            SELECT vigilante_id, nombre, apellido, turno
+            FROM vigilante
+            WHERE vigilante_id = ?
+        `;
+        const [rows] = await pool.query(query, [vigilanteId]);
+        return rows;
+    }
 }
 
-module.exports = new GuardiaRepository();
+module.exports = new VigilanteRepository();
