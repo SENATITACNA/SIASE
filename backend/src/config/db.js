@@ -7,12 +7,12 @@ const db = mysql.createConnection({
   database: "proyecto_SIASE"
 });
 
-db.connect(err => {
-  if (err) {
-    console.log("Error conexión:", err);
-  } else {
-    console.log("Base de datos conectada");
-  }
+connection.connect((err) => {
+ if (err) {
+   console.log("Error de conexión:", err);
+ } else {
+   console.log("Conectado a MySQL");
+ }
 });
 
-module.exports = db;
+module.exports = connection;
