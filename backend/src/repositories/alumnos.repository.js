@@ -14,7 +14,7 @@ exports.obtenerAlumnoPorId = async (id) => {
         WHERE da.id = ?
     `;
 
-    const [rows] = await db.query(query, [id]);
+    const [rows] = await db.promise().query(query, [id]);
 
     return rows[0];
 };

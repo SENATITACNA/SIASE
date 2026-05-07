@@ -12,7 +12,7 @@ exports.obtenerInstructores = async () => {
         WHERE estado = 1
     `;
 
-    const [rows] = await db.query(query);
+    const [rows] = await db.promise().query(query);
 
     return rows;
 };

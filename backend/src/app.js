@@ -20,6 +20,9 @@ app.use("/api/datos_alumnos", datosAlumnosRoutes);
 app.use("/api/alumnos", alumnosRoutes);
 app.use("/api/instructores", instructorRoutes);
 
+const asistenciaRoutes = require("./routes/asistenciaRoutes");
+app.use("/api/asistencias", asistenciaRoutes);
+
 /* Error Middleware*/
 const errorMiddleware = require("./middlewares/error.middleware");
 

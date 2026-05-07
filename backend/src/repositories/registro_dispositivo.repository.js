@@ -28,7 +28,7 @@ class RegistroDispositivoRepository {
                 ON r.objeto_id = d.id
         `;
 
-        const [rows] = await db.query(query);
+        const [rows] = await db.promise().query(query);
 
         return rows;
     }
@@ -60,8 +60,7 @@ class RegistroDispositivoRepository {
             "sistema"
         ];
 
-        const [result] =
-            await db.query(query, values);
+        const [result] = await db.promise().query(query, values);
 
         return result.insertId;
     }
@@ -90,8 +89,7 @@ class RegistroDispositivoRepository {
             "sistema"
         ];
 
-        const [result] =
-            await db.query(query, values);
+        const [result] = await db.promise().query(query, values);
 
         return result.insertId;
     }
