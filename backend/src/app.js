@@ -20,9 +20,20 @@ app.use("/api/datos_alumnos", datosAlumnosRoutes);
 app.use("/api/alumnos", alumnosRoutes);
 app.use("/api/instructores", instructorRoutes);
 
+/* Login route (Basic temporary login) */
+app.post("/login", (req, res) => {
+  const { usuario, password } = req.body;
+  
+  if (usuario && password) {
+    // Aquí después conectarás con la base de datos
+    res.json({ success: true, redirectUrl: "/dashboard" }); // Cambia "/dashboard" a donde quieras redirigir
+  } else {
+    res.status(400).json({ success: false, error: "Credenciales inválidas" });
+  }
+});
+
 /* Error Middleware*/
 const errorMiddleware = require("./middlewares/error.middleware");
-
 
 app.use(errorMiddleware);
 
