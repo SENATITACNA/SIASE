@@ -2,7 +2,7 @@ const db = require("../config/db");
 
 const getAsistencias = (req, res) => {
 
-  const { alumno, fecha } = req.query;
+  const { alumno_id, guardia, fecha, equipo} = req.query;
 
   let sql = `
     SELECT 
@@ -22,15 +22,12 @@ const getAsistencias = (req, res) => {
     JOIN vigilante v
     ON rd.vigilante_id = v.id
 
-    JOIN datos_alumnos al 
-    ON rd.alumno_id = al.id
-
-    WHERE 1=1
+    WHERE rd.alumno_id = ?
   `;
 
-  let params = [];
+  let params = [alumno_id];
 
-  if (alumno) {
+  if (guardia) {
     sql += ` AND CONCAT(al.nombres, ' ', al.apellidos) LIKE ? `;
     params.push(`%${alumno}%`);
   }
@@ -39,8 +36,13 @@ const getAsistencias = (req, res) => {
     sql += ' AND rd.fecha_entrada = ?';
     params.push(fecha);
   }
+
+  if (equipo) {
+    sql += ' AND dxa.tipo LIKE ?';
+    params.push('%${equipo}%');
+  }
   sql += `
-    ORDER BY rd.fecha_creacion DESC
+    ORDER BY rd.fecha_entrada DESC
   `;
 
   db.query(sql, params, (err, result) => {
