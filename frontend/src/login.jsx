@@ -4,7 +4,7 @@ function Login() {
   const [usuario, setUsuario] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!usuario || !password) {
@@ -12,11 +12,27 @@ function Login() {
       return;
     }
 
-    // Aquí luego conectarás con backend
-    console.log("Usuario:", usuario);
-    console.log("Password:", password);
+    try {
+      const response = await fetch("http://localhost:8080/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ usuario, password }),
+      });
 
-    alert("Login enviado 🚀");
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        alert(`Bienvenido, ${data.usuario.nombres || data.usuario.nombre}`);
+        window.location.href = data.redirectUrl;
+      } else {
+        alert(data.error || "Error al iniciar sesión");
+      }
+    } catch (error) {
+      console.error("Error en la conexión:", error);
+      alert("Hubo un problema al conectar con el servidor.");
+    }
   };
 
   return (
