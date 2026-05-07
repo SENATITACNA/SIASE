@@ -124,7 +124,7 @@ desktop.ini
 *.key
 
 # Archivos de lock opcionales (si no quieren subirlos)
-# package-lock.json
+package-lock.json
 # yarn.lock
 # pnpm-lock.yaml
 # parcel-bundler cache (https://parceljs.org/)

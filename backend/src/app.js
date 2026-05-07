@@ -1,17 +1,19 @@
-const express = require("express");
-const cors = require("cors");
-
+const express = require('express');
+const cors = require('cors');
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-const asistenciaRoutes = require("./routes/asistenciaRoutes");
-const datosAlumnosRoutes = require("./routes/datos_alumnosRoutes");
+const vigilanteRoutes = require('./routes/vigilante.routes');
+const registroRoutes = require('./routes/registro_dispositivo.routes');
+const datosAlumnosRoutes = require('./routes/datos_alumnos.routes');
+const errorMiddleware = require('./middlewares/error.middleware');
 
-app.use("/asistencia", asistenciaRoutes);
-app.use("/api", datosAlumnosRoutes);
+app.use('/api/vigilante', vigilanteRoutes);
+app.use('/api/registro_dispositivos', registroRoutes);
+app.use('/api/datos_alumnos', datosAlumnosRoutes);
 
-app.listen(3000, () => {
-    console.log("Servidor corriendo en puerto 3000");
-});
+app.use(errorMiddleware);
+
+module.exports = app;
