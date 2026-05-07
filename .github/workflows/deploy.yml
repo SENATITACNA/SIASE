@@ -1,0 +1,26 @@
+name: Deploy to Server
+
+# Se ejecuta solo cuando se hace un push o merge a main
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Desplegar vía SSH
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "." # Qué archivos enviar (punto significa todos)
+          target: "/home/freddy/proyecto_SIASE" # Ruta de destino en tu servidor
+          strip_components: 0
