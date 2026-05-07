@@ -1,4 +1,4 @@
-const datosAlumnosService = require("../services/datos_alumnosService");
+const datosAlumnosService = require("../services/alumnosService");
 
 const obtenerAlumnoPorId = (req, res) => {
     const id = req.params.id;

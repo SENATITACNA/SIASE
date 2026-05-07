@@ -1,9 +1,15 @@
-const datosAlumnosRepo = require('../repositories/datos_alumnos.repository');
+const alumnosRepository = require("../repositories/alumnosRepository");
 
-class DatosAlumnosService {
-    async obtenerAlumnoPorId(id) {
-        return await datosAlumnosRepo.obtenerAlumnoPorId(id);
+const obtenerAlumnoPorId = (id, callback) => {
+  alumnosRepository.obtenerAlumnoPorId(id, (err, alumno) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, alumno);
     }
-}
+  });
+};
 
-module.exports = new DatosAlumnosService();
+module.exports = {
+  obtenerAlumnoPorId
+};
