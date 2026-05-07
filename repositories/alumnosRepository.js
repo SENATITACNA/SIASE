@@ -1,7 +1,13 @@
 const db = require("../config/db");
 
 const obtenerAlumnoPorId = (id, callback) => {
-  const sql = "SELECT * FROM datos_alumnos WHERE id = ?";
+  const sql = "SELECT id,
+      nombres, apellidos, idsenati,
+      semestre, carrera_id, estado,
+      fecha_creacion, fecha_modificacion,
+      usuario_creacion, usuario_modificacion,
+      contra 
+    FROM datos_alumnos WHERE id = ?";
   db.query(sql, [id], (err, resultados) => {
     if (err) {
       callback(err, null);
