@@ -1,5 +1,6 @@
-const express = require('express');
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
+
 const app = express();
 
 app.use(cors());
@@ -9,12 +10,17 @@ const vigilanteRoutes = require('./routes/vigilante.routes');
 const registroRoutes = require('./routes/registro_dispositivo.routes');
 const datosAlumnosRoutes = require('./routes/datos_alumnos.routes');
 const asistenciaRoutes = require('./routes/asistencia.routes')
-const errorMiddleware = require('./middlewares/error.middleware');
+const alumnosRoutes = require("./routes/alumnos.routes");
+const instructorRoutes = require("./routes/instructor.routes");
 
 app.use('/api/vigilante', vigilanteRoutes);
 app.use('/api/registro_dispositivos', registroRoutes);
 app.use('/api/datos_alumnos', datosAlumnosRoutes);
+app.use("/api/alumnos", alumnosRoutes);
+app.use("/api/instructores", instructorRoutes);
 app.use('/api/asistencia', asistenciaRoutes);
+
+const errorMiddleware = require("./middlewares/error.middleware");
 
 app.use(errorMiddleware);
 
