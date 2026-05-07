@@ -1,4 +1,4 @@
-const datosAlumnosRepository = require("../repositories/datos_alumnosRepository");
+const datosAlumnosRepository = require("../repositories/alumnosRepository");
 
 const obtenerAlumnoPorId = (id, callback) => {
     datosAlumnosRepository.obtenerAlumnoPorId(id, (err, alumno) => {

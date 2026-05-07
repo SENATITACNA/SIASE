@@ -1,11 +1,18 @@
-const pool = require('../config/db');
+const db = require('../config/db');
 
-class DatosAlumnosRepository {
-    async obtenerAlumnoPorId(id) {
-        const query = "SELECT id, nombres, apellidos FROM datos_alumnos WHERE id = ?";
-        const [rows] = await pool.query(query, [id]);
-        return rows;
+const obtenerAlumnoPorId = (id, callback) => {
+  const sql = "SELECT id, nombres, apellidos, idsenati, semestre, carrera_id, estado FROM datos_alumnos WHERE id = ?";
+  db.query(sql, [id], (err, resultados) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      // Retornamos solo un objeto en lugar de un array
+      callback(null, resultados[0]);
     }
-}
+  });
+};
 
-module.exports = new DatosAlumnosRepository();
+module.exports = {
+  obtenerAlumnoPorId
+};
+

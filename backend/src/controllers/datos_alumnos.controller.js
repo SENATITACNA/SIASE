@@ -1,20 +1,18 @@
-const datosAlumnosService = require('../services/datos_alumnos.service');
+const alumnosService = require("../services/datos_alumnos.service");
 
-class DatosAlumnosController {
-    async obtenerAlumnoPorId(req, res) {
-        try {
-            const id = req.params.id;
-            const alumno = await datosAlumnosService.obtenerAlumnoPorId(id);
-            
-            if (alumno.length === 0) {
-                return res.status(404).json({ mensaje: "Alumno no encontrado" });
-            }
-            res.status(200).json(alumno[0]);
-        } catch (error) {
-            console.error('Error en obtenerAlumnoPorId:', error);
-            res.status(500).json({ error: "Error del servidor" });
-        }
+const obtenerAlumnoPorId = (req, res) => {
+  const { id } = req.params;
+  alumnosService.obtenerAlumnoPorId(id, (err, alumno) => {
+    if (err) {
+      return res.status(500).json({ error: "Error del servidor" });
     }
-}
+    if (!alumno) {
+      return res.status(404).json({ error: "Alumno no encontrado" });
+    }
+    res.json(alumno);
+  });
+};
 
-module.exports = new DatosAlumnosController();
+module.exports = {
+  obtenerAlumnoPorId
+};

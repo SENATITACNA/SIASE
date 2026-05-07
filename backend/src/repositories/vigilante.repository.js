@@ -10,12 +10,12 @@ class VigilanteRepository {
             LEFT JOIN carreras c ON a.carrera_id = c.id
             WHERE a.estado = 1
         `;
-        const [rows] = await pool.query(query);
+        const [rows] = await pool.promise().query(query);
         return rows;
     }
 
     async obtenerRegistroPorId(connection, registroId) {
-        const [rows] = await connection.query(
+        const [rows] = await connection.promise().query(
             'SELECT alumno_id FROM registro_dispositivo WHERE id = ?',
             [registroId]
         );
@@ -23,21 +23,21 @@ class VigilanteRepository {
     }
 
     async actualizarEstadoRegistro(connection, registroId, nuevoEstado) {
-        await connection.query(
+        await connection.promise().query(
             'UPDATE registro_dispositivo SET estado = ? WHERE id = ?',
             [nuevoEstado, registroId]
         );
     }
 
     async registrarEntradaAsistencia(connection, alumnoId, vigilanteId) {
-        await connection.query(
+        await connection.promise().query(
             'INSERT INTO asistencia (alumno_id, vigilante_id) VALUES (?, ?)',
             [alumnoId, vigilanteId]
         );
     }
 
     async registrarSalidaAsistencia(connection, alumnoId) {
-        await connection.query(`
+        await connection.promise().query(`
             UPDATE asistencia 
             SET hora_salida = CURTIME() 
             WHERE alumno_id = ? 
@@ -53,7 +53,7 @@ class VigilanteRepository {
             FROM vigilante
             WHERE vigilante_id = ?
         `;
-        const [rows] = await pool.query(query, [vigilanteId]);
+        const [rows] = await pool.promise().query(query, [vigilanteId]);
         return rows;
     }
 }
