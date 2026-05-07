@@ -1,122 +1,281 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+function Login() {
+  const [usuario, setUsuario] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    if (!usuario || !password) {
+      alert("Completa los campos");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:8080/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          usuario,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        window.location.href = data.redirectUrl;
+      } else {
+        alert(data.error || "Error al iniciar sesión");
+      }
+    } catch (error) {
+      alert("Error de conexión con el servidor");
+      console.error(error);
+    }
+  };
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
+      <div className="container">
+        <div className="card">
+
+          {/* LOGO */}
+          <img
+            src="/senati.png"
+            alt="Logo SENATI"
+            className="logo"
+          />
+
+          {/* TITULO */}
+          <h2 className="title">Sistema Académico</h2>
+
+          <p className="subtitle">
+            Inicia sesión para continuar
           </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
 
-      <div className="ticks"></div>
+          {/* FORMULARIO */}
+          <form onSubmit={handleLogin} className="form">
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+            <input
+              type="text"
+              placeholder="ID"
+              value={usuario}
+              onChange={(e) => setUsuario(e.target.value)}
+              className="input"
+            />
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+            <input
+              type="password"
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="input"
+            />
+
+            <button type="submit" className="button">
+              Ingresar
+            </button>
+
+          </form>
+
+          {/* FOOTER */}
+          <p className="footer">
+            © 2025 Sistema Académico
+          </p>
+
+        </div>
+      </div>
+
+      <style>{`
+
+        /* RESET GENERAL */
+        *{
+          margin:0;
+          padding:0;
+          box-sizing:border-box;
+          font-family:"Segoe UI", Arial, sans-serif;
+        }
+
+        /* IMPORTANTE PARA QUITAR LOS BORDES NEGROS */
+        html, body, #root{
+          width:100%;
+          min-height:100vh;
+          background:#ffffff;
+          overflow-x:hidden;
+        }
+
+        body{
+          margin:0;
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container{
+          width:100vw;
+          min-height:100vh;
+          display:flex;
+          justify-content:center;
+          align-items:center;
+          background:#ffffff;
+          padding:20px;
+        }
+
+        /* TARJETA */
+        .card{
+          width:380px;
+          background:rgba(255,255,255,0.98);
+          border-radius:20px;
+          padding:40px;
+          text-align:center;
+
+          box-shadow:
+          0 35px 100px rgba(0,0,0,0.45),
+          0 15px 40px rgba(0,0,0,0.30),
+          0 5px 15px rgba(0,0,0,0.20);
+
+          animation:fadeIn .6s ease;
+        }
+
+        /* LOGO */
+        .logo{
+          width:160px;
+          margin-bottom:10px;
+        }
+
+        /* TITULO */
+        .title{
+          font-size:28px;
+          font-weight:700;
+          color:#0f172a;
+          margin-bottom:8px;
+        }
+
+        /* SUBTITULO */
+        .subtitle{
+          font-size:14px;
+          color:#64748b;
+          margin-bottom:25px;
+        }
+
+        /* FORM */
+        .form{
+          display:flex;
+          flex-direction:column;
+        }
+
+        /* INPUTS */
+        .input{
+          padding:14px;
+          margin-bottom:14px;
+          border-radius:12px;
+          border:1px solid #cbd5e1;
+          outline:none;
+          font-size:15px;
+          background:#fff;
+          color:#374151;
+          transition:0.25s;
+        }
+
+        .input::placeholder{
+          color:#9ca3af;
+        }
+
+        .input:focus{
+          border-color:#1e3a8a;
+          box-shadow:0 0 0 4px rgba(30,58,138,0.12);
+        }
+
+        /* BOTON */
+        .button{
+          padding:14px;
+          margin-top:8px;
+          background:#1e3a8a;
+          color:white;
+          border:none;
+          border-radius:12px;
+          font-size:16px;
+          font-weight:600;
+          cursor:pointer;
+          transition:.3s;
+        }
+
+        .button:hover{
+          background:#162c6b;
+          transform:translateY(-2px);
+        }
+
+        /* FOOTER */
+        .footer{
+          margin-top:22px;
+          font-size:12px;
+          color:#94a3b8;
+        }
+
+        /* ANIMACION */
+        @keyframes fadeIn{
+          from{
+            opacity:0;
+            transform:translateY(-15px);
+          }
+
+          to{
+            opacity:1;
+            transform:translateY(0);
+          }
+        }
+
+        /* TABLET */
+        @media(max-width:768px){
+
+          .card{
+            width:90%;
+            padding:35px;
+          }
+
+          .logo{
+            width:140px;
+          }
+
+          .title{
+            font-size:24px;
+          }
+
+        }
+
+        /* MOVIL */
+        @media(max-width:480px){
+
+          .card{
+            width:100%;
+            padding:25px;
+            border-radius:16px;
+          }
+
+          .logo{
+            width:120px;
+          }
+
+          .title{
+            font-size:22px;
+          }
+
+          .input{
+            padding:12px;
+            font-size:14px;
+          }
+
+          .button{
+            padding:12px;
+            font-size:15px;
+          }
+
+        }
+
+      `}</style>
     </>
-  )
+  );
 }
 
-export default App
+export default Login;
