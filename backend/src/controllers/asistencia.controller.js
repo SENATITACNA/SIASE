@@ -1,7 +1,6 @@
 const db = require("../config/db");
 
-const getAsistencias = (req, res) => {
-
+const getAsistencias = async (req, res) => {
   const { guardia, fecha, alumno } = req.query;
 
   let sql = `
@@ -37,16 +36,15 @@ const getAsistencias = (req, res) => {
     params.push(`%${alumno}%`);
   }
 
-  db.query(sql, params, (err, result) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).json({ error: "Error en servidor" });
-    }
-
+  try {
+    const [result] = await db.promise().query(sql, params);
     res.json(result);
-  });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: "Error en servidor" });
+  }
 };
 
 module.exports = {
-  getAsistencias
+  getAsistencias,
 };

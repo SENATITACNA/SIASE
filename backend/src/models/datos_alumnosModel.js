@@ -11,7 +11,7 @@ class DatosAlumnos {
     fecha_modificacion = null,
     usuario_creacion = null,
     usuario_modificacion = null,
-    password_alumno
+    password_alumno,
   }) {
     this.id = id;
     this.nombres = nombres;
