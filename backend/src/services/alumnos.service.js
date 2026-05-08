@@ -1,5 +1,9 @@
 const alumnosRepository = require("../repositories/alumnos.repository");
 
-exports.obtenerAlumnoPorId = async (id) => {
-  return await alumnosRepository.obtenerAlumnoPorId(id);
+exports.obtenerAlumnoFormateadoPorId = async (id) => {
+  return await alumnosRepository.obtenerAlumnoFormateadoPorId(id);
+};
+
+exports.obtenerDatosAlumnoPorId = async (id) => {
+  return await alumnosRepository.obtenerDatosAlumnoPorId(id);
 };

@@ -1,6 +1,6 @@
 const db = require("../config/db");
 
-exports.obtenerAlumnoPorId = async (id) => {
+exports.obtenerAlumnoFormateadoPorId = async (id) => {
   const query = `
         SELECT
             da.id,
@@ -15,5 +15,23 @@ exports.obtenerAlumnoPorId = async (id) => {
 
   const [rows] = await db.promise().query(query, [id]);
 
+  return rows[0];
+};
+
+exports.obtenerDatosAlumnoPorId = async (id) => {
+  const sql = `
+    SELECT 
+      id,
+      nombres,
+      apellidos,
+      idsenati,
+      semestre,
+      carrera_id,
+      estado
+    FROM datos_alumnos
+    WHERE id = ?
+  `;
+
+  const [rows] = await db.promise().query(sql, [id]);
   return rows[0];
 };
