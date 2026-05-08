@@ -1,48 +1,86 @@
 const db = require("../config/db");
 
 const getAsistencias = async (req, res) => {
-  const { guardia, fecha, alumno } = req.query;
+
+  const { alumno_id, guardia, fecha, equipo } = req.query;
 
   let sql = `
     SELECT 
-      a.id,
-      a.fecha,
-      a.hora_ingreso,
-      a.hora_salida,
-      CONCAT(al.nombres, ' ', al.apellidos) AS alumno,
-      CONCAT(v.nombre, ' ', v.apellido) AS guardia,
-      c.nombre AS carrera
-    FROM asistencia a
-    JOIN datos_alumnos al ON a.alumno_id = al.id
-    JOIN vigilante v ON a.guardia_id = v.id
-    JOIN carreras c ON al.carrera_id = c.id
-    WHERE 1=1
+      rd.id,
+
+      dxa.tipo,
+      dxa.marca,
+      dxa.modelo,
+
+      rd.fecha_entrada,
+      rd.fecha_salida,
+      rd.estado,
+
+      CONCAT(v.nombre, ' ', v.apellido)
+      AS vigilante
+
+    FROM registro_dispositivo rd
+
+    JOIN dispositivos_x_alumno dxa
+    ON rd.objeto_id = dxa.id
+
+    JOIN vigilante v
+    ON rd.guardia_id = v.id
+
+    WHERE rd.alumno_id = ?
   `;
 
-  let params = [];
+  let params = [alumno_id];
 
   if (guardia) {
-    sql += " AND v.nombre LIKE ?";
+
+    sql += `
+      AND CONCAT(v.nombre, ' ', v.apellido)
+      LIKE ?
+    `;
+
     params.push(`%${guardia}%`);
   }
 
   if (fecha) {
-    sql += " AND a.fecha = ?";
+
+    sql += `
+      AND rd.fecha_entrada = ?
+    `;
+
     params.push(fecha);
   }
 
-  if (alumno) {
-    sql += " AND al.nombres LIKE ?";
-    params.push(`%${alumno}%`);
+  if (equipo) {
+
+    sql += `
+      AND dxa.tipo LIKE ?
+    `;
+
+    params.push(`%${equipo}%`);
   }
 
+  sql += `
+    ORDER BY rd.fecha_entrada DESC
+  `;
+
   try {
-    const [result] = await db.promise().query(sql, params);
+
+    const [result] =
+      await db.promise().query(sql, params);
+
     res.json(result);
+
   } catch (err) {
+
     console.log(err);
-    return res.status(500).json({ error: "Error en servidor" });
+
+    return res.status(500).json({
+      error: "Error en servidor"
+    });
+
   }
+
 };
 
 module.exports = {
