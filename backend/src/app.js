@@ -16,16 +16,42 @@ app.use("/api/registro_dispositivos", registroRoutes);
 app.use("/api/alumnos", alumnosRoutes);
 app.use("/api/instructores", instructorRoutes);
 
-app.post("/login", (req, res) => {
+const pool = require("./config/db");
+
+app.post("/login", async (req, res) => {
   const { usuario, password } = req.body;
 
-  if (usuario && password) {
-    res.json({ success: true, redirectUrl: "/dashboard" });
-  } else {
-    res.status(400).json({ success: false, error: "Credenciales inválidas" });
+  if (!usuario || !password) {
+    return res.status(400).json({ success: false, error: "Faltan credenciales" });
+  }
+
+  try {
+    const promisePool = pool.promise();
+
+    const [alumnos] = await promisePool.query(
+      "SELECT * FROM datos_alumnos WHERE idsenati = ? AND password_alumno = ? AND estado = 1",
+      [usuario, password]
+    );
+
+    if (alumnos.length > 0) {
+      return res.json({ success: true, redirectUrl: "/dashboard-alumno", role: "alumno", user: alumnos[0] });
+    }
+
+    const [vigilantes] = await promisePool.query(
+      "SELECT * FROM vigilante WHERE guardia_id = ? AND password_vigilante = ? AND estado = 1",
+      [usuario, password]
+    );
+
+    if (vigilantes.length > 0) {
+      return res.json({ success: true, redirectUrl: "/dashboard-vigilante", role: "vigilante", user: vigilantes[0] });
+    }
+
+    return res.status(401).json({ success: false, error: "Credenciales inválidas o usuario inactivo" });
+  } catch (error) {
+    console.error("Error de autenticación:", error);
+    return res.status(500).json({ success: false, error: "Error interno del servidor" });
   }
 });
-
 const asistenciaRoutes = require("./routes/asistencia.routes");
 app.use("/api/asistencias", asistenciaRoutes);
 
