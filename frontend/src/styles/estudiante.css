@@ -1,0 +1,56 @@
+body {
+  margin: 0;
+  font-family: "Noto Sans", Helvetica, Arial, sans-serif;
+  background-color: #F3F4F6;
+}
+
+.contenedor-estudiante {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F3F4F6;
+}
+
+.card-estudiante {
+  width: 400px;
+  background-color: #FFFFFF;
+  padding: 30px;
+  border-radius: 12px;
+  border-top: 6px solid #264186;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+}
+
+.card-estudiante h1 {
+  font-size: 20px;
+  color: #264186;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.campo-info {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+.campo-info label {
+  font-size: 14px;
+  color: #7992A6;
+  margin-bottom: 6px;
+}
+
+.campo-info input {
+  height: 42px;
+  border: 2px solid #08C0CB;
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 14px;
+  background-color: #FFFFFF;
+  color: #1C1C1C;
+  outline: none;
+}
+
+.campo-info input:focus {
+  border-color: #02BBF3;
+}
