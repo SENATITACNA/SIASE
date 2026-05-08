@@ -1,4 +1,4 @@
-class DatosAlumnos {
+class Alumno {
   constructor({
     id = null,
     nombres,
@@ -26,6 +26,10 @@ class DatosAlumnos {
     this.usuario_modificacion = usuario_modificacion;
     this.password_alumno = password_alumno;
   }
+
+  get nombre_completo() {
+    return `${this.nombres} ${this.apellidos}`;
+  }
 }
 
-module.exports = { DatosAlumnos };
+module.exports = { Alumno };
