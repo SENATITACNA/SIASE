@@ -1,6 +1,6 @@
-const db = require('../config/db');
+const db = require("../config/db");
 
-const obtenerAlumnoPorId = (id, callback) => {
+const obtenerAlumnoPorId = async (id) => {
   const sql = `
     SELECT 
       id,
@@ -14,17 +14,10 @@ const obtenerAlumnoPorId = (id, callback) => {
     WHERE id = ?
   `;
 
-  pool.query(sql, [id], (err, resultados) => {
-    const sql = "SELECT id, nombres, apellidos, idsenati, semestre, carrera_id, estado FROM datos_alumnos WHERE id = ?";
-    db.query(sql, [id], (err, resultados) => {
-      if (err) {
-        callback(err, null);
-      } else {
-        callback(null, resultados[0]);
-      }
-    });
-  };
+  const [rows] = await db.promise().query(sql, [id]);
+  return rows[0];
+};
 
-  module.exports = {
-    obtenerAlumnoPorId
-  };
+module.exports = {
+  obtenerAlumnoPorId,
+};

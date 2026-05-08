@@ -1,10 +1,7 @@
 const db = require("../config/db");
 
 class RegistroDispositivoRepository {
-
-    /* GET - Obtener registros */
     async obtenerRegistros() {
-
         const query = `
             SELECT 
                 r.id,
@@ -23,7 +20,7 @@ class RegistroDispositivoRepository {
             JOIN instructor i
                 ON r.instructor_id = i.id
             JOIN vigilante g
-                ON r.vigilante_id = g.id
+                ON r.guardia_id = g.id
             JOIN dispositivos_x_alumno d
                 ON r.objeto_id = d.id
         `;
@@ -33,9 +30,7 @@ class RegistroDispositivoRepository {
         return rows;
     }
 
-    /* POST - Crear dispositivo */
     async crearDispositivo(data) {
-
         const query = `
             INSERT INTO dispositivos_x_alumno (
                 tipo,
@@ -57,7 +52,7 @@ class RegistroDispositivoRepository {
             data.numero_serie,
             data.descripcion,
             1,
-            "sistema"
+            "sistema",
         ];
 
         const [result] = await db.promise().query(query, values);
@@ -65,28 +60,28 @@ class RegistroDispositivoRepository {
         return result.insertId;
     }
 
-    /* POST - Crear registro */
     async crearRegistro(data) {
-
         const query = `
             INSERT INTO registro_dispositivo (
                 estado,
                 fecha_envio,
                 alumno_id,
                 instructor_id,
+                guardia_id,
                 objeto_id,
                 usuario_creacion,
                 fecha_creacion
             )
-            VALUES (?, NOW(), ?, ?, ?, ?, NOW())
+            VALUES (?, NOW(), ?, ?, ?, ?, ?, NOW())
         `;
 
         const values = [
             1,
             data.alumno_id,
             data.instructor_id,
+            data.guardia_id,
             data.objeto_id,
-            "sistema"
+            "sistema",
         ];
 
         const [result] = await db.promise().query(query, values);

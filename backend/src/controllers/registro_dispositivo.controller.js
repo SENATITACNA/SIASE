@@ -3,8 +3,6 @@ const registroService =
 
 class RegistroDispositivoController {
 
-    /*GET - Obtener registros*/
-
     async obtenerRegistros(req, res) {
         try {
             const resultados =
