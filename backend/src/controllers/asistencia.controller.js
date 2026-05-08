@@ -8,26 +8,31 @@ const getAsistencias = async (req, res) => {
     SELECT 
       rd.id,
 
-      dxa.tipo,
-      dxa.marca,
-      dxa.modelo,
-
-      rd.fecha_entrada,
-      rd.fecha_salida,
-      rd.estado,
+      a.fecha,
+      a.hora_ingreso,
+      a.hora_salida,
 
       CONCAT(v.nombre, ' ', v.apellido)
       AS vigilante
 
-    FROM registro_dispositivo rd
+      dxa.tipo AS equipo,
+      dxa.marca,
+      dxa.modelo
 
-    JOIN dispositivos_x_alumno dxa
+    FROM asistencia a
+    JOIN vigilante v
+    ON a.guardia_id = v.id
+
+    JOIN datos_alumnos al
+    ON a.alumno_id = al.id
+
+    LEFT JOIN registro_dispositivo rd
+    ON rd.alumno_id = al.id
+
+    LEFT JOIN dispositivos_x_alumno dxa
     ON rd.objeto_id = dxa.id
 
-    JOIN vigilante v
-    ON rd.guardia_id = v.id
-
-    WHERE rd.alumno_id = ?
+    WHERE a.alumno_id = ?
   `;
 
   let params = [alumno_id];
@@ -38,28 +43,37 @@ const getAsistencias = async (req, res) => {
       AND CONCAT(v.nombre, ' ', v.apellido)
       LIKE ?
     `;
+    params.push(`%${guardia}%`);
+  }
+  if (fecha) {
+    sql += ' AND a.fecha = ?';
+    params.push(fecha);
+  }
 
   if (equipo) {
-    sql += ' AND dxa.tipo LIKE ?';
-    params.push('%${equipo}%');
+
+    sql += ` AND dxa.tipo LIKE ?
+    `;
+    params.push(`%${equipo}%`);
   }
+
   sql += `
-    ORDER BY rd.fecha_entrada DESC
+    ORDER BY a.fecha DESC,
+    a.hora_ingreso DESC
   `;
 
-  db.query(sql, params, (err, result) => {
-    if (err) {
-      console.log(err);
-      return res.status(500).json({ 
-        error: "Error en servidor" 
-      });
-    }
-
-    res.json(result);
+  try {
+  const [result] =
+    await db.promise().query(sql, params);
+  res.json(result);
+} catch (err) {
+  console.log(err);
+  return res.status(500).json({
+    error: "Error en servidor"
   });
+}
 };
 
 module.exports = {
   getAsistencias
 };
-}
