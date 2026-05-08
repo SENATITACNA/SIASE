@@ -4,11 +4,15 @@ const pool = mysql.createPool({
   user: "desarrollador",
   password: "SENATI",
   database: "proyecto_SIASE",
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
 });
 
-console.log("Conectado a MySQL (Pool)");
+pool.getConnection((err, connection) => {
+  if (err) {
+    console.log("Error de conexión:", err);
+  } else {
+    console.log("Conectado a MySQL");
+    connection.release();
+  }
+});
 
-module.exports = pool.promise();
+module.exports = pool;
