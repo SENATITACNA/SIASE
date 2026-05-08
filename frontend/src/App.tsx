@@ -1,7 +1,7 @@
-import RegistroDispositivoPage from './pages/RegistroDispositivoPage'
+import Login from "./Login";
 
 function App() {
-  return <RegistroDispositivoPage />
+  return <Login />;
 }
 
-export default App
+export default App;
