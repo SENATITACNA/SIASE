@@ -1,8 +1,7 @@
 const db = require("../config/db");
 
 exports.obtenerAlumnoPorId = async (id) => {
-
-    const query = `
+  const query = `
         SELECT
             da.id,
             CONCAT(da.nombres, ' ', da.apellidos) AS nombre_completo,
@@ -14,7 +13,7 @@ exports.obtenerAlumnoPorId = async (id) => {
         WHERE da.id = ?
     `;
 
-    const [rows] = await db.query(query, [id]);
+  const [rows] = await db.promise().query(query, [id]);
 
-    return rows[0];
+  return rows[0];
 };
