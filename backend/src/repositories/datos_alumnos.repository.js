@@ -6,7 +6,6 @@ const obtenerAlumnoPorId = (id, callback) => {
     if (err) {
       callback(err, null);
     } else {
-      // Retornamos solo un objeto en lugar de un array
       callback(null, resultados[0]);
     }
   });
