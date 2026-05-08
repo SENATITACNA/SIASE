@@ -1,26 +1,26 @@
 const express = require("express");
 const cors = require("cors");
-
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-const vigilanteRoutes = require("./routes/vigilante.routes");
-const registroRoutes = require("./routes/registro_dispositivo.routes");
 const alumnosRoutes = require("./routes/alumnos.routes");
-const instructorRoutes = require("./routes/instructor.routes");
-
-app.use("/api/vigilante", vigilanteRoutes);
-app.use("/api/registro_dispositivos", registroRoutes);
-app.use("/api/alumnos", alumnosRoutes);
-app.use("/api/instructores", instructorRoutes);
-
 const asistenciaRoutes = require("./routes/asistencia.routes");
-app.use("/api/asistencias", asistenciaRoutes);
+const instructorRoutes = require("./routes/instructor.routes");
+const registroDispositivoRoutes = require("./routes/registro_dispositivo.routes");
+const vigilanteRoutes = require("./routes/vigilante.routes");
+const tokensVigilanteRoutes = require("./routes/tokens_vigilante.routes");
 
-const errorMiddleware = require("./middlewares/error.middleware");
+app.use("/api/alumnos", alumnosRoutes);
+app.use("/api/asistencia", asistenciaRoutes);
+app.use("/api/instructor", instructorRoutes);
+app.use("/api/registro_dispositivo", registroDispositivoRoutes);
+app.use("/api/vigilantes", vigilanteRoutes);
+app.use("/api/tokens_vigilante", tokensVigilanteRoutes);
 
-app.use(errorMiddleware);
+app.use((err, req, res, next) => {
+    res.status(500).json({ error: "Error en el servidor" });
+});
 
 module.exports = app;
