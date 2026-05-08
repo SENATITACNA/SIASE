@@ -1,10 +1,7 @@
-// repositories/instructor.repository.js
-
 const db = require("../config/db");
 
 exports.obtenerInstructores = async () => {
-
-    const query = `
+  const query = `
         SELECT
             id,
             CONCAT(nombre, ' ', apellido) AS nombre_completo
@@ -12,7 +9,7 @@ exports.obtenerInstructores = async () => {
         WHERE estado = 1
     `;
 
-    const [rows] = await db.query(query);
+  const [rows] = await db.promise().query(query);
 
-    return rows;
+  return rows;
 };
