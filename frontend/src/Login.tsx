@@ -1,4 +1,5 @@
 import { useState } from "react";
+import senatiLogo from "./assets/senati.png";  // ← NUEVA
 
 function Login() {
   const [usuario, setUsuario] = useState("");
@@ -44,7 +45,7 @@ function Login() {
 
           {/* LOGO */}
           <img
-            src="/senati.png"
+            src={senatiLogo}
             alt="Logo SENATI"
             className="logo"
           />
