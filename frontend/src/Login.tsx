@@ -1,11 +1,14 @@
 import { useState } from "react";
-import senatiLogo from "./assets/senati.png";  // ← NUEVA
+import senatiLogo from "./assets/senati.png";
+import "./styles/Login.css";
 
 function Login() {
-  const [usuario, setUsuario] = useState("");
-  const [password, setPassword] = useState("");
+  const [usuario, setUsuario] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
 
     if (!usuario || !password) {
@@ -33,249 +36,74 @@ function Login() {
         alert(data.error || "Error al iniciar sesión");
       }
     } catch (error) {
-      alert("Error de conexión con el servidor");
       console.error(error);
+      alert("Error de conexión con el servidor");
     }
   };
 
   return (
-    <>
-      <div className="container">
-        <div className="card">
+    <div className="container">
+      <div className="card">
 
-          {/* LOGO */}
-          <img
-            src={senatiLogo}
-            alt="Logo SENATI"
-            className="logo"
+        {/* LOGO */}
+        <img
+          src={senatiLogo}
+          alt="Logo SENATI"
+          className="logo"
+        />
+
+        {/* TITULO */}
+        <h2 className="title">
+          Sistema Académico
+        </h2>
+
+        {/* SUBTITULO */}
+        <p className="subtitle">
+          Inicia sesión para continuar
+        </p>
+
+        {/* FORMULARIO */}
+        <form
+          onSubmit={handleLogin}
+          className="form"
+        >
+
+          <input
+            type="text"
+            placeholder="ID"
+            value={usuario}
+            onChange={(e) =>
+              setUsuario(e.target.value)
+            }
+            className="input"
           />
 
-          {/* TITULO */}
-          <h2 className="title">Sistema Académico</h2>
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
+            className="input"
+          />
 
-          <p className="subtitle">
-            Inicia sesión para continuar
-          </p>
+          <button
+            type="submit"
+            className="button"
+          >
+            Ingresar
+          </button>
 
-          {/* FORMULARIO */}
-          <form onSubmit={handleLogin} className="form">
+        </form>
 
-            <input
-              type="text"
-              placeholder="ID"
-              value={usuario}
-              onChange={(e) => setUsuario(e.target.value)}
-              className="input"
-            />
+        {/* FOOTER */}
+        <p className="footer">
+          © 2025 Sistema Académico
+        </p>
 
-            <input
-              type="password"
-              placeholder="Contraseña"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input"
-            />
-
-            <button type="submit" className="button">
-              Ingresar
-            </button>
-
-          </form>
-
-          {/* FOOTER */}
-          <p className="footer">
-            © 2025 Sistema Académico
-          </p>
-
-        </div>
       </div>
-
-      <style>{`
-
-        /* RESET GENERAL */
-        *{
-          margin:0;
-          padding:0;
-          box-sizing:border-box;
-          font-family:"Segoe UI", Arial, sans-serif;
-        }
-
-        /* IMPORTANTE PARA QUITAR LOS BORDES NEGROS */
-        html, body, #root{
-          width:100%;
-          min-height:100vh;
-          background:#ffffff;
-          overflow-x:hidden;
-        }
-
-        body{
-          margin:0;
-        }
-
-        /* CONTENEDOR PRINCIPAL */
-        .container{
-          width:100vw;
-          min-height:100vh;
-          display:flex;
-          justify-content:center;
-          align-items:center;
-          background:#ffffff;
-          padding:20px;
-        }
-
-        /* TARJETA */
-        .card{
-          width:380px;
-          background:rgba(255,255,255,0.98);
-          border-radius:20px;
-          padding:40px;
-          text-align:center;
-
-          box-shadow:
-          0 35px 100px rgba(0,0,0,0.45),
-          0 15px 40px rgba(0,0,0,0.30),
-          0 5px 15px rgba(0,0,0,0.20);
-
-          animation:fadeIn .6s ease;
-        }
-
-        /* LOGO */
-        .logo{
-          width:160px;
-          margin-bottom:10px;
-        }
-
-        /* TITULO */
-        .title{
-          font-size:28px;
-          font-weight:700;
-          color:#0f172a;
-          margin-bottom:8px;
-        }
-
-        /* SUBTITULO */
-        .subtitle{
-          font-size:14px;
-          color:#64748b;
-          margin-bottom:25px;
-        }
-
-        /* FORM */
-        .form{
-          display:flex;
-          flex-direction:column;
-        }
-
-        /* INPUTS */
-        .input{
-          padding:14px;
-          margin-bottom:14px;
-          border-radius:12px;
-          border:1px solid #cbd5e1;
-          outline:none;
-          font-size:15px;
-          background:#fff;
-          color:#374151;
-          transition:0.25s;
-        }
-
-        .input::placeholder{
-          color:#9ca3af;
-        }
-
-        .input:focus{
-          border-color:#1e3a8a;
-          box-shadow:0 0 0 4px rgba(30,58,138,0.12);
-        }
-
-        /* BOTON */
-        .button{
-          padding:14px;
-          margin-top:8px;
-          background:#1e3a8a;
-          color:white;
-          border:none;
-          border-radius:12px;
-          font-size:16px;
-          font-weight:600;
-          cursor:pointer;
-          transition:.3s;
-        }
-
-        .button:hover{
-          background:#162c6b;
-          transform:translateY(-2px);
-        }
-
-        /* FOOTER */
-        .footer{
-          margin-top:22px;
-          font-size:12px;
-          color:#94a3b8;
-        }
-
-        /* ANIMACION */
-        @keyframes fadeIn{
-          from{
-            opacity:0;
-            transform:translateY(-15px);
-          }
-
-          to{
-            opacity:1;
-            transform:translateY(0);
-          }
-        }
-
-        /* TABLET */
-        @media(max-width:768px){
-
-          .card{
-            width:90%;
-            padding:35px;
-          }
-
-          .logo{
-            width:140px;
-          }
-
-          .title{
-            font-size:24px;
-          }
-
-        }
-
-        /* MOVIL */
-        @media(max-width:480px){
-
-          .card{
-            width:100%;
-            padding:25px;
-            border-radius:16px;
-          }
-
-          .logo{
-            width:120px;
-          }
-
-          .title{
-            font-size:22px;
-          }
-
-          .input{
-            padding:12px;
-            font-size:14px;
-          }
-
-          .button{
-            padding:12px;
-            font-size:15px;
-          }
-
-        }
-
-      `}</style>
-    </>
+    </div>
   );
 }
 
