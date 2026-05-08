@@ -18,24 +18,6 @@ exports.obtenerAlumnoFormateadoPorId = async (id) => {
   return rows[0];
 };
 
-exports.obtenerDatosAlumnoPorId = async (id) => {
-  const sql = `
-    SELECT 
-      id,
-      nombres,
-      apellidos,
-      idsenati,
-      semestre,
-      carrera_id,
-      estado
-    FROM datos_alumnos
-    WHERE id = ?
-  `;
-
-  const [rows] = await db.promise().query(sql, [id]);
-  return rows[0];
-};
-
 const pool = require('../config/db');
 
 exports.obtenerAlumnoPorId = (id, callback) => {
