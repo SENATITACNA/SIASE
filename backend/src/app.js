@@ -27,6 +27,8 @@ app.post("/login", (req, res) => {
     res.status(400).json({ success: false, error: "Credenciales inválidas" });
   }
 });
+const asistenciaRoutes = require("./routes/asistencia.routes");
+app.use("/api/asistencias", asistenciaRoutes);
 
 const errorMiddleware = require("./middlewares/error.middleware");
 
