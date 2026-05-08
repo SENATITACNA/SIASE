@@ -7,7 +7,7 @@ class VigilanteService {
     }
 
     async procesarCambioEstado(registroId, nuevoEstado, vigilanteId) {
-        const connection = await pool.getConnection();
+        const connection = await pool.promise().getConnection();
 
         try {
             await connection.beginTransaction();
