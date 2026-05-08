@@ -1,15 +1,16 @@
 const mysql = require("mysql2");
-const connection = mysql.createConnection({
- host: "80.241.217.53",
- user: "desarrollador",
- password: "SENATI",
- database: "proyecto_SIASE"
+
+
+const pool = mysql.createPool({
+  host: "80.241.217.53",
+  user: "desarrollador",
+  password: "SENATI",
+  database: "proyecto_SIASE",
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
-connection.connect((err) => {
- if (err) {
- console.log("Error de conexión:", err);
- } else {
- console.log("Conectado a MySQL");
- }
-});
-module.exports = connection;
+
+console.log("Conectado a MySQL (Pool)");
+
+module.exports = pool.promise();
