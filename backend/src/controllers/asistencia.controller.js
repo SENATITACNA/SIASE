@@ -1,26 +1,31 @@
 const db = require("../config/db");
 
-const getAsistencias = (req, res) => {
+const getAsistencias = async (req, res) => {
 
-  const { alumno_id, guardia, fecha, equipo} = req.query;
+  const { alumno_id, guardia, fecha, equipo } = req.query;
 
   let sql = `
     SELECT 
       rd.id,
+
       dxa.tipo,
       dxa.marca,
       dxa.modelo,
+
       rd.fecha_entrada,
       rd.fecha_salida,
       rd.estado,
-      CONCAT(v.nombre, ' ', v.apellido) AS vigilante,
+
+      CONCAT(v.nombre, ' ', v.apellido)
+      AS vigilante
+
     FROM registro_dispositivo rd
 
     JOIN dispositivos_x_alumno dxa
     ON rd.objeto_id = dxa.id
 
     JOIN vigilante v
-    ON rd.vigilante_id = v.id
+    ON rd.guardia_id = v.id
 
     WHERE rd.alumno_id = ?
   `;
@@ -28,14 +33,11 @@ const getAsistencias = (req, res) => {
   let params = [alumno_id];
 
   if (guardia) {
-    sql += ` AND CONCAT(al.nombres, ' ', al.apellidos) LIKE ? `;
-    params.push(`%${alumno}%`);
-  }
 
-  if (fecha) {
-    sql += ' AND rd.fecha_entrada = ?';
-    params.push(fecha);
-  }
+    sql += `
+      AND CONCAT(v.nombre, ' ', v.apellido)
+      LIKE ?
+    `;
 
   if (equipo) {
     sql += ' AND dxa.tipo LIKE ?';
@@ -60,3 +62,4 @@ const getAsistencias = (req, res) => {
 module.exports = {
   getAsistencias
 };
+}
