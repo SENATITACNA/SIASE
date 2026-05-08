@@ -1,4 +1,5 @@
-const loginRepository = require("../repositories/login.repository");
+const alumnosRepository = require("../repositories/alumnos.repository");
+const vigilanteRepository = require("../repositories/vigilante.repository");
 
 exports.login = async (req, res) => {
   const { usuario, password } = req.body;
@@ -8,13 +9,13 @@ exports.login = async (req, res) => {
   }
 
   try {
-    const alumnos = await loginRepository.obtenerAlumnoPorCredenciales(usuario, password);
+    const alumnos = await alumnosRepository.obtenerAlumnoPorCredenciales(usuario, password);
 
     if (alumnos.length > 0) {
       return res.json({ success: true, redirectUrl: "/dashboard-alumno", role: "alumno", user: alumnos[0] });
     }
 
-    const vigilantes = await loginRepository.obtenerVigilantePorCredenciales(usuario, password);
+    const vigilantes = await vigilanteRepository.obtenerVigilantePorCredenciales(usuario, password);
 
     if (vigilantes.length > 0) {
       return res.json({ success: true, redirectUrl: "/dashboard-vigilante", role: "vigilante", user: vigilantes[0] });
