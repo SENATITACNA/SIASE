@@ -1,5 +1,5 @@
 import { useState } from "react";
-import senatiLogo from "./assets/senati.png";
+import senatiLogo from "./assets/Senati.png";
 import "./styles/Login.css";
 
 function Login() {
