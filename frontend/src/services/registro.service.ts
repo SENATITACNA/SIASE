@@ -1,4 +1,4 @@
-const API = 'http://localhost:3000/api'
+const API = 'http://80.241.217.53:3000/api'
 
 export const obtenerAlumno = async (id: string) => {
 
