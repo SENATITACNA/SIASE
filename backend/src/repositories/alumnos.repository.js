@@ -21,7 +21,7 @@ exports.obtenerAlumnoFormateadoPorId = async (id) => {
 const pool = require('../config/db');
 
 exports.obtenerAlumnoPorId = (id, callback) => {
-  const sql = "SELECT id, nombres, apellidos, idsenati, semestre, carrera_id, estado, FROM datos_alumnos WHERE id = ?";
+  const sql = "SELECT id, nombres, apellidos, idsenati, semestre, carrera_id, estado FROM datos_alumnos WHERE id = ?";
   db.query(sql, [id], (err, resultados) => {
     if (err) {
       callback(err, null);
@@ -32,7 +32,7 @@ exports.obtenerAlumnoPorId = (id, callback) => {
 };
 
 exports.obtenerAlumnoPorCredenciales = async (usuario, password) => {
-  const query = "SELECT * FROM datos_alumnos WHERE idsenati = ? AND password_alumno = ? AND estado = 1";
+  const query = "SELECT id, nombres, apellidos, idsenati, carrera_id, semestre, estado FROM datos_alumnos WHERE idsenati = ? AND password_alumno = ? AND estado = 1";
   const [rows] = await db.promise().query(query, [usuario, password]);
   return rows;
 };

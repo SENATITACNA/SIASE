@@ -66,7 +66,7 @@ class VigilanteRepository {
     }
 
     async obtenerVigilantePorCredenciales(usuario, password) {
-        const query = "SELECT id, guardia_id, password_vigilante, estado FROM vigilante WHERE guardia_id = ? AND password_vigilante = ? AND estado = 1";
+        const query = "SELECT id, guardia_id, nombre, apellido, turno, password_vigilante, estado FROM vigilante WHERE guardia_id = ? AND password_vigilante = ? AND estado = 1";
         const [rows] = await pool.promise().query(query, [usuario, password]);
         return rows;
     }
