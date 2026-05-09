@@ -18,20 +18,21 @@ exports.obtenerAlumnoFormateadoPorId = async (id) => {
   return rows[0];
 };
 
-exports.obtenerDatosAlumnoPorId = async (id) => {
-  const sql = `
-    SELECT 
-      id,
-      nombres,
-      apellidos,
-      idsenati,
-      semestre,
-      carrera_id,
-      estado
-    FROM datos_alumnos
-    WHERE id = ?
-  `;
+const pool = require('../config/db');
 
-  const [rows] = await db.promise().query(sql, [id]);
-  return rows[0];
+exports.obtenerAlumnoPorId = (id, callback) => {
+  const sql = "SELECT id, nombres, apellidos, idsenati, semestre, carrera_id, estado, FROM datos_alumnos WHERE id = ?";
+  db.query(sql, [id], (err, resultados) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, resultados[0]);
+    }
+  });
+};
+
+exports.obtenerAlumnoPorCredenciales = async (usuario, password) => {
+  const query = "SELECT * FROM datos_alumnos WHERE idsenati = ? AND password_alumno = ? AND estado = 1";
+  const [rows] = await db.promise().query(query, [usuario, password]);
+  return rows;
 };
