@@ -8,7 +8,7 @@ function Estudiante() {
   const [alumno, setAlumno] = useState<Alumno | null>(null);
 
   useEffect(() => {
-    obtenerAlumno(2)
+    obtenerAlumno(1)
       .then((data) => setAlumno(data))
       .catch((error) => console.error(error));
   }, []);
