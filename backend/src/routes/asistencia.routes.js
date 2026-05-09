@@ -17,3 +17,8 @@ router.get("/:id", (req, res) => {
 module.exports = router;
 
 
+const { getAsistencias } = require("../controllers/asistencia.controller");
+
+router.get("/", getAsistencias);
+
+module.exports = router;
