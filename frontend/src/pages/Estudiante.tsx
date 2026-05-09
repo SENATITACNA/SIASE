@@ -5,12 +5,21 @@ import AlumnoForm from "../components/alumnoForm";
 import "../styles/estudiante.css";
 
 function Estudiante() {
+
   const [alumno, setAlumno] = useState<Alumno | null>(null);
 
   useEffect(() => {
-    obtenerAlumno(1)
-      .then((data) => setAlumno(data))
-      .catch((error) => console.error(error));
+
+    const alumnoId = localStorage.getItem("alumno_id");
+
+    if (alumnoId) {
+
+      obtenerAlumno(Number(alumnoId))
+        .then((data) => setAlumno(data))
+        .catch((error) => console.error(error));
+
+    }
+
   }, []);
 
   if (!alumno) {

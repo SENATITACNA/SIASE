@@ -31,10 +31,17 @@ function Login() {
       const data = await response.json();
 
       if (response.ok && data.success) {
+
+        // 🔥 GUARDAR ID DEL ALUMNO EN LOCALSTORAGE
+        localStorage.setItem("alumno_id", usuario);
+
+        // 🔥 REDIRECCIONAR
         window.location.href = data.redirectUrl;
+
       } else {
         alert(data.error || "Error al iniciar sesión");
       }
+
     } catch (error) {
       console.error(error);
       alert("Error de conexión con el servidor");
@@ -45,24 +52,20 @@ function Login() {
     <div className="container">
       <div className="card">
 
-        {/* LOGO */}
         <img
           src={senatiLogo}
           alt="Logo SENATI"
           className="logo"
         />
 
-        {/* TITULO */}
         <h2 className="title">
           Sistema Académico
         </h2>
 
-        {/* SUBTITULO */}
         <p className="subtitle">
           Inicia sesión para continuar
         </p>
 
-        {/* FORMULARIO */}
         <form
           onSubmit={handleLogin}
           className="form"
@@ -97,7 +100,6 @@ function Login() {
 
         </form>
 
-        {/* FOOTER */}
         <p className="footer">
           © 2025 Sistema Académico
         </p>
