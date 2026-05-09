@@ -99,7 +99,7 @@ function Login() {
 
         {/* FOOTER */}
         <p className="footer">
-          © 2025 Sistema Académico
+          © 2026 Sistema Académico
         </p>
 
       </div>
