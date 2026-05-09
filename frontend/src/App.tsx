@@ -1,7 +1,7 @@
-import Estudiante from "./pages/Estudiante";
+import Login from "./Login";
 
 function App() {
-  return <Estudiante />;
+  return <Login />;
 }
 
 export default App;
