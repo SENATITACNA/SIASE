@@ -15,8 +15,32 @@ export default function DetallesItem({ alumno }) {
             EQUIPO ASIGNADO
           </div>
           <div className="equipo-info">
-            <p><strong>Descripción:</strong> {alumno.objeto || "No registrado"}</p>
-            <p><strong>Observaciones:</strong> {alumno.observacion || "Ninguna"}</p>
+            {alumno.marca ? (
+              <>
+                <div className="equipo-grid">
+                  <div className="equipo-grid-item">
+                    <span className="equipo-label">Marca</span>
+                    <span className="equipo-value">{alumno.marca}</span>
+                  </div>
+                  <div className="equipo-grid-item">
+                    <span className="equipo-label">Modelo</span>
+                    <span className="equipo-value">{alumno.modelo}</span>
+                  </div>
+                  <div className="equipo-grid-item">
+                    <span className="equipo-label">No. Serie</span>
+                    <span className="equipo-value serie-mono">{alumno.numero_serie || "N/A"}</span>
+                  </div>
+                </div>
+                {alumno.descripcion && (
+                  <div className="equipo-descripcion">
+                    <span className="equipo-label">Descripción</span>
+                    <p className="equipo-desc-text">{alumno.descripcion}</p>
+                  </div>
+                )}
+              </>
+            ) : (
+              <p><strong>Descripción:</strong> No registrado</p>
+            )}
           </div>
         </div>
       ) : (

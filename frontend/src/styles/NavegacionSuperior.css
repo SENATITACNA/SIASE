@@ -79,3 +79,22 @@
   width: 20px;
   height: 20px;
 }
+
+.logout-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid transparent;
+  color: #EF4444;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.logout-button:hover {
+  background-color: #FEE2E2;
+  border-color: #FCA5A5;
+}

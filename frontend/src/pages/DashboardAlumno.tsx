@@ -1,12 +1,11 @@
-import React from 'react';
-
-function DashboardAlumno() {
-  return (
-    <div style={{ padding: "2rem", textAlign: "center", fontFamily: "sans-serif" }}>
-      <h1>Dashboard del Alumno</h1>
-      <p>Bienvenido. Aquí podrás registrar tus dispositivos y ver tu historial.</p>
-    </div>
-  );
-}
+const DashboardAlumno = () => (
+  <div style={{ height: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", backgroundColor: "#eef2f3" }}>
+    <h1>Menú del Alumno</h1>
+    <p>Bienvenido al Sistema Académico</p>
+    <button onClick={() => window.location.href = "/"} style={{ marginTop: "20px", padding: "10px 20px" }}>
+      Cerrar Sesión
+    </button>
+  </div>
+);
 
 export default DashboardAlumno;

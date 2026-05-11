@@ -6,14 +6,15 @@ export default function ResultadosBusqueda({ alumnos, selectedAlumno, onSelect }
     <div className="card-panel resultados-panel">
       <div className="card-title">
         <span className="title-dot"></span>
-        RESULTADOS DE BÚSQUEDA
+        LISTA DE ALUMNOS
       </div>
       
       <div className="resultados-list">
         <div className="resultados-grid">
           {alumnos.map((alumno) => {
             const isSelected = selectedAlumno?.id === alumno.id;
-            const isIngreso = alumno.estado === 'INGRESO';
+            const isIngreso = alumno.estado === 1;
+            const estadoText = isIngreso ? 'INGRESO' : 'SALIDA';
             
             return (
               <div 
@@ -23,11 +24,11 @@ export default function ResultadosBusqueda({ alumnos, selectedAlumno, onSelect }
               >
                 <div className="card-header">
                   <span className="badge-id">
-                    {alumno.id}
+                    {alumno.idsenati}
                   </span>
                   <span className={`badge-status ${isIngreso ? 'ingreso' : 'salida'}`}>
                     <span className={`status-dot ${isIngreso ? 'ingreso' : 'salida'}`}></span>
-                    {alumno.estado}
+                    {estadoText}
                   </span>
                 </div>
                 

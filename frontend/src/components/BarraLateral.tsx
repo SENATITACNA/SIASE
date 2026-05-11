@@ -21,7 +21,7 @@ export default function BarraLateral({ alumno }) {
           <div className="alumno-info-list">
             <div className="info-item">
               <span className="info-label">ID ALUMNO</span>
-              <span>{alumno.id}</span>
+              <span>{alumno.idsenati || alumno.alumno_id}</span>
             </div>
             <div className="info-item">
               <span className="info-label">NOMBRE</span>
@@ -32,12 +32,18 @@ export default function BarraLateral({ alumno }) {
               <span>{alumno.apellido}</span>
             </div>
             <div className="info-item">
-              <span className="info-label">CURSO</span>
-              <span>{alumno.curso}</span>
+              <span className="info-label">CARRERA</span>
+              <span>{alumno.carrera || alumno.curso}</span>
             </div>
+            {alumno.semestre && (
+              <div className="info-item">
+                <span className="info-label">SEMESTRE</span>
+                <span>{alumno.semestre}</span>
+              </div>
+            )}
             <div className="info-item">
               <span className="info-label">INSTRUCTOR</span>
-              <span>{alumno.instructor}</span>
+              <span>{alumno.instructor || "No asignado"}</span>
             </div>
           </div>
         </>
