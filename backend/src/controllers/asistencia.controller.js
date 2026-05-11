@@ -13,7 +13,7 @@ const getAsistencias = async (req, res) => {
       a.hora_salida,
 
       CONCAT(v.nombre, ' ', v.apellido)
-      AS vigilante
+      AS vigilante,
 
       dxa.tipo AS equipo,
       dxa.marca,

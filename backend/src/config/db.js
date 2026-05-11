@@ -6,11 +6,12 @@ const pool = mysql.createPool({
   database: "proyecto_SIASE",
 });
 
-connection.connect((err) => {
+pool.getConnection((err, connection) => {
   if (err) {
     console.log("Error de conexión:", err);
   } else {
     console.log("Conectado a MySQL");
+    connection.release();
   }
 });
 
