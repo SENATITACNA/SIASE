@@ -1,0 +1,169 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#eef4ff;
+}
+
+/* NAVBAR */
+
+.navbar{
+    width:100%;
+    height:70px;
+
+    background:#0f4fa8;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 20px;
+
+    position:fixed;
+    top:0;
+    left:0;
+
+    z-index:1000;
+}
+
+.logo{
+    color:white;
+    text-decoration:none;
+
+    font-size:22px;
+    font-weight:bold;
+}
+
+/* LINKS */
+
+.nav-links{
+    display:flex;
+    align-items:center;
+
+    list-style:none;
+
+    gap:20px;
+}
+
+.nav-item{
+    list-style:none;
+}
+
+.nav-item a{
+    color:white;
+    text-decoration:none;
+
+    font-weight:500;
+
+    transition:0.2s;
+}
+
+.nav-item a:hover{
+    color:#cfe3ff;
+}
+
+/* BOTON HAMBURGUESA */
+
+.menu-btn{
+    border:none;
+    background:none;
+
+    color:white;
+
+    font-size:28px;
+
+    cursor:pointer;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* SIDEBAR MOBILE */
+
+.sidebar{
+    position:fixed;
+
+    top:70px;
+    right:-100%;
+
+    width:250px;
+    height:100vh;
+
+    background:white;
+
+    box-shadow:-2px 0 10px rgba(0,0,0,0.1);
+
+    transition:0.3s;
+
+    padding:30px 20px;
+
+    z-index:999;
+}
+
+.sidebar.active{
+    right:0;
+}
+
+.sidebar ul{
+    list-style:none;
+}
+
+.sidebar .nav-item{
+    margin-bottom:25px;
+}
+
+.sidebar .nav-item a{
+    color:#0f4fa8;
+    font-weight:600;
+}
+
+/* CONTENIDO */
+
+.page-content{
+    padding:100px 20px 20px;
+}
+
+/* LOGOUT */
+
+.logout-btn{
+    border:none;
+
+    background:#dc2626;
+    color:white;
+
+    padding:10px 14px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:0.2s;
+}
+
+.logout-btn:hover{
+    background:#b91c1c;
+}
+
+/* RESPONSIVE */
+
+@media screen and (max-width:768px){
+
+    .nav-links{
+        display:none;
+    }
+}
+
+.menu-container{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+
+    width:auto;
+}
