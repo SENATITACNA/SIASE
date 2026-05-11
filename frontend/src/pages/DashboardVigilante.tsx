@@ -16,16 +16,16 @@ function DashboardVigilante() {
     fetch("http://80.241.217.53:3000/api/vigilantes/alumnos")
       .then(res => res.json())
       .then(data => {
-         const mapped = data.map((a: any) => ({
-             id: a.id,
-             alumno_id: a.id,
-             idsenati: a.idsenati,
-             alumno: a.nombres + " " + a.apellidos,
-             estado: 1,
-             fecha_envio: new Date().toISOString()
-         }));
-         setAllAlumnos(mapped);
-         setAlumnos(mapped);
+        const mapped = data.map((a: any) => ({
+          id: a.id,
+          alumno_id: a.id,
+          idsenati: a.idsenati,
+          alumno: a.nombres + " " + a.apellidos,
+          estado: 1,
+          fecha_envio: new Date().toISOString()
+        }));
+        setAllAlumnos(mapped);
+        setAlumnos(mapped);
       })
       .catch(err => console.error("Error al cargar registros:", err));
   };
@@ -37,14 +37,14 @@ function DashboardVigilante() {
       fetch(`http://80.241.217.53:3000/api/vigilantes/${user.guardia_id}`)
         .then(res => res.json())
         .then(data => {
-            if(data && data.vigilante_id) {
-                setGuardia({
-                    nombre: data.nombre + " " + data.apellido,
-                    rol: "ID de vigilante: " + data.vigilante_id,
-                    turno: data.turno,
-                    id: "GRD-" + data.vigilante_id
-                });
-            }
+          if (data && data.vigilante_id) {
+            setGuardia({
+              nombre: data.nombre + " " + data.apellido,
+              rol: "ID de vigilante: " + data.vigilante_id,
+              turno: data.turno,
+              id: "GRD-" + data.vigilante_id
+            });
+          }
         })
         .catch(err => console.error("Error al cargar vigilante:", err));
     }
@@ -58,9 +58,9 @@ function DashboardVigilante() {
       return;
     }
     const lower = searchTerm.toLowerCase();
-    const filtered = allAlumnos.filter(a => 
-       a.idsenati.includes(lower) || 
-       a.alumno.toLowerCase().includes(lower)
+    const filtered = allAlumnos.filter(a =>
+      a.idsenati.includes(lower) ||
+      a.alumno.toLowerCase().includes(lower)
     );
     setAlumnos(filtered);
   };
@@ -69,19 +69,19 @@ function DashboardVigilante() {
     fetch(`http://80.241.217.53:3000/api/alumnos/${registro.alumno_id}`)
       .then(res => res.json())
       .then(alumnoData => {
-         setSelectedAlumno({
-           ...registro,
-           nombre: alumnoData.nombres,
-           apellido: alumnoData.apellidos,
-           carrera: alumnoData.carrera,
-           semestre: alumnoData.semestre,
-           idsenati: alumnoData.idsenati,
-           tipo: alumnoData.tipo,
-           marca: alumnoData.marca,
-           modelo: alumnoData.modelo,
-           numero_serie: alumnoData.numero_serie,
-           descripcion: alumnoData.descripcion
-         });
+        setSelectedAlumno({
+          ...registro,
+          nombre: alumnoData.nombres,
+          apellido: alumnoData.apellidos,
+          carrera: alumnoData.carrera,
+          semestre: alumnoData.semestre,
+          idsenati: alumnoData.idsenati,
+          tipo: alumnoData.tipo,
+          marca: alumnoData.marca,
+          modelo: alumnoData.modelo,
+          numero_serie: alumnoData.numero_serie,
+          descripcion: alumnoData.descripcion
+        });
       })
       .catch(err => console.error("Error al cargar datos del alumno:", err));
   };
