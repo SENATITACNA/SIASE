@@ -1,6 +1,5 @@
 name: Deploy to Server
 
-# Se ejecuta solo cuando se hace un push o merge a main
 on:
   push:
     branches:
@@ -9,7 +8,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout del código
         uses: actions/checkout@v4
@@ -48,11 +46,15 @@ jobs:
             cd ../frontend
             npm install
             npm run build
-            
-            # Detener y reiniciar el servicio de frontend usando npx serve
-            pm2 delete front-siase || true
-            pm2 start "npx serve" --name "front-siase" -- -s dist -p 4000
 
-            # 4. Guardar configuración de PM2
+            # Asegurar que 'serve' esté instalado globalmente en el servidor
+            sudo npm install -g serve
+
+            # Detener y reiniciar el servicio de frontend usando serve directamente
+            pm2 delete front-siase || true
+            # -s: Single Page App mode, -l: Listen on port 4000
+            pm2 start serve --name "front-siase" -- -s dist -l 4000
+
+            # 4. Guardar configuración de PM2 para persistencia tras reinicios
             pm2 save
             echo "🚀 ¡Despliegue finalizado con éxito!"
