@@ -5,6 +5,8 @@ class RegistroDispositivoRepository {
         const query = `
             SELECT 
                 r.id,
+                r.alumno_id,
+                a.idsenati,
                 r.estado,
                 r.fecha_envio,
                 r.fecha_entrada,
