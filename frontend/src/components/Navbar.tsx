@@ -26,7 +26,6 @@ const Navbar = () => {
           SIASE
         </Link>
 
-        {/* Desktop Menu */}
         <div className="navbar-menu">
           <div className="nav-links">
             {navItems.map((item) => (
@@ -46,7 +45,6 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* Mobile Menu Toggle */}
         <button
           className="mobile-menu-btn"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -55,7 +53,6 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile Menu */}
       <div className={`mobile-menu ${isMobileMenuOpen ? 'active' : ''}`}>
         {navItems.map((item) => (
           <Link

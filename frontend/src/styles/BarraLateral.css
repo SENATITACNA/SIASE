@@ -1,8 +1,8 @@
-/* Barra Lateral */
+
 .barra-lateral {
   width: 320px;
-  background-color: #F4F7FA; /* Color suave y claro con tono azulado */
-  color: #1E293B; /* Texto oscuro para contrastar */
+  background-color: #F4F7FA; 
+  color: #1E293B; 
   display: flex;
   flex-direction: column;
   padding: 24px;
