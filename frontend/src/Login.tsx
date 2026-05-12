@@ -31,6 +31,10 @@ function Login() {
       const data = await response.json();
 
       if (response.ok && data.success) {
+        // Guardamos la información del usuario y su rol para usarla en los dashboards
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("role", data.role);
+  
         window.location.href = data.redirectUrl;
       } else {
         alert(data.error || "Error al iniciar sesión");
