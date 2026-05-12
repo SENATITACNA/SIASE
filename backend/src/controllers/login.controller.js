@@ -13,7 +13,7 @@ exports.login = async (req, res) => {
     const alumnos = await alumnosRepository.obtenerAlumnoPorCredenciales(usuario, password);
 
     if (alumnos.length > 0) {
-      const token = jwt.sign({ id: alumnos[0].ID_Alumno, role: "alumno", usuario }, process.env.JWT_SECRET || "secreto_super_seguro", { expiresIn: "1d" });
+      const token = jwt.sign({ id: alumnos[0].id, role: "alumno", usuario }, process.env.JWT_SECRET || "secreto_super_seguro", { expiresIn: "1d" });
       res.cookie("auth_token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
@@ -26,7 +26,7 @@ exports.login = async (req, res) => {
     const vigilantes = await vigilanteRepository.obtenerVigilantePorCredenciales(usuario, password);
 
     if (vigilantes.length > 0) {
-      const token = jwt.sign({ id: vigilantes[0].ID_Vigilante, role: "vigilante", usuario }, process.env.JWT_SECRET || "secreto_super_seguro", { expiresIn: "1d" });
+      const token = jwt.sign({ id: vigilantes[0].id, role: "vigilante", usuario }, process.env.JWT_SECRET || "secreto_super_seguro", { expiresIn: "1d" });
       res.cookie("auth_token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
