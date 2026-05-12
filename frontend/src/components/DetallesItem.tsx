@@ -1,7 +1,7 @@
 import { Laptop } from 'lucide-react'
 import '../styles/DetallesItem.css'
 
-export default function DetallesItem({ alumno }) {
+export default function DetallesItem({ alumno }: { alumno: any }) {
   return (
     <div className="card-panel detalles-panel">
       <div className="card-title">

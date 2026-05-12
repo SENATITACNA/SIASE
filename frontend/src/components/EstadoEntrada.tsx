@@ -1,6 +1,6 @@
 import '../styles/EstadoEntrada.css'
 
-export default function EstadoEntrada({ alumno }) {
+export default function EstadoEntrada({ alumno }: { alumno: any }) {
   const disabled = !alumno;
   
   return (
