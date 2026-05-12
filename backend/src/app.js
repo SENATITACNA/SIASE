@@ -1,9 +1,16 @@
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: true, // Permite cualquier origen con credenciales
+    credentials: true, // Permite envío de cookies
+  })
+);
 app.use(express.json());
+app.use(cookieParser());
 
 const loginRoutes = require("./routes/login.routes");
 const alumnosRoutes = require("./routes/alumnos.routes");
