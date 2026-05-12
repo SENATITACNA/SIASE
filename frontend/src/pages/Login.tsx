@@ -1,10 +1,12 @@
 import { useState } from "react";
-import senatiLogo from "./assets/Senati.png";
-import "./styles/Login.css";
+import { useNavigate } from "react-router-dom";
+import senatiLogo from "../assets/Senati.png";
+import "../styles/Login.css";
 
 function Login() {
   const [usuario, setUsuario] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleLogin = async (
     e: React.FormEvent<HTMLFormElement>
@@ -32,7 +34,8 @@ function Login() {
       const data = await response.json();
 
       if (response.ok && data.success) {
-        window.location.href = data.redirectUrl;
+        localStorage.setItem("user", JSON.stringify(data.user));
+        navigate(data.redirectUrl);
       } else {
         alert(data.error || "Error al iniciar sesión");
       }
@@ -45,25 +48,17 @@ function Login() {
   return (
     <div className="container">
       <div className="card">
-
-        {/* LOGO */}
         <img
           src={senatiLogo}
           alt="Logo SENATI"
           className="logo"
         />
-
-        {/* TITULO */}
         <h2 className="title">
           Sistema Académico
         </h2>
-
-        {/* SUBTITULO */}
         <p className="subtitle">
           Inicia sesión para continuar
         </p>
-
-        {/* FORMULARIO */}
         <form
           onSubmit={handleLogin}
           className="form"
@@ -97,8 +92,6 @@ function Login() {
           </button>
 
         </form>
-
-        {/* FOOTER */}
         <p className="footer">
           © 2026 Sistema Académico
         </p>

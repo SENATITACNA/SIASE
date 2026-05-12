@@ -26,8 +26,7 @@ const QRVigilante = () => {
       <div style={{ border: "1px solid blue", padding: "15px", borderRadius: "8px", maxWidth: "400px", margin: "0 auto" }}>
         <strong>Último Alumno:</strong> {alumnoDetectado || "Esperando escaneo..."}
       </div>
-      
-      {/* NOTA: Ahora este botón regresa a dashboard-vigilante */}
+
       <button onClick={() => navigate("/dashboard-vigilante")} style={{ marginTop: "20px" }}>
         Volver al Panel
       </button>

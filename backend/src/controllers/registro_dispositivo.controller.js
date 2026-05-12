@@ -11,6 +11,8 @@ class RegistroDispositivoController {
             const resultadosOrdenados = resultados.map(
                 ({
                     id,
+                    alumno_id,
+                    idsenati,
                     alumno,
                     objeto,
                     observacion,
@@ -22,6 +24,8 @@ class RegistroDispositivoController {
                     fecha_salida
                 }) => ({
                     id,
+                    alumno_id,
+                    idsenati,
                     alumno,
                     objeto,
                     observacion,

@@ -1,13 +1,10 @@
 const alumnosRepository = require("../repositories/alumnos.repository");
 const vigilanteRepository = require("../repositories/vigilante.repository");
 const jwt = require("jsonwebtoken");
+const { loginService } = require("../services/login.service");
 
 exports.login = async (req, res) => {
   const { usuario, password } = req.body;
-
-  if (!usuario || !password) {
-    return res.status(400).json({ success: false, error: "Faltan credenciales" });
-  }
 
   try {
     const alumnos = await alumnosRepository.obtenerAlumnoPorCredenciales(usuario, password);
@@ -37,7 +34,15 @@ exports.login = async (req, res) => {
     }
 
     return res.status(401).json({ success: false, error: "Credenciales inválidas o usuario inactivo" });
+    const result = await loginService(usuario, password);
+    return res.json(result);
   } catch (error) {
+    if (error.message === "Faltan credenciales") {
+      return res.status(400).json({ success: false, error: error.message });
+    }
+    if (error.message === "Credenciales inválidas o usuario inactivo") {
+      return res.status(401).json({ success: false, error: error.message });
+    }
     console.error("Error de autenticación:", error);
     return res.status(500).json({ success: false, error: "Error interno del servidor" });
   }
