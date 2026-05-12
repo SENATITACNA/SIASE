@@ -1,14 +1,10 @@
-import { Search, User, LogOut } from 'lucide-react'
+import { Search, User } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import '../styles/NavegacionSuperior.css'
 
 export default function NavegacionSuperior({ guardia, onSearch }) {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/login");
-  };
   return (
     <div className="navegacion-superior">
       <div className="guardia-info">
@@ -32,9 +28,6 @@ export default function NavegacionSuperior({ guardia, onSearch }) {
           />
           <Search className="search-icon" />
         </div>
-        <button className="logout-button" onClick={handleLogout} title="Cerrar sesión">
-          <LogOut size={22} strokeWidth={2.5} />
-        </button>
       </div>
     </div>
   )

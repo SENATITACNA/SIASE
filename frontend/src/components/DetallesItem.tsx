@@ -5,7 +5,7 @@ export default function DetallesItem({ alumno }) {
   return (
     <div className="card-panel detalles-panel">
       <div className="card-title">
-        ITEM
+        DISPOSITIVO
       </div>
       
       {alumno ? (
@@ -20,11 +20,11 @@ export default function DetallesItem({ alumno }) {
                 <div className="equipo-grid">
                   <div className="equipo-grid-item">
                     <span className="equipo-label">Marca</span>
-                    <span className="equipo-value">{alumno.marca}</span>
+                    <span className="equipo-value value-box">{alumno.marca}</span>
                   </div>
                   <div className="equipo-grid-item">
                     <span className="equipo-label">Modelo</span>
-                    <span className="equipo-value">{alumno.modelo}</span>
+                    <span className="equipo-value value-box">{alumno.modelo}</span>
                   </div>
                   <div className="equipo-grid-item">
                     <span className="equipo-label">No. Serie</span>

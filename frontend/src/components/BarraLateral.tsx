@@ -1,9 +1,22 @@
-import { User, UserX } from 'lucide-react'
+import { useState } from 'react'
+import { User, UserX, ChevronRight, ChevronLeft } from 'lucide-react'
 import '../styles/BarraLateral.css'
 
 export default function BarraLateral({ alumno }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <div className="barra-lateral">
+    <>
+      {/* Toggle Button for smaller screens */}
+      <button 
+        className={`barra-toggle-btn ${isOpen ? 'open' : ''}`}
+        onClick={() => setIsOpen(!isOpen)}
+        title={isOpen ? "Ocultar Alumno" : "Ver Alumno"}
+      >
+        {isOpen ? <ChevronLeft size={24} /> : <ChevronRight size={24} />}
+      </button>
+
+      <div className={`barra-lateral ${isOpen ? 'open' : ''}`}>
       <div className="barra-lateral-header">
         <h1 className="barra-lateral-title">
           ALUMNO
@@ -55,6 +68,7 @@ export default function BarraLateral({ alumno }) {
           </p>
         </div>
       )}
-    </div>
+      </div>
+    </>
   )
 }

@@ -5,11 +5,11 @@
 }
 
 .equipo-header {
-  margin-top: 48px;
+  margin-top: 12px;
   font-size: var(--text-body);
   font-weight: 600;
   color: var(--color-nav-bg);
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -64,25 +64,36 @@
 }
 
 .equipo-desc-text {
-  color: var(--color-secondary-text);
-  font-size: 13px;
+  color: var(--color-black-text);
+  font-size: 14px;
+  font-weight: 500;
   line-height: 1.5;
   margin: 0;
+}
+
+.value-box {
+  background-color: #F3F4F6;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #E5E7EB;
+  display: inline-block;
 }
 
 .serie-mono {
   font-family: monospace;
   background-color: #F3F4F6;
-  padding: 2px 6px;
+  padding: 4px 8px;
   border-radius: 4px;
   border: 1px solid #E5E7EB;
+  display: inline-block;
 }
 
 .empty-detalles {
-  margin-top: 64px;
+  margin-top: 32px;
   font-size: var(--text-body);
   font-weight: 600;
   color: #D1D5DB;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  text-align: center;
 }

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import '../styles/App.css';
 import BarraLateral from '../components/BarraLateral';
 import NavegacionSuperior from '../components/NavegacionSuperior';
+import Navbar from '../components/Navbar';
 import ResultadosBusqueda from '../components/ResultadosBusqueda';
 import DetallesItem from '../components/DetallesItem';
 import EstadoEntrada from '../components/EstadoEntrada';
@@ -13,7 +14,7 @@ function DashboardVigilante() {
   const [guardia, setGuardia] = useState({ nombre: "Cargando...", rol: "Oficial de Guardia", turno: "", id: "" });
 
   const fetchAlumnos = () => {
-    fetch("http://80.241.217.53:3000/api/vigilantes/alumnos")
+    fetch("http://localhost:3000/api/alumnos")
       .then(res => res.json())
       .then(data => {
         const mapped = data.map((a: any) => ({
@@ -34,7 +35,7 @@ function DashboardVigilante() {
     const userStr = localStorage.getItem("user");
     if (userStr) {
       const user = JSON.parse(userStr);
-      fetch(`http://80.241.217.53:3000/api/vigilantes/${user.guardia_id}`)
+      fetch(`http://localhost:3000/api/vigilantes/${user.guardia_id}`)
         .then(res => res.json())
         .then(data => {
           if (data && data.vigilante_id) {
@@ -66,7 +67,7 @@ function DashboardVigilante() {
   };
 
   const handleSelectRegistro = (registro: any) => {
-    fetch(`http://80.241.217.53:3000/api/alumnos/${registro.alumno_id}`)
+    fetch(`http://localhost:3000/api/alumnos/${registro.alumno_id}`)
       .then(res => res.json())
       .then(alumnoData => {
         setSelectedAlumno({
@@ -87,8 +88,10 @@ function DashboardVigilante() {
   };
 
   return (
-    <div className="app-container">
-      <BarraLateral alumno={selectedAlumno} />
+    <div className="layout-wrapper">
+      <Navbar />
+      <div className="app-container">
+        <BarraLateral alumno={selectedAlumno} />
 
       <div className="main-content">
         <NavegacionSuperior guardia={guardia} onSearch={handleSearch} />
@@ -102,6 +105,7 @@ function DashboardVigilante() {
           <div className="content-grid">
             <DetallesItem alumno={selectedAlumno} />
             <EstadoEntrada alumno={selectedAlumno} />
+          </div>
           </div>
         </div>
       </div>
