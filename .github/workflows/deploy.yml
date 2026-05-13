@@ -1,6 +1,5 @@
 name: Deploy to Server
 
-# Se ejecuta solo cuando se hace un push o merge a main
 on:
   push:
     branches:
@@ -9,18 +8,53 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout del código
         uses: actions/checkout@v4
 
-      - name: Desplegar vía SSH
+      - name: Desplegar archivos vía SCP
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "." # Qué archivos enviar (punto significa todos)
-          target: "/home/freddy/proyecto_SIASE" # Ruta de destino en tu servidor
+          source: "."
+          target: "/home/freddy/proyecto_SIASE"
           strip_components: 0
+
+      - name: Instalar dependencias y reiniciar servicios
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            # 1. Entrar a la carpeta raíz
+            cd /home/freddy/proyecto_SIASE
+
+            # 2. Configurar el BACKEND
+            echo "Actualizando Backend..."
+            cd backend
+            npm install --production
+            pm2 delete api-siase || true
+            pm2 start src/server.js --name "api-siase"
+
+            # 3. Configurar el FRONTEND (Vite + TS)
+            echo "Compilando Frontend (Vite)..."
+            cd ../frontend
+            npm install
+            npm run build
+
+            # Asegurar que 'serve' esté instalado globalmente en el servidor
+            sudo npm install -g serve
+
+            # Detener y reiniciar el servicio de frontend usando serve directamente
+            pm2 delete front-siase || true
+            # -s: Single Page App mode, -l: Listen on port 4000
+            pm2 start serve --name "front-siase" -- -s dist -l 4000
+
+            # 4. Guardar configuración de PM2 para persistencia tras reinicios
+            pm2 save
+            echo "🚀 ¡Despliegue finalizado con éxito!"
