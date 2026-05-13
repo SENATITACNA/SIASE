@@ -3,6 +3,7 @@ import Login from "./pages/Login";
 import DashboardVigilante from "./pages/DashboardVigilante";
 import DashboardAlumno from "./pages/DashboardAlumno";
 import QRVigilante from "./pages/QRVigilante";
+import EscanerAlumno from './pages/EscanerAlumno';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/dashboard-vigilante" element={<DashboardVigilante />} />
         <Route path="/dashboard-alumno" element={<DashboardAlumno />} />
         <Route path="/qr-vigilante" element={<QRVigilante />} />
+        <Route path="/escaner-alumno" element={<EscanerAlumno />} />
       </Routes>
     </BrowserRouter>
   );
