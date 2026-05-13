@@ -1,7 +1,7 @@
 import { Calendar, ChevronRight } from 'lucide-react'
 import '../styles/ResultadosBusqueda.css'
 
-export default function ResultadosBusqueda({ alumnos, selectedAlumno, onSelect }) {
+export default function ResultadosBusqueda({ alumnos, selectedAlumno, onSelect }: { alumnos: any[], selectedAlumno: any, onSelect: any }) {
   return (
     <div className="card-panel resultados-panel">
       <div className="card-title">
@@ -11,7 +11,7 @@ export default function ResultadosBusqueda({ alumnos, selectedAlumno, onSelect }
       
       <div className="resultados-list">
         <div className="resultados-grid">
-          {alumnos.map((alumno) => {
+          {alumnos.map((alumno: any) => {
             const isSelected = selectedAlumno?.id === alumno.id;
             const isIngreso = alumno.estado === 1;
             const estadoText = isIngreso ? 'INGRESO' : 'SALIDA';
