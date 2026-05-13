@@ -9,17 +9,17 @@ export interface Alumno {
   id: string | number;
   alumno_id?: string | number;
   idsenati: string;
-  alumno?: string; // Nombre completo
+  alumno?: string;
   estado?: number;
   fecha_envio?: string;
-  
+
   nombre?: string;
   apellido?: string;
   carrera?: string;
   curso?: string;
   semestre?: string;
   instructor?: string;
-  
+
   tipo?: string;
   marca?: string;
   modelo?: string;

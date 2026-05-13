@@ -14,7 +14,7 @@ function DashboardVigilante() {
   const [guardia, setGuardia] = useState({ nombre: "Cargando...", rol: "Oficial de Guardia", turno: "", id: "" });
 
   const fetchAlumnos = () => {
-    fetch("http://80.241.217.53:3000/api/alumnos")
+    fetch("/api/alumnos")
       .then(res => res.json())
       .then(data => {
         const mapped = data.map((a: any) => ({
@@ -35,7 +35,7 @@ function DashboardVigilante() {
     const userStr = localStorage.getItem("user");
     if (userStr) {
       const user = JSON.parse(userStr);
-      fetch(`http://80.241.217.53:3000/api/vigilantes/${user.guardia_id}`)
+      fetch(`/api/vigilantes/${user.guardia_id}`)
         .then(res => res.json())
         .then(data => {
           if (data && data.vigilante_id) {
@@ -67,7 +67,7 @@ function DashboardVigilante() {
   };
 
   const handleSelectRegistro = (registro: any) => {
-    fetch(`http://80.241.217.53:3000/api/alumnos/${registro.alumno_id}`)
+    fetch(`/api/alumnos/${registro.alumno_id}`)
       .then(res => res.json())
       .then(alumnoData => {
         setSelectedAlumno({
@@ -77,6 +77,7 @@ function DashboardVigilante() {
           carrera: alumnoData.carrera,
           semestre: alumnoData.semestre,
           idsenati: alumnoData.idsenati,
+          instructor: alumnoData.instructor,
           tipo: alumnoData.tipo,
           marca: alumnoData.marca,
           modelo: alumnoData.modelo,

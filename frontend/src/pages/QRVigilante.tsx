@@ -8,7 +8,7 @@ const QRVigilante = () => {
   useEffect(() => {
     const chequearAsistencia = async () => {
       try {
-        const res = await fetch("http://80.241.217.53:3000/api/asistencia/ultimo");
+        const res = await fetch("/api/asistencia/ultimo");
         const data = await res.json();
         if (data.success) setAlumnoDetectado(data.alumno.nombre);
       } catch (e) { console.error("Error", e); }
