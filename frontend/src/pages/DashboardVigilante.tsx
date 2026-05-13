@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../styles/App.css';
 import BarraLateral from '../components/BarraLateral';
 import NavegacionSuperior from '../components/NavegacionSuperior';
@@ -8,10 +9,41 @@ import DetallesItem from '../components/DetallesItem';
 import EstadoEntrada from '../components/EstadoEntrada';
 
 function DashboardVigilante() {
+  const navigate = useNavigate();
   const [alumnos, setAlumnos] = useState<any[]>([]);
   const [allAlumnos, setAllAlumnos] = useState<any[]>([]);
   const [selectedAlumno, setSelectedAlumno] = useState(null);
   const [guardia, setGuardia] = useState({ nombre: "Cargando...", rol: "Oficial de Guardia", turno: "", id: "" });
+
+  useEffect(() => {
+    // --- TU LÓGICA DE SEGURIDAD ---
+    const userData = localStorage.getItem("user");
+    const role = localStorage.getItem("role");
+
+    if (!userData || role !== "vigilante") {
+      navigate("/");
+      return;
+    }
+
+    const user = JSON.parse(userData);
+
+    // Carga de datos usando la IP del servidor
+    fetch(`http://80.241.217.53:3000/api/vigilantes/${user.guardia_id}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.vigilante_id) {
+          setGuardia({
+            nombre: data.nombre + " " + data.apellido,
+            rol: "ID de vigilante: " + data.vigilante_id,
+            turno: data.turno,
+            id: "GRD-" + data.vigilante_id
+          });
+        }
+      })
+      .catch(err => console.error("Error al cargar vigilante:", err));
+
+    fetchAlumnos();
+  }, [navigate]);
 
   const fetchAlumnos = () => {
     fetch("http://80.241.217.53:3000/api/alumnos")
@@ -31,28 +63,6 @@ function DashboardVigilante() {
       .catch(err => console.error("Error al cargar registros:", err));
   };
 
-  useEffect(() => {
-    const userStr = localStorage.getItem("user");
-    if (userStr) {
-      const user = JSON.parse(userStr);
-      fetch(`http://localhost:3000/api/vigilantes/${user.guardia_id}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.vigilante_id) {
-            setGuardia({
-              nombre: data.nombre + " " + data.apellido,
-              rol: "ID de vigilante: " + data.vigilante_id,
-              turno: data.turno,
-              id: "GRD-" + data.vigilante_id
-            });
-          }
-        })
-        .catch(err => console.error("Error al cargar vigilante:", err));
-    }
-
-    fetchAlumnos();
-  }, []);
-
   const handleSearch = (searchTerm: string) => {
     if (!searchTerm.trim()) {
       setAlumnos(allAlumnos);
@@ -67,7 +77,7 @@ function DashboardVigilante() {
   };
 
   const handleSelectRegistro = (registro: any) => {
-    fetch(`http://localhost:3000/api/alumnos/${registro.alumno_id}`)
+    fetch(`http://80.241.217.53:3000/api/alumnos/${registro.alumno_id}`)
       .then(res => res.json())
       .then(alumnoData => {
         setSelectedAlumno({
@@ -93,24 +103,25 @@ function DashboardVigilante() {
       <div className="app-container">
         <BarraLateral alumno={selectedAlumno} />
 
-      <div className="main-content">
-        <NavegacionSuperior guardia={guardia} onSearch={handleSearch} />
+        <div className="main-content">
+          {/* Aquí NavegacionSuperior ya debe traer el botón de QR del main */}
+          <NavegacionSuperior guardia={guardia} onSearch={handleSearch} />
 
-        <div className="content-area">
-          <ResultadosBusqueda
-            alumnos={alumnos}
-            selectedAlumno={selectedAlumno}
-            onSelect={handleSelectRegistro}
-          />
-          <div className="content-grid">
-            <DetallesItem alumno={selectedAlumno} />
-            <EstadoEntrada alumno={selectedAlumno} />
-          </div>
+          <div className="content-area">
+            <ResultadosBusqueda
+              alumnos={alumnos}
+              selectedAlumno={selectedAlumno}
+              onSelect={handleSelectRegistro}
+            />
+            <div className="content-grid">
+              <DetallesItem alumno={selectedAlumno} />
+              <EstadoEntrada alumno={selectedAlumno} />
+            </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default DashboardVigilante;
