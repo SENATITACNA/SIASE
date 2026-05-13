@@ -2,10 +2,6 @@ const pool = require("../config/db");
 const vigilanteRepo = require("../repositories/vigilante.repository");
 
 class VigilanteService {
-  async listarAlumnos() {
-    return await vigilanteRepo.obtenerAlumnosActivos();
-  }
-
   async procesarCambioEstado(registroId, nuevoEstado, vigilanteId) {
     const connection = await pool.promise().getConnection();
 

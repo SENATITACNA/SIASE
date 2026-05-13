@@ -1,4 +1,4 @@
-/* CONTENEDOR PRINCIPAL */
+
 .container{
   width:100%;
   min-height:100vh;
@@ -9,7 +9,6 @@
   padding:20px;
 }
 
-/* TARJETA */
 .card{
   width:380px;
   background:rgba(255,255,255,0.98);
@@ -25,13 +24,11 @@
   animation:fadeIn .6s ease;
 }
 
-/* LOGO */
 .logo{
   width:160px;
   margin-bottom:10px;
 }
 
-/* TITULO */
 .title{
   font-size:28px;
   font-weight:700;
@@ -39,20 +36,17 @@
   margin-bottom:8px;
 }
 
-/* SUBTITULO */
 .subtitle{
   font-size:14px;
   color:#64748b;
   margin-bottom:25px;
 }
 
-/* FORM */
 .form{
   display:flex;
   flex-direction:column;
 }
 
-/* INPUTS */
 .input{
   padding:14px;
   margin-bottom:14px;
@@ -74,7 +68,6 @@
   box-shadow:0 0 0 4px rgba(30,58,138,0.12);
 }
 
-/* BOTON */
 .button{
   padding:14px;
   margin-top:8px;
@@ -93,14 +86,12 @@
   transform:translateY(-2px);
 }
 
-/* FOOTER */
 .footer{
   margin-top:22px;
   font-size:12px;
   color:#94a3b8;
 }
 
-/* ANIMACION */
 @keyframes fadeIn{
   from{
     opacity:0;
@@ -113,7 +104,6 @@
   }
 }
 
-/* TABLET */
 @media(max-width:768px){
 
   .card{
@@ -131,7 +121,6 @@
 
 }
 
-/* MOVIL */
 @media(max-width:480px){
 
   .card{
