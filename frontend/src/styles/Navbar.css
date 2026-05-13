@@ -19,11 +19,26 @@
 }
 
 .navbar-logo {
-  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 10px;
+  font-size: 25px;
   font-weight: bold;
   color: var(--color-white);
   text-decoration: none;
   letter-spacing: 1px;
+}
+
+.navbar-logo .logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.navbar-logo .titulo {
+   line-height: 1;
+   margin-top: -5px;
 }
 
 .navbar-menu {

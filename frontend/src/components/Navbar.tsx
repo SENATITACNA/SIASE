@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { LogOut, Menu, X } from 'lucide-react';
+import senatiVigilante from "../assets/SenatiVigilante.png";
 import '../styles/Navbar.css';
 
 const Navbar = () => {
@@ -23,7 +24,8 @@ const Navbar = () => {
     <nav className="global-navbar">
       <div className="navbar-container">
         <Link to="/dashboard-vigilante" className="navbar-logo">
-          SIASE
+          <img src={senatiVigilante} alt="SENATI" className="logo"/>
+          <span className="titulo">SIASE</span>
         </Link>
 
         <div className="navbar-menu">
