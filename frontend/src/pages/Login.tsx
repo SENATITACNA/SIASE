@@ -34,8 +34,6 @@ function Login() {
 
       if (response.ok && data.success) {
         localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("role", data.role);
-  
         navigate(data.redirectUrl);
       } else {
         alert(data.error || "Error al iniciar sesión");
