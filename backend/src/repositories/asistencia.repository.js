@@ -58,8 +58,89 @@ const obtenerAsistenciasRepo = async (filtros) => {
     return result;
 };
 
+const obtenerAsistenciaAlumnoRepo =
+async (filtros) => {
+
+    let sql = `
+      SELECT 
+        a.id,
+
+        a.fecha,
+        a.hora_ingreso,
+        a.hora_salida,
+
+        CONCAT(v.nombre, ' ', v.apellido)
+        AS vigilante,
+
+        dxa.tipo AS equipo,
+        dxa.marca,
+        dxa.modelo
+
+      FROM asistencia a
+
+      JOIN vigilante v
+      ON a.guardia_id = v.id
+
+      JOIN datos_alumnos al
+      ON a.alumno_id = al.id
+
+      LEFT JOIN registro_dispositivo rd
+      ON rd.alumno_id = al.id
+
+      LEFT JOIN dispositivos_x_alumno dxa
+      ON rd.objeto_id = dxa.id
+
+      WHERE a.alumno_id = ?
+    `;
+
+    let params = [filtros.alumno_id];
+
+    if (filtros.guardia) {
+
+      sql += `
+        AND CONCAT(v.nombre, ' ', v.apellido)
+        LIKE ?
+      `;
+
+      params.push(`%${filtros.guardia}%`);
+
+    }
+
+    if (filtros.fecha) {
+
+      sql += `
+        AND a.fecha = ?
+      `;
+
+      params.push(filtros.fecha);
+
+    }
+
+    if (filtros.equipo) {
+
+      sql += `
+        AND dxa.tipo LIKE ?
+      `;
+
+      params.push(`%${filtros.equipo}%`);
+
+    }
+
+    sql += `
+      ORDER BY a.fecha DESC,
+      a.hora_ingreso DESC
+    `;
+
+    const [result] =
+      await db.promise().query(sql, params);
+
+    return result;
+
+};
+
 module.exports = {
     registrarAsistencia,
     obtenerUltimoEscaneoRepo,
-    obtenerAsistenciasRepo
+    obtenerAsistenciasRepo,
+    obtenerAsistenciaAlumnoRepo
 };
