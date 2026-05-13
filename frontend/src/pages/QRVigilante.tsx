@@ -28,8 +28,7 @@ const QRVigilante = () => {
       inicializarYObtenerToken(id);
     }
   }, [navigate]);
-
-  // Lógica de detección del Main (Escucha si alguien marcó)
+  
   useEffect(() => {
     const chequearAsistencia = async () => {
       try {
@@ -37,7 +36,6 @@ const QRVigilante = () => {
         const data = await res.json();
         if (data.success) {
           setAlumnoDetectado(data.alumno.nombre);
-          // Opcional: Limpiar el nombre después de 5 segundos para el siguiente alumno
           setTimeout(() => setAlumnoDetectado(null), 5000);
         }
       } catch (e) {
@@ -45,7 +43,7 @@ const QRVigilante = () => {
       }
     };
 
-    const timer = setInterval(chequearAsistencia, 3000); // Revisa cada 3 seg
+    const timer = setInterval(chequearAsistencia, 3000); 
     return () => clearInterval(timer);
   }, []);
 
@@ -85,7 +83,6 @@ const QRVigilante = () => {
     }
   };
 
-  // Rotación automática (Tu lógica)
   useEffect(() => {
     if (!guardiaId) return;
     const interval = setInterval(() => {
@@ -100,7 +97,6 @@ const QRVigilante = () => {
       <h2 style={{ color: "#333", marginBottom: "5px" }}>Control de Acceso</h2>
       <p style={{ marginBottom: "20px" }}>Vigilante ID: <strong>{guardiaId}</strong></p>
 
-      {/* SECCIÓN DEL QR */}
       <div style={{ background: "white", padding: "25px", borderRadius: "15px", boxShadow: "0 10px 25px rgba(0,0,0,0.1)", marginBottom: "30px" }}>
         {token ? (
           <QRCodeSVG value={token} size={250} level="H" includeMargin={true} />
@@ -111,7 +107,6 @@ const QRVigilante = () => {
         )}
       </div>
 
-      {/* SECCIÓN DE DETECCIÓN (Fusión con el Main) */}
       <div style={{ 
         width: "100%", 
         maxWidth: "400px", 
@@ -128,7 +123,6 @@ const QRVigilante = () => {
         </p>
       </div>
 
-      {/* BOTONES */}
       <div style={{ display: "flex", gap: "15px", marginTop: "30px" }}>
         <button 
           onClick={ejecutarRotacion} 
