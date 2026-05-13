@@ -9,6 +9,7 @@ exports.obtenerAlumnoFormateadoPorId = async (id) => {
             da.idsenati,
             c.nombre AS carrera,
             da.semestre,
+            CONCAT(i.nombre, ' ', i.apellido) AS instructor,
             d.tipo,
             d.marca,
             d.modelo,
@@ -17,6 +18,8 @@ exports.obtenerAlumnoFormateadoPorId = async (id) => {
         FROM datos_alumnos da
         INNER JOIN carreras c
             ON da.carrera_id = c.id
+        LEFT JOIN instructor i
+            ON da.instructor_id = i.id
         LEFT JOIN dispositivos_x_alumno d
             ON da.id = d.alumno_id AND d.estado = 1
         WHERE da.id = ?
