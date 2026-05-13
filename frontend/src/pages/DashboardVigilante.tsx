@@ -14,7 +14,7 @@ function DashboardVigilante() {
   const [guardia, setGuardia] = useState({ nombre: "Cargando...", rol: "Oficial de Guardia", turno: "", id: "" });
 
   const fetchAlumnos = () => {
-    fetch("http://localhost:3000/api/alumnos")
+    fetch("http://80.241.217.53:3000/api/alumnos")
       .then(res => res.json())
       .then(data => {
         const mapped = data.map((a: any) => ({
