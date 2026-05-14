@@ -1,18 +1,28 @@
-const { obtenerAsistenciasService } = require("../services/asistencia.service");
+const {
+  obtenerAsistenciasService
+} = require("../services/asistencia.service");
 
 const getAsistencias = async (req, res) => {
 
   try {
-    const result = await asistenciaService.obtenerAsistencias(req.query);
+
+    const result =
+      await obtenerAsistenciasService(
+        req.query
+      );
+
     res.json(result);
 
   } catch (err) {
 
     console.log(err);
+
     return res.status(500).json({
       error: "Error en servidor"
     });
+
   }
+
 };
 
 module.exports = {

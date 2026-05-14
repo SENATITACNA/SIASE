@@ -1,4 +1,8 @@
-const { obtenerAsistenciaAlumnoRepo } = require("../repositories/asistencia.repository");
+const {
+  obtenerAsistenciaAlumnoRepo
+} = require(
+  "../repositories/asistencia.repository"
+);
 
 const obtenerAsistenciasService =
 async (filtros) => {
@@ -13,7 +17,7 @@ async (filtros) => {
 
   const result =
     await obtenerAsistenciaAlumnoRepo(
-      filtros
+      filtros.alumno_id
     );
 
   return result;
