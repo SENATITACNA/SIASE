@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+<<<<<<< HEAD
 const db = require("../config/db");
 
 // GET por ID
@@ -17,3 +18,10 @@ router.get("/:id", (req, res) => {
 module.exports = router;
 
 
+=======
+const { getAsistencias } = require("../controllers/asistencia.controller");
+
+router.get("/", getAsistencias);
+
+module.exports = router;
+>>>>>>> a7265d73ab0e803fe6fbf0c2757f999b9a19b49b
