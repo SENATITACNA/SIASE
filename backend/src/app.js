@@ -1,6 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8df41127beb4920abbc5ccfbfd3daf91273fdf6a
 
 const app = express();
 
@@ -14,6 +17,7 @@ app.use("/asistencia", asistenciaRoutes);
 app.listen(3000, () => {
   console.log("Servidor corriendo");
 });
+<<<<<<< HEAD
 =======
 const app = express();
 
@@ -36,6 +40,8 @@ app.use(cors({
 }));
 app.use(express.json());
 
+=======
+>>>>>>> 8df41127beb4920abbc5ccfbfd3daf91273fdf6a
 const loginRoutes = require("./routes/login.routes");
 const alumnosRoutes = require("./routes/alumnos.routes");
 const instructorRoutes = require("./routes/instructor.routes");
@@ -58,4 +64,7 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = app;
+<<<<<<< HEAD
 >>>>>>> a7265d73ab0e803fe6fbf0c2757f999b9a19b49b
+=======
+>>>>>>> 8df41127beb4920abbc5ccfbfd3daf91273fdf6a
