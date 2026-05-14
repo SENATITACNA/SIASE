@@ -31,7 +31,7 @@ export default function EstadoEntrada({ alumno }: { alumno: Alumno | null }) {
             Último registro: 
             <span className={`registro-estado ${alumno.estado === 1 ? 'ingreso' : 'salida'}`}>
               {alumno.estado === 1 ? 'INGRESO' : 'SALIDA'}
-            </span> a las {new Date(alumno.fecha_envio).toLocaleString('en-CA', { hour12: true }).replace(',', '')}
+            </span> a las {new Date(alumno.fecha_envio ?? '').toLocaleString('en-CA', { hour12: true }).replace(',', '')}
           </div>
         )}
       </div>

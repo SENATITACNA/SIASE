@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import ResultadosBusqueda from '../components/ResultadosBusqueda';
 import DetallesItem from '../components/DetallesItem';
 import EstadoEntrada from '../components/EstadoEntrada';
+import { API_BASE } from '../services/api';
 
 function DashboardVigilante() {
   const [alumnos, setAlumnos] = useState<any[]>([]);
@@ -14,7 +15,7 @@ function DashboardVigilante() {
   const [guardia, setGuardia] = useState({ nombre: "Cargando...", rol: "Oficial de Guardia", turno: "", id: "" });
 
   const fetchAlumnos = () => {
-    fetch("/api/alumnos")
+    fetch(`${API_BASE}/api/alumnos`)
       .then(res => res.json())
       .then(data => {
         const mapped = data.map((a: any) => ({
@@ -35,7 +36,9 @@ function DashboardVigilante() {
     const userStr = localStorage.getItem("user");
     if (userStr) {
       const user = JSON.parse(userStr);
-      fetch(`/api/vigilantes/${user.guardia_id}`)
+      // The vigilante object from the DB has guardia_id as the primary key
+      const vigilanteId = user.guardia_id ?? user.id;
+      fetch(`${API_BASE}/api/vigilantes/${vigilanteId}`)
         .then(res => res.json())
         .then(data => {
           if (data && data.vigilante_id) {
@@ -67,7 +70,7 @@ function DashboardVigilante() {
   };
 
   const handleSelectRegistro = (registro: any) => {
-    fetch(`/api/alumnos/${registro.alumno_id}`)
+    fetch(`${API_BASE}/api/alumnos/${registro.alumno_id}`)
       .then(res => res.json())
       .then(alumnoData => {
         setSelectedAlumno({

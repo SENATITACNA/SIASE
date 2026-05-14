@@ -43,7 +43,7 @@ export default function ResultadosBusqueda({ alumnos, selectedAlumno, onSelect }
                 <div className="card-footer">
                   <div className="date-info">
                     <Calendar className="date-icon" />
-                    <span>{new Date(alumno.fecha_envio).toLocaleString()}</span>
+                    <span>{new Date(alumno.fecha_envio ?? '').toLocaleString()}</span>
                   </div>
                   <ChevronRight className="chevron-icon" />
                 </div>

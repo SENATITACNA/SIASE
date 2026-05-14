@@ -9,7 +9,7 @@ exports.obtenerAlumnoFormateadoPorId = async (id) => {
             da.idsenati,
             c.nombre AS carrera,
             da.semestre,
-            CONCAT(i.nombre, ' ', i.apellido) AS instructor,
+            COALESCE(CONCAT_WS(' ', i.nombre, i.apellido), 'Sin asignar') AS instructor,
             d.tipo,
             d.marca,
             d.modelo,
