@@ -1,18 +1,15 @@
 import type { Alumno } from "../types/alumnos";
+import { API_BASE } from "./api";
 
-const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/alumnos`;
+const API_URL = `${API_BASE}/api/alumnos`;
 
 export const obtenerAlumno = async (
   id: number
 ): Promise<Alumno> => {
-
-  const response =
-    await fetch(`${API_URL}/${id}`);
+  const response = await fetch(`${API_URL}/${id}`);
 
   if (!response.ok) {
-    throw new Error(
-      "Error al obtener alumno"
-    );
+    throw new Error("Error al obtener alumno");
   }
 
   return await response.json();

@@ -1,14 +1,24 @@
 const express = require("express");
 const cors = require("cors");
-const cookieParser = require('cookie-parser');
 const app = express();
 
+const allowedOrigins = [
+  "http://80.241.217.53:4000",
+  "http://localhost:4000",
+  "http://localhost:5173",
+];
 
 app.use(cors({
-  origin: ["http://localhost:4000", "http://80.241.217.53:5173"], 
-  credentials: true
+  origin: function (origin, callback) {
+    // Allow requests with no origin (e.g. mobile apps, curl, server-side)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error(`CORS bloqueado para el origen: ${origin}`));
+  },
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
 }));
-app.use(cookieParser());
 app.use(express.json());
 
 const loginRoutes = require("./routes/login.routes");
@@ -19,7 +29,8 @@ const vigilanteRoutes = require("./routes/vigilante.routes");
 const tokensVigilanteRoutes = require("./routes/tokens_vigilante.routes");
 const asistenciaRoutes = require("./routes/asistencia.routes");
 
-app.use("/login", loginRoutes); 
+app.use("/login", loginRoutes);
+
 app.use("/api/alumnos", alumnosRoutes);
 app.use("/api/instructor", instructorRoutes);
 app.use("/api/registro_dispositivo", registroDispositivoRoutes);

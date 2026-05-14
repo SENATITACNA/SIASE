@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import '../styles/App.css';
 import BarraLateral from '../components/BarraLateral';
 import NavegacionSuperior from '../components/NavegacionSuperior';
@@ -7,71 +6,56 @@ import Navbar from '../components/Navbar';
 import ResultadosBusqueda from '../components/ResultadosBusqueda';
 import DetallesItem from '../components/DetallesItem';
 import EstadoEntrada from '../components/EstadoEntrada';
-
-const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api`;
+import { API_BASE } from '../services/api';
 
 function DashboardVigilante() {
-  const navigate = useNavigate();
   const [alumnos, setAlumnos] = useState<any[]>([]);
   const [allAlumnos, setAllAlumnos] = useState<any[]>([]);
   const [selectedAlumno, setSelectedAlumno] = useState(null);
-  const [guardia, setGuardia] = useState({ 
-    nombre: "Cargando...", 
-    rol: "Oficial de Guardia", 
-    turno: "Activo", 
-    id: "" 
-  });
+  const [guardia, setGuardia] = useState({ nombre: "Cargando...", rol: "Oficial de Guardia", turno: "", id: "" });
 
-  const getCookie = (name: string) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) {
-      try {
-        const cookieContent = parts.pop()?.split(';').shift();
-        return cookieContent ? JSON.parse(decodeURIComponent(cookieContent)) : null;
-      } catch (e) {
-        console.error("Error al parsear cookie:", e);
-        return null;
-      }
-    }
-    return null;
-  };
-
-  const fetchAlumnos = () => {
-    fetch(`${API_URL}/alumnos`)
+  const fetchRegistros = () => {
+    fetch(`${API_BASE}/api/registro_dispositivo`)
       .then(res => res.json())
       .then(data => {
-        const mapped = data.map((a: any) => ({
-          id: a.id,
-          alumno_id: a.id,
-          idsenati: a.idsenati,
-          alumno: a.nombres + " " + a.apellidos,
-          estado: 1,
-          fecha_envio: new Date().toISOString()
+        // En el backend, obtenerRegistros ya devuelve un join con los datos del alumno y dispositivo
+        const mapped = data.map((r: any) => ({
+          ...r,
+          id: r.id, // ID del registro
+          alumno_id: r.alumno_id,
+          idsenati: r.idsenati,
+          alumno: r.alumno,
+          estado: r.estado, // 0=en espera, 1=ingreso, 2=salida
+          fecha_envio: r.fecha_envio
         }));
         setAllAlumnos(mapped);
         setAlumnos(mapped);
       })
-      .catch(err => console.error("Error al cargar alumnos:", err));
+      .catch(err => console.error("Error al cargar registros:", err));
   };
 
   useEffect(() => {
-    const session = getCookie('user_session');
-
-    if (!session) {
-      console.warn("Sin sesión activa. Redirigiendo al login...");
-      navigate("/login");
-      return;
+    const userStr = localStorage.getItem("user");
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      const vigilanteId = user.guardia_id ?? user.id;
+      fetch(`${API_BASE}/api/vigilantes/${vigilanteId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.vigilante_id) {
+            setGuardia({
+              nombre: data.nombre + " " + data.apellido,
+              rol: "ID de vigilante: " + data.vigilante_id,
+              turno: data.turno,
+              id: data.id // Usamos el PK 'id' real para las operaciones de BD
+            });
+          }
+        })
+        .catch(err => console.error("Error al cargar vigilante:", err));
     }
 
-    setGuardia({
-      nombre: session.nombre,
-      rol: "Oficial de Guardia",
-      turno: "Activo",
-      id: "ID: " + session.id 
-    });
-    fetchAlumnos();
-  }, [navigate]);
+    fetchRegistros();
+  }, []);
 
   const handleSearch = (searchTerm: string) => {
     if (!searchTerm.trim()) {
@@ -80,51 +64,65 @@ function DashboardVigilante() {
     }
     const lower = searchTerm.toLowerCase();
     const filtered = allAlumnos.filter(a =>
-      a.idsenati.includes(lower) ||
+      a.idsenati.toLowerCase().includes(lower) ||
       a.alumno.toLowerCase().includes(lower)
     );
     setAlumnos(filtered);
   };
 
   const handleSelectRegistro = (registro: any) => {
-    fetch(`${API_URL}/alumnos/${registro.alumno_id}`)
+    // Ya tenemos casi todo en el registro, pero podemos refinar si es necesario
+    setSelectedAlumno({
+      ...registro,
+      nombre: registro.alumno.split(' ')[0], // Aproximación
+      apellido: registro.alumno.split(' ').slice(1).join(' '),
+      // Los detalles del dispositivo vienen en el 'objeto' formateado, 
+      // pero para DetallesItem necesitamos los campos sueltos
+    });
+
+    // Opcional: Fetch detallado si faltan campos (marca, modelo, etc.)
+    fetch(`${API_BASE}/api/alumnos/${registro.alumno_id}`)
       .then(res => res.json())
       .then(alumnoData => {
-        setSelectedAlumno({
-          ...registro,
-          nombre: alumnoData.nombres,
-          apellido: alumnoData.apellidos,
+        setSelectedAlumno(prev => ({
+          ...prev,
           carrera: alumnoData.carrera,
           semestre: alumnoData.semestre,
           idsenati: alumnoData.idsenati,
           instructor: alumnoData.instructor,
-          tipo: alumnoData.tipo,
-          marca: alumnoData.marca,
-          modelo: alumnoData.modelo,
-          numero_serie: alumnoData.numero_serie,
-          descripcion: alumnoData.descripcion
-        });
+          // Buscamos el dispositivo específico
+          tipo: registro.objeto.split(' ')[0] || 'Dispositivo',
+          marca: registro.objeto.split(' ')[1] || 'N/A',
+          modelo: registro.objeto.split(' ').slice(2).join(' ') || 'N/A',
+        }));
       })
-      .catch(err => console.error("Error al cargar detalles del alumno:", err));
+      .catch(err => console.error("Error al cargar detalles extra:", err));
   };
+
 
   return (
     <div className="layout-wrapper">
       <Navbar />
       <div className="app-container">
         <BarraLateral alumno={selectedAlumno} />
-        <div className="main-content">
-          <NavegacionSuperior guardia={guardia} onSearch={handleSearch} />
-          <div className="content-area">
-            <ResultadosBusqueda
-              alumnos={alumnos}
-              selectedAlumno={selectedAlumno}
-              onSelect={handleSelectRegistro}
+
+      <div className="main-content">
+        <NavegacionSuperior guardia={guardia} onSearch={handleSearch} />
+
+        <div className="content-area">
+          <ResultadosBusqueda
+            alumnos={alumnos}
+            selectedAlumno={selectedAlumno}
+            onSelect={handleSelectRegistro}
+          />
+          <div className="content-grid">
+            <DetallesItem alumno={selectedAlumno} />
+            <EstadoEntrada 
+              alumno={selectedAlumno} 
+              guardiaId={guardia.id}
+              onRefresh={fetchRegistros}
             />
-            <div className="content-grid">
-              <DetallesItem alumno={selectedAlumno} />
-              <EstadoEntrada alumno={selectedAlumno} />
-            </div>
+          </div>
           </div>
         </div>
       </div>

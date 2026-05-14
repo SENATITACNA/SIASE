@@ -5,4 +5,5 @@ export interface Alumno {
   idsenati: string;
   semestre: number;
   carrera: string;
-}
+  instructor?: string;
+}
