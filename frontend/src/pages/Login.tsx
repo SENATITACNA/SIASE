@@ -1,10 +1,13 @@
 import { useState } from "react";
-import senatiLogo from "./assets/Senati.png";
-import "./styles/Login.css";
+import { useNavigate } from "react-router-dom";
+import senatiLogo from "../assets/Senati.png";
+import { API_BASE } from "../services/api";
+import "../styles/Login.css";
 
 function Login() {
   const [usuario, setUsuario] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const navigate = useNavigate();
 
   const handleLogin = async (
     e: React.FormEvent<HTMLFormElement>
@@ -17,7 +20,7 @@ function Login() {
     }
 
     try {
-      const response = await fetch("http://80.241.217.53:3000/login", {
+      const response = await fetch(`${API_BASE}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -31,7 +34,9 @@ function Login() {
       const data = await response.json();
 
       if (response.ok && data.success) {
-        window.location.href = data.redirectUrl;
+        // Persist role alongside user data so protected routes can check it
+        localStorage.setItem("user", JSON.stringify({ ...data.user, role: data.role }));
+        navigate(data.redirectUrl);
       } else {
         alert(data.error || "Error al iniciar sesión");
       }
@@ -44,25 +49,17 @@ function Login() {
   return (
     <div className="container">
       <div className="card">
-
-        {/* LOGO */}
         <img
           src={senatiLogo}
           alt="Logo SENATI"
           className="logo"
         />
-
-        {/* TITULO */}
         <h2 className="title">
           Sistema Académico
         </h2>
-
-        {/* SUBTITULO */}
         <p className="subtitle">
           Inicia sesión para continuar
         </p>
-
-        {/* FORMULARIO */}
         <form
           onSubmit={handleLogin}
           className="form"
@@ -96,8 +93,6 @@ function Login() {
           </button>
 
         </form>
-
-        {/* FOOTER */}
         <p className="footer">
           © 2026 Sistema Académico
         </p>

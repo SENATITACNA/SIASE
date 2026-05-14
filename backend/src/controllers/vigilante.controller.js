@@ -1,16 +1,6 @@
 const vigilanteService = require("../services/vigilante.service");
 
 class VigilanteController {
-  async getAlumnos(req, res) {
-    try {
-      const alumnos = await vigilanteService.listarAlumnos();
-      res.status(200).json(alumnos);
-    } catch (error) {
-      console.error("Error en getAlumnos:", error);
-      res.status(500).json({ mensaje: "Error interno del servidor" });
-    }
-  }
-
   async putEstadoRegistro(req, res) {
     try {
       const registroId = req.params.id;
@@ -47,8 +37,8 @@ class VigilanteController {
         return res.status(404).json({ mensaje: "Vigilante no encontrado" });
       }
 
-      const { vigilante_id: vid, nombre, apellido, turno } = data[0];
-      res.status(200).json({ vigilante_id: vid, nombre, apellido, turno });
+      const { id, vigilante_id: vid, nombre, apellido, turno } = data[0];
+      res.status(200).json({ id, vigilante_id: vid, nombre, apellido, turno });
     } catch (error) {
       console.error("[vigilante] Error MySQL:", error.message);
       res.status(500).json({ mensaje: "Error al obtener el vigilante" });

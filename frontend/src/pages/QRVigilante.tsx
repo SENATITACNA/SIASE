@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE } from "../services/api";
 
 const QRVigilante = () => {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ const QRVigilante = () => {
   useEffect(() => {
     const chequearAsistencia = async () => {
       try {
-        const res = await fetch("http://80.241.217.53:4000/api/asistencia/ultimo");
+        const res = await fetch(`${API_BASE}/api/asistencia/ultimo`);
         const data = await res.json();
         if (data.success) setAlumnoDetectado(data.alumno.nombre);
       } catch (e) { console.error("Error", e); }
@@ -26,8 +27,7 @@ const QRVigilante = () => {
       <div style={{ border: "1px solid blue", padding: "15px", borderRadius: "8px", maxWidth: "400px", margin: "0 auto" }}>
         <strong>Último Alumno:</strong> {alumnoDetectado || "Esperando escaneo..."}
       </div>
-      
-      {/* NOTA: Ahora este botón regresa a dashboard-vigilante */}
+
       <button onClick={() => navigate("/dashboard-vigilante")} style={{ marginTop: "20px" }}>
         Volver al Panel
       </button>
