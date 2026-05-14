@@ -16,8 +16,8 @@ const Navbar = () => {
 
   const navItems = [
     { title: 'Dashboard', path: '/dashboard-vigilante' },
-    { title: 'Escáner de QR', path: '/qr-vigilante' },
-    { title: 'Asistencia', path: '/asistencia-vigilante' }
+    { title: 'QR guardia', path: '/dashboard-vigilante/qr-vigilante' },
+    { title: 'Asistencia', path: '/asistencia' }
   ];
 
   return (
