@@ -1,4 +1,4 @@
-const mysql = require("mysql2/promise");
+const mysql = require("mysql2");
 
 const pool = mysql.createPool({
   host: "80.241.217.53",
@@ -10,14 +10,13 @@ const pool = mysql.createPool({
   queueLimit: 0
 });
 
-(async () => {
-  try {
-    const connection = await pool.getConnection();
-    console.log("Conectado en el servidor");
-    connection.release();
-  } catch (err) {
-    console.error("Error de conexión a la base de datos", err.message);
+pool.getConnection((err, connection) => {
+  if (err) {
+    console.error("Error de conexión a la base de datos:", err.message);
+  } else {
+    console.log("Conectado a el servidor");
+    if (connection) connection.release();
   }
-})();
+});
 
 module.exports = pool;

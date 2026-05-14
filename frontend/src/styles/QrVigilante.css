@@ -1,0 +1,95 @@
+.qr-layout {
+  display: flex;
+  gap: 30px;
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+.qr-scanner-section {
+  flex: 1;
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.qr-viewport-large {
+  width: 100%;
+  aspect-ratio: 1 / 1; 
+  max-width: 500px;
+  border: 4px dashed #003459;
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f4f8;
+  border-radius: 15px;
+  font-weight: bold;
+  color: #003459;
+}
+
+.qr-data-section {
+  flex: 1;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  border-left: 5px solid #003459;
+  min-height: 500px;
+}
+
+.data-header {
+  border-bottom: 2px solid #eee;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.data-row {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.data-label {
+  font-size: 14px;
+  color: #666;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.data-value {
+  font-size: 18px;
+  color: #333;
+  font-weight: 700;
+}
+
+.no-data {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-style: italic;
+  text-align: center;
+}
+.qr-subtitle {
+  color: #666;
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+.qr-timer-text {
+  font-size: 12px;
+  color: #888;
+  margin-top: 10px;
+}
+
+/* Asegura que el QR no se desborde */
+.qr-viewport-large canvas {
+  max-width: 100%;
+  height: auto !important;
+  border-radius: 10px;
+}

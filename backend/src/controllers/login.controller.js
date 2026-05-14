@@ -5,15 +5,24 @@ exports.login = async (req, res) => {
 
   try {
     const result = await loginService(usuario, password);
-    return res.json(result);
+    
+    const user = result.vigilante || result.user || result.alumno;
+
+    res.cookie('user_session', JSON.stringify({
+      id: user.guardia_id || user.idsenati || user.id, 
+      nombre: `${user.nombre || user.nombres} ${user.apellido || user.apellidos}`,
+      rol: result.role
+    }), {
+      httpOnly: false,   
+      secure: false, 
+      maxAge: 2592000000, // 30 día
+      sameSite: 'lax'
+    });
+
+    return res.json({ success: true, ...result });
+
   } catch (error) {
-    if (error.message === "Faltan credenciales") {
-      return res.status(400).json({ success: false, error: error.message });
-    }
-    if (error.message === "Credenciales inválidas o usuario inactivo") {
-      return res.status(401).json({ success: false, error: error.message });
-    }
     console.error("Error de autenticación:", error);
-    return res.status(500).json({ success: false, error: "Error interno del servidor" });
+    return res.status(401).json({ success: false, error: error.message });
   }
 };

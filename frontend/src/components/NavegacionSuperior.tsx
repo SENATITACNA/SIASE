@@ -1,7 +1,8 @@
 import { Search, User } from 'lucide-react'
 import '../styles/NavegacionSuperior.css'
+import type { Guardia } from '../types'
 
-export default function NavegacionSuperior({ guardia, onSearch }: { guardia: any, onSearch: any }) {
+export default function NavegacionSuperior({ guardia, onSearch }: { guardia: Guardia | null, onSearch: (term: string) => void }) {
   return (
     <div className="navegacion-superior">
       <div className="guardia-info">

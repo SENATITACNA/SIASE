@@ -1,64 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { QRCodeCanvas } from 'qrcode.react';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-// Se cambia la IP por localhost porque ahora usas tu backend local como puente
-const API_BASE_URL = 'http://localhost:3000/api/tokens_vigilante';
+const QRVigilante = () => {
+  const navigate = useNavigate();
+  const [alumnoDetectado, setAlumnoDetectado] = useState<string | null>(null);
 
-const QRVigilante: React.FC = () => {
-    const [token, setToken] = useState<string>('');
-    const [mensaje, setMensaje] = useState<string>('Conectando al backend local...');
-    const [error, setError] = useState<boolean>(false);
-
-    const guardia_id = 1; 
-
-    const obtenerToken = async () => {
-        try {
-            const response = await fetch(`${API_BASE_URL}/rotar`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ guardia_id })
-            });
-
-            if (!response.ok) throw new Error('Error en el servidor local');
-
-            const data = await response.json();
-            
-            if (data.token) {
-                setToken(data.token);
-                setMensaje('Conectado a DB Remota - QR Activo');
-                setError(false);
-            }
-        } catch (err) {
-            console.error("Fallo de conexión:", err);
-            setError(true);
-            setMensaje('Error: No se pudo conectar con el backend en localhost:3000');
-        }
+  useEffect(() => {
+    const chequearAsistencia = async () => {
+      try {
+        const res = await fetch("/api/asistencia/ultimo");
+        const data = await res.json();
+        if (data.success) setAlumnoDetectado(data.alumno.nombre);
+      } catch (e) { console.error("Error", e); }
     };
+    const timer = setInterval(chequearAsistencia, 3000);
+    return () => clearInterval(timer);
+  }, []);
 
-    useEffect(() => {
-        obtenerToken()
-        const intervalo = setInterval(obtenerToken, 5000);
-        return () => clearInterval(intervalo);
-    }, []);
+  return (
+    <div style={{ padding: "40px", textAlign: "center" }}>
+      <h2>Escáner de Guardia</h2>
+      <div style={{ width: "200px", height: "200px", border: "2px solid black", margin: "20px auto", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        [ ESPACIO PARA EL QR ]
+      </div>
+      <div style={{ border: "1px solid blue", padding: "15px", borderRadius: "8px", maxWidth: "400px", margin: "0 auto" }}>
+        <strong>Último Alumno:</strong> {alumnoDetectado || "Esperando escaneo..."}
+      </div>
 
-    return (
-        <div style={{ textAlign: 'center', marginTop: '50px', fontFamily: 'Arial' }}>
-            <h2>Panel Vigilante (Backend Local + DB Servidor)</h2>
-            <p style={{ color: error ? '#d32f2f' : '#2e7d32', fontWeight: 'bold' }}>{mensaje}</p>
-            <div style={{ padding: '20px', background: '#fff', display: 'inline-block', border: '2px solid #003366', borderRadius: '10px' }}>
-                {token ? (
-                    <QRCodeCanvas value={token} size={256} level="H" includeMargin={true} />
-                ) : (
-                    <div style={{ width: 256, height: 256, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        {error ? '⚠️ Revisa tu Backend' : 'Cargando QR...'}
-                    </div>
-                )}
-            </div>
-            <p style={{ fontSize: '0.8rem', color: '#666', marginTop: '10px' }}>
-                Comunicándose con: {API_BASE_URL}/rotar
-            </p>
-        </div>
-    );
+      <button onClick={() => navigate("/dashboard-vigilante")} style={{ marginTop: "20px" }}>
+        Volver al Panel
+      </button>
+    </div>
+  );
 };
 
 export default QRVigilante;
