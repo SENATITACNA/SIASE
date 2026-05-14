@@ -32,6 +32,14 @@ class RegistroDispositivoService {
   async crearSolicitudIngreso(alumnoId, dispositivoId, instructorId) {
     return await registroRepository.crearSolicitudIngreso(alumnoId, dispositivoId, instructorId);
   }
+
+  async marcarEntrada(registroId, guardiaId) {
+    return await registroRepository.marcarEntrada(registroId, guardiaId);
+  }
+
+  async marcarSalida(registroId) {
+    return await registroRepository.marcarSalida(registroId);
+  }
 }
 
 module.exports = new RegistroDispositivoService();

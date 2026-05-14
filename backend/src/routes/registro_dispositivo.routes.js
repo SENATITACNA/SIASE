@@ -11,5 +11,7 @@ router.post("/", ctrl.registrarDispositivo.bind(ctrl));
 router.get("/alumno/:alumno_id/dispositivos", ctrl.obtenerDispositivosPorAlumno.bind(ctrl));
 router.get("/alumno/:alumno_id/solicitudes", ctrl.obtenerSolicitudesPorAlumno.bind(ctrl));
 router.post("/solicitud-ingreso", ctrl.crearSolicitudIngreso.bind(ctrl));
+router.put("/:id/marcar-entrada", ctrl.marcarEntrada.bind(ctrl));
+router.put("/:id/marcar-salida", ctrl.marcarSalida.bind(ctrl));
 
 module.exports = router;

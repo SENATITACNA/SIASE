@@ -25,6 +25,7 @@ class RegistroDispositivoRepository {
                 ON r.guardia_id = g.id
             JOIN dispositivos_x_alumno d
                 ON r.objeto_id = d.id
+            ORDER BY r.id DESC
         `;
 
         const [rows] = await db.promise().query(query);
@@ -151,6 +152,25 @@ class RegistroDispositivoRepository {
         `;
         const [result] = await db.promise().query(query, [alumnoId, instructorId, dispositivoId]);
         return result.insertId;
+    }
+    async marcarEntrada(registroId, guardiaId) {
+        const query = `
+            UPDATE registro_dispositivo 
+            SET estado = 1, fecha_entrada = CURDATE(), guardia_id = ?
+            WHERE id = ?
+        `;
+        const [result] = await db.promise().query(query, [guardiaId, registroId]);
+        return result.affectedRows > 0;
+    }
+
+    async marcarSalida(registroId) {
+        const query = `
+            UPDATE registro_dispositivo 
+            SET estado = 2, fecha_salida = CURDATE()
+            WHERE id = ?
+        `;
+        const [result] = await db.promise().query(query, [registroId]);
+        return result.affectedRows > 0;
     }
 }
 

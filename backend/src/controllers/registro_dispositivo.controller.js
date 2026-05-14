@@ -110,7 +110,33 @@ class RegistroDispositivoController {
             return res.status(500).json({ error: "Error interno del servidor" });
         }
     }
+
+    async marcarEntrada(req, res) {
+        try {
+            const { id } = req.params;
+            const { guardia_id } = req.body;
+            const success = await registroService.marcarEntrada(id, guardia_id);
+            if (success) return res.status(200).json({ message: "Entrada marcada" });
+            return res.status(404).json({ error: "Registro no encontrado" });
+        } catch (error) {
+            console.error("Error en marcarEntrada:", error);
+            return res.status(500).json({ error: "Error interno del servidor" });
+        }
+    }
+
+    async marcarSalida(req, res) {
+        try {
+            const { id } = req.params;
+            const success = await registroService.marcarSalida(id);
+            if (success) return res.status(200).json({ message: "Salida marcada" });
+            return res.status(404).json({ error: "Registro no encontrado" });
+        } catch (error) {
+            console.error("Error en marcarSalida:", error);
+            return res.status(500).json({ error: "Error interno del servidor" });
+        }
+    }
 }
 
 module.exports =
-    new RegistroDispositivoController();
+    new RegistroDispositivoController();
+

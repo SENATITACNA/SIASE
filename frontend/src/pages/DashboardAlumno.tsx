@@ -120,9 +120,11 @@ export default function DashboardAlumno() {
     }
   };
 
-  /* Solicitud activa del dispositivo seleccionado */
+  /* Solicitud activa del dispositivo seleccionado (la más reciente que no sea salida) */
   const solicitudActiva = selectedDispositivo
-    ? solicitudes.find(s => s.dispositivo_id === selectedDispositivo.id) ?? null
+    ? solicitudes
+        .filter(s => s.dispositivo_id === selectedDispositivo.id)
+        .sort((a, b) => b.id - a.id)[0] ?? null
     : null;
 
   /* Transformar Dispositivo → forma que acepta DetallesItem */
@@ -162,6 +164,9 @@ export default function DashboardAlumno() {
               <div className="alumno-topbar-avatar">
                 <User size={22} />
               </div>
+              <h2 style={{ fontSize: '1.2rem', fontWeight: '600', color: '#374151', margin: 0 }}>
+                Bienvenido/a, {alumno.nombres}
+              </h2>
             </div>
           </div>
 
@@ -248,13 +253,13 @@ export default function DashboardAlumno() {
                   {/* Botón enviar solicitud de ingreso */}
                   <button
                     className="btn-accion-alumno btn-solicitar"
-                    disabled={!selectedDispositivo || enviandoSolicitud || !!solicitudActiva}
+                    disabled={!selectedDispositivo || enviandoSolicitud || (!!solicitudActiva && solicitudActiva.estado !== 2)}
                     onClick={handleEnviarSolicitud}
                     title={
                       !selectedDispositivo
                         ? 'Selecciona un dispositivo primero'
-                        : solicitudActiva
-                        ? 'Ya existe una solicitud para este dispositivo'
+                        : solicitudActiva && solicitudActiva.estado !== 2
+                        ? 'Ya existe una solicitud activa para este dispositivo'
                         : 'Enviar solicitud de ingreso al vigilante'
                     }
                   >
@@ -265,9 +270,9 @@ export default function DashboardAlumno() {
                   {/* Estado de la solicitud activa */}
                   {solicitudActiva && (
                     <div className={`solicitud-estado ${ESTADO_CLASS[solicitudActiva.estado] ?? ''}`}>
-                      Estado: <strong>{ESTADO_LABEL[solicitudActiva.estado] ?? 'Desconocido'}</strong>
+                      Último estado: <strong>{ESTADO_LABEL[solicitudActiva.estado] ?? 'Desconocido'}</strong>
                       {solicitudActiva.fecha_entrada && (
-                        <> · Entrada: {new Date(solicitudActiva.fecha_entrada).toLocaleString()}</>
+                        <> · Entrada: {new Date(solicitudActiva.fecha_entrada).toLocaleDateString()}</>
                       )}
                     </div>
                   )}
