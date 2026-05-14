@@ -8,7 +8,7 @@ import ResultadosBusqueda from '../components/ResultadosBusqueda';
 import DetallesItem from '../components/DetallesItem';
 import EstadoEntrada from '../components/EstadoEntrada';
 
-const API_URL = "http://localhost:3000/api";
+const API_URL = "http://80.241.217.53:3000/api";
 
 function DashboardVigilante() {
   const navigate = useNavigate();
