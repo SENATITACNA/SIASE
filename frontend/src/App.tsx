@@ -6,7 +6,7 @@ import DashboardAlumno from "./pages/DashboardAlumno";
 import QRVigilante from "./pages/QRVigilante";
 import QRAlumno from "./pages/QRAlumno";
 import AsistenciaAlumno from "./pages/AsistenciaAlumno";
-import AsistenciaLista from './pages/AsistenciaLista';
+import AsistenciaLista from './pages/Registroasistencia';
 
 import ProtectedRoute from "./components/ProtectedRoute";
 

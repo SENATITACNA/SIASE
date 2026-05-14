@@ -1,7 +1,15 @@
 const API = "http://localhost:3000/api/asistencia";
 
-export const obtenerAsistencias = async (filtros: any) => {
+type FiltrosAsistencia = {
+  alumno_id?: string;
+  fecha?: string;
+  equipo?: string;
+  vigilante?: string;
+};
 
+export const obtenerAsistencias = async (
+  filtros: FiltrosAsistencia
+) => {
   const params = new URLSearchParams();
 
   if (filtros.alumno_id) {
@@ -24,5 +32,21 @@ export const obtenerAsistencias = async (filtros: any) => {
     `${API}?${params.toString()}`
   );
 
+  if (!response.ok) {
+    throw new Error("Error al obtener asistencias");
+  }
+
   return await response.json();
+};
+
+export const formatearFecha = (
+  fecha: string
+): string => {
+  const date = new Date(fecha + "T00:00:00");
+
+  return date.toLocaleDateString("es-PE", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 };
