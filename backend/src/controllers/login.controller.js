@@ -9,7 +9,7 @@ exports.login = async (req, res) => {
 
     const token = jwt.sign(
       { id: result.user.id, role: result.role, usuario },
-      process.env.JWT_SECRET || "secreto_super_seguro",
+      process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
@@ -28,7 +28,7 @@ exports.login = async (req, res) => {
     if (error.message === "Credenciales inválidas o usuario inactivo") {
       return res.status(401).json({ success: false, error: error.message });
     }
-    console.error("Error de autenticación:", error);
+    console.error("Error de autenticación:", error.message);
     return res.status(500).json({ success: false, error: "Error interno del servidor" });
   }
 };

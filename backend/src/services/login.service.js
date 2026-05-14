@@ -9,13 +9,17 @@ const loginService = async (usuario, password) => {
   const alumnos = await alumnosRepository.obtenerAlumnoPorCredenciales(usuario, password);
 
   if (alumnos.length > 0) {
-    return { success: true, redirectUrl: "/dashboard-alumno", role: "alumno", user: alumnos[0] };
+    // No devolver password ni campos sensibles
+    const { password_alumno, ...safeUser } = alumnos[0];
+    return { success: true, redirectUrl: "/dashboard-alumno", role: "alumno", user: safeUser };
   }
 
   const vigilantes = await vigilanteRepository.obtenerVigilantePorCredenciales(usuario, password);
 
   if (vigilantes.length > 0) {
-    return { success: true, redirectUrl: "/dashboard-vigilante", role: "vigilante", user: vigilantes[0] };
+    // No devolver password ni campos sensibles
+    const { password_vigilante, ...safeUser } = vigilantes[0];
+    return { success: true, redirectUrl: "/dashboard-vigilante", role: "vigilante", user: safeUser };
   }
 
   throw new Error("Credenciales inválidas o usuario inactivo");

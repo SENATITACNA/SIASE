@@ -1,15 +1,25 @@
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const helmet = require("helmet");
 const app = express();
+
+// Headers de seguridad HTTP
+app.use(helmet());
+
+// CORS restringido a orígenes específicos
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim())
+  : ["http://localhost:5173"];
 
 app.use(
   cors({
-    origin: true, // Permite cualquier origen con credenciales
-    credentials: true, // Permite envío de cookies
+    origin: allowedOrigins,
+    credentials: true,
   })
 );
-app.use(express.json());
+
+app.use(express.json({ limit: "1mb" }));
 app.use(cookieParser());
 
 const loginRoutes = require("./routes/login.routes");
@@ -30,6 +40,7 @@ app.use("/api/tokens_vigilante", tokensVigilanteRoutes);
 app.use("/api/asistencia", asistenciaRoutes);
 
 app.use((err, req, res, next) => {
+  console.error("Error no controlado:", err.message);
   res.status(500).json({ error: "Error en el servidor" });
 });
 
