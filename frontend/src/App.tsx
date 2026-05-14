@@ -31,7 +31,7 @@ function App() {
           }
         />
         <Route
-          path="/qr-vigilante"
+          path="/dashboard-vigilante/qr-vigilante"
           element={
             <ProtectedRoute requiredRole="vigilante">
               <QRVigilante />
@@ -59,4 +59,4 @@ function App() {
   );
 }
 
-export default App;
+export default App;

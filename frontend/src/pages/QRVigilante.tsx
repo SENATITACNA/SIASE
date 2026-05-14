@@ -1,36 +1,144 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { QRCodeSVG } from "qrcode.react";
+import { RefreshCw, ArrowLeft, CheckCircle } from "lucide-react";
+import Navbar from "../components/Navbar";
 import { API_BASE } from "../services/api";
+import "../styles/App.css";
 
 const QRVigilante = () => {
   const navigate = useNavigate();
-  const [alumnoDetectado, setAlumnoDetectado] = useState<string | null>(null);
+  const [tokens, setTokens] = useState<string[]>([]);
+  const [ultimoEscaneo, setUltimoEscaneo] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [guardiaId, setGuardiaId] = useState<number | null>(null);
 
   useEffect(() => {
-    const chequearAsistencia = async () => {
-      try {
-        const res = await fetch(`${API_BASE}/api/asistencia/ultimo`);
-        const data = await res.json();
-        if (data.success) setAlumnoDetectado(data.alumno.nombre);
-      } catch (e) { console.error("Error", e); }
-    };
-    const timer = setInterval(chequearAsistencia, 3000);
-    return () => clearInterval(timer);
-  }, []);
+    const userStr = localStorage.getItem("user");
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      setGuardiaId(user.id); 
+    } else {
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  const cargarDatosQR = async () => {
+    if (!guardiaId) return;
+    try {
+      const resTokens = await fetch(`${API_BASE}/api/tokens_vigilante/activos/${guardiaId}`);
+      const dataTokens = await resTokens.json();
+      
+      if (Array.isArray(dataTokens)) {
+        setTokens(dataTokens.map((t: any) => t.token));
+      }
+
+      const resUltimo = await fetch(`${API_BASE}/api/tokens_vigilante/ultimo-escaneo/${guardiaId}`);
+      const dataUltimo = await resUltimo.json();
+      
+      if (dataUltimo && (!ultimoEscaneo || dataUltimo.asistencia_id !== ultimoEscaneo.asistencia_id)) {
+        setUltimoEscaneo(dataUltimo);
+      }
+      
+      setLoading(false);
+    } catch (e) {
+      console.error("Error al cargar datos del QR", e);
+    }
+  };
+
+  const handleRotarToken = async () => {
+    if (!guardiaId) return;
+    try {
+      await fetch(`${API_BASE}/api/tokens_vigilante/rotar`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ guardia_id: guardiaId }),
+      });
+      await cargarDatosQR();
+    } catch (e) {
+      console.error("Error al rotar", e);
+    }
+  };
+
+  useEffect(() => {
+    if (guardiaId) {
+      fetch(`${API_BASE}/api/tokens_vigilante/inicializar`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ guardia_id: guardiaId }),
+      }).then(() => cargarDatosQR());
+
+      const intervalEscaneo = setInterval(cargarDatosQR, 2000);
+
+      const intervalRotacion = setInterval(handleRotarToken, 5000);
+
+      return () => {
+        clearInterval(intervalEscaneo);
+        clearInterval(intervalRotacion);
+      };
+    }
+  }, [guardiaId, ultimoEscaneo?.asistencia_id]);
 
   return (
-    <div style={{ padding: "40px", textAlign: "center" }}>
-      <h2>Escáner de Guardia</h2>
-      <div style={{ width: "200px", height: "200px", border: "2px solid black", margin: "20px auto", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        [ ESPACIO PARA EL QR ]
-      </div>
-      <div style={{ border: "1px solid blue", padding: "15px", borderRadius: "8px", maxWidth: "400px", margin: "0 auto" }}>
-        <strong>Último Alumno:</strong> {alumnoDetectado || "Esperando escaneo..."}
-      </div>
+    <div className="layout-wrapper">
+      <Navbar />
+      <div className="app-container">
+        <div className="main-content">
+          <div className="content-area" style={{ alignItems: "center" }}>
+            
+            <div className="card-panel" style={{ maxWidth: "500px", width: "100%", textAlign: "center" }}>
+              <div className="card-title center">
+                <span className="title-dot" />
+                CÓDIGO QR DE ASISTENCIA
+              </div>
 
-      <button onClick={() => navigate("/dashboard-vigilante")} style={{ marginTop: "20px" }}>
-        Volver al Panel
-      </button>
+              <div style={{ background: "white", padding: "20px", borderRadius: "12px", display: "inline-block", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
+                {loading ? (
+                  <div style={{ width: 250, height: 250, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    Cargando...
+                  </div>
+                ) : (
+                  tokens.length > 0 ? (
+                    <QRCodeSVG value={tokens[0]} size={250} level="H" />
+                  ) : (
+                    <div style={{ width: 250, height: 250, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      Generando nuevo código...
+                    </div>
+                  )
+                )}
+              </div>
+
+              <p style={{ margin: "20px 0", color: "var(--color-secondary-text)", fontSize: "0.9rem" }}>
+                El código se actualiza automáticamente por seguridad.
+              </p>
+
+              <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+                <button className="btn-modal-cancel" onClick={() => navigate("/dashboard-vigilante")}>
+                  <ArrowLeft size={18} /> Volver
+                </button>
+              </div>
+            </div>
+
+            {ultimoEscaneo && (
+              <div className="card-panel" style={{ maxWidth: "500px", width: "100%", marginTop: "20px", borderColor: "var(--color-btn-green)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", color: "#15803D" }}>
+                  <CheckCircle size={24} />
+                  <div style={{ textAlign: "left" }}>
+                    <strong style={{ display: "block" }}>Último ingreso registrado:</strong>
+                    <span style={{ fontSize: "0.9rem" }}>
+                      {ultimoEscaneo.nombres} {ultimoEscaneo.apellidos}
+                    </span>
+                    <div style={{ fontSize: "0.8rem", opacity: 0.8 }}>
+                      ID: {ultimoEscaneo.idsenati} | Hora: {ultimoEscaneo.hora_ingreso}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
