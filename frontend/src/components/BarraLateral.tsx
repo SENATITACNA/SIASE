@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { User, UserX, ChevronRight, ChevronLeft } from 'lucide-react'
 import '../styles/BarraLateral.css'
+import type { Alumno } from '../types'
 
-export default function BarraLateral({ alumno }) {
+export default function BarraLateral({ alumno }: { alumno: Alumno | null }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

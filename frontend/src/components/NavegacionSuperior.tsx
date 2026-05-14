@@ -1,10 +1,8 @@
 import { Search, User } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
 import '../styles/NavegacionSuperior.css'
+import type { Guardia } from '../types'
 
-export default function NavegacionSuperior({ guardia, onSearch }) {
-  const navigate = useNavigate();
-
+export default function NavegacionSuperior({ guardia, onSearch }: { guardia: Guardia | null, onSearch: (term: string) => void }) {
   return (
     <div className="navegacion-superior">
       <div className="guardia-info">
@@ -22,6 +20,8 @@ export default function NavegacionSuperior({ guardia, onSearch }) {
         <div className="search-container">
           <input 
             type="text" 
+            id="buscar-alumno"
+            name="buscar-alumno"
             className="search-input"
             placeholder="Buscar ID Senati..."
             onChange={(e) => onSearch && onSearch(e.target.value)}

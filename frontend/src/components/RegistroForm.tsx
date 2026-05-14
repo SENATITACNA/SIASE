@@ -4,7 +4,7 @@ import {
     obtenerAlumno,
     obtenerInstructores,
     registrarDispositivo
-} from '../services/registro.service'
+} from '../services/registroService'
 
 import '../styles/registro.css'
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE } from "../services/api";
 
 const QRVigilante = () => {
   const navigate = useNavigate();
@@ -8,7 +9,7 @@ const QRVigilante = () => {
   useEffect(() => {
     const chequearAsistencia = async () => {
       try {
-        const res = await fetch("http://80.241.217.53:3000/api/asistencia/ultimo");
+        const res = await fetch(`${API_BASE}/api/asistencia/ultimo`);
         const data = await res.json();
         if (data.success) setAlumnoDetectado(data.alumno.nombre);
       } catch (e) { console.error("Error", e); }
