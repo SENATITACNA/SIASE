@@ -54,7 +54,8 @@ const obtenerAsistenciasRepo = async (filtros) => {
       params.push(`%${filtros.alumno}%`);
     }
     
-   const [result] = await db.promise().query(
+
+    const [result] = await db.promise().query(
   `SELECT 
       a.id,
       a.fecha,
@@ -62,9 +63,11 @@ const obtenerAsistenciasRepo = async (filtros) => {
       a.hora_salida,
       CONCAT(al.nombres, ' ', al.apellidos) AS alumno
    FROM asistencia a
-   JOIN datos_alumnos al ON a.alumno_id = al.id`
+   JOIN datos_alumnos al ON a.alumno_id = al.id
+   WHERE a.id = ?`,
+  [id]
 );
-    return result;
+       return result;
 };
 
 module.exports = {
