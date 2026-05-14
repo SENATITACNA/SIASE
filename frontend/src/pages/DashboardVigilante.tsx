@@ -18,14 +18,14 @@ function DashboardVigilante() {
     fetch(`${API_BASE}/api/registro_dispositivo`)
       .then(res => res.json())
       .then(data => {
-        // En el backend, obtenerRegistros ya devuelve un join con los datos del alumno y dispositivo
+
         const mapped = data.map((r: any) => ({
           ...r,
-          id: r.id, // ID del registro
+          id: r.id,
           alumno_id: r.alumno_id,
           idsenati: r.idsenati,
           alumno: r.alumno,
-          estado: r.estado, // 0=en espera, 1=ingreso, 2=salida
+          estado: r.estado,
           fecha_envio: r.fecha_envio
         }));
         setAllAlumnos(mapped);
@@ -47,7 +47,7 @@ function DashboardVigilante() {
               nombre: data.nombre + " " + data.apellido,
               rol: "ID de vigilante: " + data.vigilante_id,
               turno: data.turno,
-              id: data.id // Usamos el PK 'id' real para las operaciones de BD
+              id: data.id
             });
           }
         })
@@ -71,16 +71,15 @@ function DashboardVigilante() {
   };
 
   const handleSelectRegistro = (registro: any) => {
-    // Ya tenemos casi todo en el registro, pero podemos refinar si es necesario
+
     setSelectedAlumno({
       ...registro,
-      nombre: registro.alumno.split(' ')[0], // Aproximación
+      nombre: registro.alumno.split(' ')[0],
       apellido: registro.alumno.split(' ').slice(1).join(' '),
-      // Los detalles del dispositivo vienen en el 'objeto' formateado, 
-      // pero para DetallesItem necesitamos los campos sueltos
+
     });
 
-    // Opcional: Fetch detallado si faltan campos (marca, modelo, etc.)
+
     fetch(`${API_BASE}/api/alumnos/${registro.alumno_id}`)
       .then(res => res.json())
       .then(alumnoData => {
@@ -90,7 +89,7 @@ function DashboardVigilante() {
           semestre: alumnoData.semestre,
           idsenati: alumnoData.idsenati,
           instructor: alumnoData.instructor,
-          // Buscamos el dispositivo específico
+
           tipo: registro.objeto.split(' ')[0] || 'Dispositivo',
           marca: registro.objeto.split(' ')[1] || 'N/A',
           modelo: registro.objeto.split(' ').slice(2).join(' ') || 'N/A',

@@ -14,3 +14,5 @@ export const obtenerAlumno = async (
 
   return await response.json();
 };
+
+export const obtenerAlumnoFormateado = obtenerAlumno;

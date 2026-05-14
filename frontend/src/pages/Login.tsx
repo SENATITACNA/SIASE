@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 import senatiLogo from "../assets/Senati.png";
 import { API_BASE } from "../services/api";
 import "../styles/Login.css";
@@ -7,6 +8,7 @@ import "../styles/Login.css";
 function Login() {
   const [usuario, setUsuario] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (
@@ -34,7 +36,6 @@ function Login() {
       const data = await response.json();
 
       if (response.ok && data.success) {
-        // Persist role alongside user data so protected routes can check it
         localStorage.setItem("user", JSON.stringify({ ...data.user, role: data.role }));
         navigate(data.redirectUrl);
       } else {
@@ -75,15 +76,24 @@ function Login() {
             className="input"
           />
 
-          <input
-            type="password"
-            placeholder="Contraseña"
-            value={password}
-            onChange={(e) =>
-              setPassword(e.target.value)
-            }
-            className="input"
-          />
+          <div className="password-container">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) =>
+                setPassword(e.target.value)
+              }
+              className="input password-input"
+            />
+            <button 
+              type="button" 
+              className="eye-icon"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
 
           <button
             type="submit"

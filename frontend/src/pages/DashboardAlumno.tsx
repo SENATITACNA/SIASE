@@ -16,7 +16,7 @@ import '../styles/EstadoEntrada.css';
 import '../styles/BarraLateral.css';
 
 
-/* ---- Tipos locales ---- */
+
 interface Dispositivo {
   id: number;
   tipo: string;
@@ -29,7 +29,7 @@ interface Dispositivo {
 
 interface Solicitud {
   id: number;
-  estado: number; // 0=en espera, 1=aprobado/ingreso, 2=salida
+  estado: number;
   fecha_envio: string;
   fecha_entrada: string | null;
   fecha_salida: string | null;
@@ -39,7 +39,7 @@ interface Solicitud {
   modelo: string;
 }
 
-/* ---- Helpers de estado de solicitud ---- */
+
 const ESTADO_LABEL: Record<number, string> = {
   0: 'En espera',
   1: 'Ingreso aprobado',
@@ -51,9 +51,7 @@ const ESTADO_CLASS: Record<number, string> = {
   2: 'aprobado',
 };
 
-/* ================================================================
-   Dashboard principal del alumno
-   ================================================================ */
+
 export default function DashboardAlumno() {
   const navigate = useNavigate();
   const [alumno, setAlumno] = useState<Alumno | null>(null);
@@ -63,7 +61,7 @@ export default function DashboardAlumno() {
   const [showModal, setShowModal] = useState(false);
   const [enviandoSolicitud, setEnviandoSolicitud] = useState(false);
 
-  /* Cargar datos del alumno desde localStorage */
+
   useEffect(() => {
     const userData = localStorage.getItem('user');
     if (!userData) { navigate('/login'); return; }
@@ -97,7 +95,7 @@ export default function DashboardAlumno() {
     if (!selectedDispositivo || !alumno) return;
     setEnviandoSolicitud(true);
     try {
-      // Usamos instructor_id=1 como default; en un flujo real se selecciona del alumno
+
       const resp = await fetch(`${API_BASE}/api/registro_dispositivo/solicitud-ingreso`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -120,14 +118,14 @@ export default function DashboardAlumno() {
     }
   };
 
-  /* Solicitud activa del dispositivo seleccionado (la más reciente que no sea salida) */
+
   const solicitudActiva = selectedDispositivo
     ? solicitudes
         .filter(s => s.dispositivo_id === selectedDispositivo.id)
         .sort((a, b) => b.id - a.id)[0] ?? null
     : null;
 
-  /* Transformar Dispositivo → forma que acepta DetallesItem */
+
   const selectedForDetalles = selectedDispositivo
     ? {
         id: selectedDispositivo.id,
@@ -155,10 +153,10 @@ export default function DashboardAlumno() {
       <NavbarAlumno />
 
       <div className="app-container">
-        {/* ===================== CONTENIDO PRINCIPAL ===================== */}
+
         <div className="main-content">
 
-          {/* Barra superior con info del alumno */}
+
           <div className="alumno-topbar">
             <div className="alumno-topbar-info">
               <div className="alumno-topbar-avatar">
@@ -170,10 +168,10 @@ export default function DashboardAlumno() {
             </div>
           </div>
 
-          {/* Área de contenido */}
+
           <div className="content-area">
 
-            {/* Panel superior: Lista de dispositivos */}
+
             <div className="card-panel dispositivos-panel">
               <div className="card-title">
                 <span className="title-dot" />
@@ -229,19 +227,19 @@ export default function DashboardAlumno() {
               )}
             </div>
 
-            {/* Panel inferior: Detalles + Acciones */}
+
             <div className="content-grid">
-              {/* Detalles del dispositivo seleccionado */}
+
               <DetallesItem alumno={selectedForDetalles} />
 
-              {/* Acciones del alumno */}
+
               <div className="card-panel acciones-panel">
                 <div className="card-title center">
                   ACCIONES
                 </div>
 
                 <div className="acciones-content">
-                  {/* Botón registrar nuevo dispositivo */}
+
                   <button
                     className="btn-accion-alumno btn-registrar"
                     onClick={() => setShowModal(true)}
@@ -250,7 +248,7 @@ export default function DashboardAlumno() {
                     Registrar Dispositivo
                   </button>
 
-                  {/* Botón enviar solicitud de ingreso */}
+
                   <button
                     className="btn-accion-alumno btn-solicitar"
                     disabled={!selectedDispositivo || enviandoSolicitud || (!!solicitudActiva && solicitudActiva.estado !== 2)}
@@ -267,7 +265,7 @@ export default function DashboardAlumno() {
                     {enviandoSolicitud ? 'Enviando…' : 'Solicitar Ingreso'}
                   </button>
 
-                  {/* Estado de la solicitud activa */}
+
                   {solicitudActiva && (
                     <div className={`solicitud-estado ${ESTADO_CLASS[solicitudActiva.estado] ?? ''}`}>
                       Último estado: <strong>{ESTADO_LABEL[solicitudActiva.estado] ?? 'Desconocido'}</strong>
@@ -289,7 +287,7 @@ export default function DashboardAlumno() {
           </div>
         </div>
 
-        {/* ===================== PANEL DERECHO: INFO ALUMNO ===================== */}
+
         <div className="alumno-info-panel">
           <div className="barra-lateral-header" style={{ marginBottom: 20 }}>
             <h1 className="barra-lateral-title">ALUMNO</h1>
@@ -326,7 +324,7 @@ export default function DashboardAlumno() {
         </div>
       </div>
 
-      {/* ===================== MODAL REGISTRO ===================== */}
+
       {showModal && (
         <RegistroDispositivoModal
           alumnoId={alumno.id}

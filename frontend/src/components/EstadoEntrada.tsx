@@ -64,7 +64,7 @@ export default function EstadoEntrada({ alumno, guardiaId, onRefresh }: Props) {
 
   const getEstadoClass = (estado?: number) => {
     switch (estado) {
-      case 0: return 'espera'; // Necesitaremos agregar esto al CSS
+      case 0: return 'espera';
       case 1: return 'ingreso';
       case 2: return 'salida';
       default: return '';

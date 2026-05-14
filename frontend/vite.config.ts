@@ -9,16 +9,32 @@ export default defineConfig({
     port: 4000,
     host: true,
     proxy: {
-      '/login': BACKEND,
-      '/api': BACKEND
+      '/login': {
+        target: BACKEND,
+        changeOrigin: true,
+        secure: false,
+      },
+      '/api': {
+        target: BACKEND,
+        changeOrigin: true,
+        secure: false,
+      }
     }
   },
   preview: {
     port: 4000,
     host: true,
     proxy: {
-      '/login': BACKEND,
-      '/api': BACKEND
+      '/login': {
+        target: BACKEND,
+        changeOrigin: true,
+        secure: false,
+      },
+      '/api': {
+        target: BACKEND,
+        changeOrigin: true,
+        secure: false,
+      }
     }
   }
 })

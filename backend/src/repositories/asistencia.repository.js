@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 const registrarAsistencia = async (alumno_id, guardia_id) => {
-    await db.query(
+    await db.promise().query(
         "INSERT INTO asistencia (alumno_id, guardia_id, fecha, hora_ingreso) VALUES (?, ?, CURDATE(), CURTIME())",
         [alumno_id, guardia_id]
     );
@@ -16,7 +16,7 @@ const obtenerUltimoEscaneoRepo = async (guardia_id) => {
         ORDER BY a.id DESC
         LIMIT 1
     `;
-    const [rows] = await db.query(sql, [guardia_id]);
+    const [rows] = await db.promise().query(sql, [guardia_id]);
     return rows;
 };
 
@@ -28,8 +28,11 @@ const obtenerAsistenciasRepo = async (filtros) => {
         a.hora_ingreso,
         a.hora_salida,
         CONCAT(al.nombres, ' ', al.apellidos) AS alumno,
+        al.idsenati AS idsenati,
+        al.semestre AS semestre,
         CONCAT(v.nombre, ' ', v.apellido) AS guardia,
-        c.nombre AS carrera
+        c.nombre AS carrera,
+        c.id AS carrera_id
       FROM asistencia a
       JOIN datos_alumnos al ON a.alumno_id = al.id
       JOIN vigilante v ON a.guardia_id = v.id
@@ -40,8 +43,8 @@ const obtenerAsistenciasRepo = async (filtros) => {
     let params = [];
   
     if (filtros.guardia) {
-      sql += " AND v.nombre LIKE ?";
-      params.push(`%${filtros.guardia}%`);
+      sql += " AND (v.nombre LIKE ? OR v.apellido LIKE ?)";
+      params.push(`%${filtros.guardia}%`, `%${filtros.guardia}%`);
     }
   
     if (filtros.fecha) {
@@ -50,16 +53,63 @@ const obtenerAsistenciasRepo = async (filtros) => {
     }
   
     if (filtros.alumno) {
-      sql += " AND al.nombres LIKE ?";
-      params.push(`%${filtros.alumno}%`);
+      sql += " AND (al.nombres LIKE ? OR al.apellidos LIKE ?)";
+      params.push(`%${filtros.alumno}%`, `%${filtros.alumno}%`);
     }
+
+    if (filtros.idsenati) {
+      sql += " AND al.idsenati LIKE ?";
+      params.push(`%${filtros.idsenati}%`);
+    }
+
+    if (filtros.carrera_id) {
+      sql += " AND al.carrera_id = ?";
+      params.push(filtros.carrera_id);
+    }
+
+    if (filtros.semestre) {
+      sql += " AND al.semestre = ?";
+      params.push(filtros.semestre);
+    }
+
+    if (filtros.mes) {
+      sql += " AND MONTH(a.fecha) = ?";
+      params.push(filtros.mes);
+    }
+
+    sql += " ORDER BY a.fecha DESC, a.hora_ingreso DESC";
     
     const [result] = await db.promise().query(sql, params);
     return result;
 };
 
+const obtenerAsistenciaPorAlumnoRepo = async (alumnoId) => {
+    const sql = `
+        SELECT
+            a.id,
+            a.fecha,
+            a.hora_ingreso,
+            a.hora_salida,
+            COALESCE((
+                SELECT CONCAT(d.tipo, ' ', d.marca, ' ', d.modelo)
+                FROM registro_dispositivo r
+                JOIN dispositivos_x_alumno d ON r.objeto_id = d.id
+                WHERE r.alumno_id = a.alumno_id 
+                  AND DATE(r.fecha_entrada) = DATE(a.fecha)
+                ORDER BY r.id DESC 
+                LIMIT 1
+            ), 'Sin dispositivo') AS dispositivo
+        FROM asistencia a
+        WHERE a.alumno_id = ?
+        ORDER BY a.fecha DESC, a.hora_ingreso DESC
+    `;
+    const [rows] = await db.promise().query(sql, [alumnoId]);
+    return rows;
+};
+
 module.exports = {
     registrarAsistencia,
     obtenerUltimoEscaneoRepo,
-    obtenerAsistenciasRepo
+    obtenerAsistenciasRepo,
+    obtenerAsistenciaPorAlumnoRepo
 };
