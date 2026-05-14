@@ -5,11 +5,9 @@ const app = express();
 
 
 app.use(cors({
-  // AQUI ESTÁ LA MAGIA: Agregamos el localhost:4000
-  origin: ["http://localhost:4000", "http://127.0.0.1:4000", "http://localhost:5173"], 
+  origin: ["http://localhost:4000", "http://80.241.217.53:5173"], 
   credentials: true
 }));
-// 2. Middlewares (sin duplicar express.json)
 app.use(cookieParser());
 app.use(express.json());
 
@@ -21,8 +19,7 @@ const vigilanteRoutes = require("./routes/vigilante.routes");
 const tokensVigilanteRoutes = require("./routes/tokens_vigilante.routes");
 const asistenciaRoutes = require("./routes/asistencia.routes");
 
-// 3. Rutas
-app.use("/login", loginRoutes); // Nota: Esta ruta no tiene /api/
+app.use("/login", loginRoutes); 
 app.use("/api/alumnos", alumnosRoutes);
 app.use("/api/instructor", instructorRoutes);
 app.use("/api/registro_dispositivo", registroDispositivoRoutes);
