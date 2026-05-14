@@ -49,6 +49,13 @@
         <Navbar />
 
         <div className="contenedor-estudiante">
+          <button
+            type="button"
+            className="btn-volver"
+            onClick={() => navigate("/dashboard-vigilante")}
+          >
+            Volver a Vigilante
+          </button>
 
           <AlumnoForm alumno={alumno} />
         </div>

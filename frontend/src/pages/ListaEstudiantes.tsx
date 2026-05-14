@@ -1,5 +1,7 @@
 // src/components/ListaEstudiantes.tsx
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/lista.css";
 interface Estudiante {
   id: string;              
   nombres: string;         
@@ -13,6 +15,7 @@ interface RegistroAsistencia extends Estudiante {
   horaIngreso: string;
 }
 const ListaEstudiantes: React.FC = () => {
+  const navigate = useNavigate();
   const [dni, setDni] = useState<string>("");
   const [alumnos, setAlumnos] = useState<Estudiante[]>([]);
   const [asistencia, setAsistencia] = useState<RegistroAsistencia[]>([]);
@@ -52,10 +55,19 @@ const ListaEstudiantes: React.FC = () => {
     return coincideMes && coincideCarrera && coincideSemestre;
   });
   return (
-    <div>
-      <section className="form-section">
-        <h2>Lista de Asistencia</h2>
-        <form onSubmit={registrarAsistencia}>
+    <div className="lista-page">
+      <div className="lista-container">
+        <button
+          type="button"
+          className="btn-volver"
+          onClick={() => navigate("/dashboard-vigilante")}
+        >
+          Volver a Menú Principal
+        </button>
+
+        <section className="form-section">
+          <h2>Lista de Asistencia</h2>
+          <form onSubmit={registrarAsistencia}>
           <label htmlFor="dni">ID SENATI:</label>
           <input
             type="text"
@@ -65,7 +77,7 @@ const ListaEstudiantes: React.FC = () => {
             required
             maxLength={8}
           />
-          <button type="submit">Registrar Ingreso</button>
+          <button type="submit">Buscar</button>
         </form>
         <div className="filters">
           <h3>Filtros</h3>
@@ -129,6 +141,7 @@ const ListaEstudiantes: React.FC = () => {
         <p>SENATI</p>
       </footer>
     </div>
+  </div>
   );
 };
 export default ListaEstudiantes;

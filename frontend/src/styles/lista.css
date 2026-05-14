@@ -53,6 +53,42 @@ h3 {
 .form-section button:hover {
   background-color: #1b2f63;
 }
+.lista-page {
+  padding: 20px 0;
+}
+.lista-container {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.btn-volver {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 20;
+  background: #ffffff;
+  color: #264186;
+  border: 1px solid #264186;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 3px 8px rgba(38, 65, 134, 0.12);
+}
+.btn-volver:hover {
+  background: #f5f7ff;
+  transform: translateX(-2px);
+}
+@media (max-width: 860px) {
+  .btn-volver {
+    position: static;
+    left: auto;
+    top: auto;
+    margin-bottom: 20px;
+    box-shadow: none;
+  }
+}
 .filters {
   display: flex;
   justify-content: space-between;
