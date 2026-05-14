@@ -11,10 +11,6 @@ const asistenciaRoutes = require("./routes/asistencia.routes");
 
 app.use("/asistencia", asistenciaRoutes);
 
-app.listen(3000, () => {
-  console.log("Servidor corriendo");
-});
-
 const app = express();
 
 const allowedOrigins = [
