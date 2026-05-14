@@ -1,7 +1,8 @@
 const db = require('../config/db');
 
-const registrarAsistencia = async (alumno_id, guardia_id) => {
-    await db.query(
+const registrarAsistencia = async (alumno_id, guardia_id, conn = null) => {
+    const q = conn || db.promise();
+    await q.query(
         "INSERT INTO asistencia (alumno_id, guardia_id, fecha, hora_ingreso) VALUES (?, ?, CURDATE(), CURTIME())",
         [alumno_id, guardia_id]
     );
@@ -16,7 +17,7 @@ const obtenerUltimoEscaneoRepo = async (guardia_id) => {
         ORDER BY a.id DESC
         LIMIT 1
     `;
-    const [rows] = await db.query(sql, [guardia_id]);
+    const [rows] = await db.promise().query(sql, [guardia_id]);
     return rows;
 };
 
