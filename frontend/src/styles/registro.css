@@ -4,6 +4,7 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     background: #eef4ff;
 }
+
 .container {
     min-height: 100vh;
     display: flex;
@@ -11,6 +12,7 @@ body {
     align-items: center;
     padding: 40px;
 }
+
 .card {
     width: 900px;
     background: white;
@@ -18,26 +20,31 @@ body {
     padding: 35px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 }
+
 h1 {
     text-align: center;
-    color: #264186;
+    color: #254186;
     margin-bottom: 30px;
 }
+
 .grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 18px;
 }
+
 .form-group {
     display: flex;
     flex-direction: column;
     margin-bottom: 18px;
 }
+
 label {
     margin-bottom: 7px;
-    color: #264186;
+    color: #254186;
     font-weight: 600;
 }
+
 input,
 textarea,
 select {
@@ -46,28 +53,32 @@ select {
     border: 1px solid #c8d4e8;
     font-size: 14px;
 }
+
 input:focus,
 textarea:focus,
 select:focus {
     outline: none;
-    border-color: #264186;
+    border-color: #254186;
 }
+
 textarea {
     min-height: 90px;
     resize: vertical;
 }
+
 button {
     width: 100%;
     padding: 14px;
     border: none;
     border-radius: 8px;
-    background: #264186;
+    background: #254186;
     color: white;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     margin-top: 10px;
 }
+
 button:hover {
-    background: #264186;
+    background: #1259a7;
 }

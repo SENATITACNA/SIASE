@@ -23,4 +23,6 @@ const errorMiddleware = require("./middlewares/error.middleware");
 
 app.use(errorMiddleware);
 
+const listaAsistenciaRoutes = require("./src/routes/lista-asistencia.routes");
+app.use("/api/lista-asistencia", listaAsistenciaRoutes);
 module.exports = app;
