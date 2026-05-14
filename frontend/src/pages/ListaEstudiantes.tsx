@@ -2,57 +2,51 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/lista.css";
-interface Estudiante {
-  id: string;              
-  nombres: string;         
-  apellidos: string;       
-  idsenati: string;        
-  semestre: string;        
-  carrera_id: string;     
-  fecha_creacion: string; 
+
+interface RegistroAsistencia {
+  id: number;
+  idsenati: string;
+  NombreCompleto: string;
+  Carrera: string;
+  Semestre?: string | number;
+  Fecha: string;
+  HoraIngreso: string;
 }
-interface RegistroAsistencia extends Estudiante {
-  horaIngreso: string;
-}
+
 const ListaEstudiantes: React.FC = () => {
   const navigate = useNavigate();
   const [dni, setDni] = useState<string>("");
-  const [alumnos, setAlumnos] = useState<Estudiante[]>([]);
   const [asistencia, setAsistencia] = useState<RegistroAsistencia[]>([]);
   const [filtroMes, setFiltroMes] = useState<string>("");
   const [filtroCarrera, setFiltroCarrera] = useState<string>("");
-  const [filtroSemestre, setFiltroSemestre] = useState<string>("");
+  const [filtroIdsenati, setFiltroIdsenati] = useState<string>("");
+
   useEffect(() => {
-    fetch("http://localhost:3000/listaVigilante_alumnos")
+    fetch("http://localhost:3000/api/asistencia-tabla")
       .then((res) => res.json())
-      .then((data: Estudiante[]) => setAlumnos(data))
-      .catch((err) => console.error("Error al cargar alumnos:", err));
+      .then((data) => {
+        if (data.data) {
+          setAsistencia(data.data);
+        }
+      })
+      .catch((err) => console.error("Error al cargar asistencia:", err));
   }, []);
-  const buscarEstudiante = (id: string): Estudiante | undefined =>
-    alumnos.find((est) => est.idsenati === id);
+
   const registrarAsistencia = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!dni) return;
-    const estudiante = buscarEstudiante(dni);
-    if (!estudiante) {
-      alert("Estudiante no encontrado");
-      return;
-    }
-    const ahora = new Date();
-    const nuevoRegistro: RegistroAsistencia = {
-      ...estudiante,
-      fecha_creacion: ahora.toLocaleDateString(), 
-      horaIngreso: ahora.toLocaleTimeString(),  
-    };
-    setAsistencia((prev) => [...prev, nuevoRegistro]);
+    setFiltroIdsenati(dni);
     setDni("");
   };
+
   const registrosFiltrados = asistencia.filter((a) => {
-    const mesRegistro = new Date(a.fecha_creacion).getMonth() + 1;
+    const fecha = new Date(a.Fecha);
+    const mesRegistro = fecha.getMonth() + 1;
     const coincideMes = filtroMes ? mesRegistro === parseInt(filtroMes) : true;
-    const coincideCarrera = filtroCarrera ? a.carrera_id === filtroCarrera : true;
-    const coincideSemestre = filtroSemestre ? a.semestre === filtroSemestre : true;
-    return coincideMes && coincideCarrera && coincideSemestre;
+    const coincideCarrera = filtroCarrera ? a.Carrera === filtroCarrera : true;
+    const coincideIdsenati = filtroIdsenati ? String(a.idsenati) === String(filtroIdsenati) : true;
+    // Semestre not available in backend data, so skip for now
+    return coincideMes && coincideCarrera && coincideIdsenati;
   });
   return (
     <div className="lista-page">
@@ -97,17 +91,10 @@ const ListaEstudiantes: React.FC = () => {
             <select value={filtroCarrera} onChange={(e) => setFiltroCarrera(e.target.value)}>
               <option value="">Todas</option>
               <option value="Software">Software</option>
-              {}
+              {/* Add more options as needed */}
             </select>
           </label>
-          <label>
-            Semestre:
-            <select value={filtroSemestre} onChange={(e) => setFiltroSemestre(e.target.value)}>
-              <option value="">Todos</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-            </select>
-          </label>
+          {/* Removed semestre filter since not available in backend data */}
         </div>
       </section>
       <section className="list-section">
@@ -115,8 +102,8 @@ const ListaEstudiantes: React.FC = () => {
         <table>
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Nombre</th>
+              <th>ID SENATI</th>
+              <th>Nombre Completo</th>
               <th>Carrera</th>
               <th>Semestre</th>
               <th>Fecha de Ingreso</th>
@@ -124,14 +111,14 @@ const ListaEstudiantes: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {registrosFiltrados.map((a, index) => (
-              <tr key={index}>
+            {registrosFiltrados.map((a) => (
+              <tr key={a.id}>
                 <td>{a.idsenati}</td>
-                <td>{`${a.nombres} ${a.apellidos}`}</td>
-                <td>{a.carrera_id}</td>
-                <td>{a.semestre}</td>
-                <td>{a.fecha_creacion}</td>
-                <td>{a.horaIngreso}</td>
+                <td>{a.NombreCompleto}</td>
+                <td>{a.Carrera}</td>
+                <td>{a.Semestre ?? "N/A"}</td>
+                <td>{a.Fecha}</td>
+                <td>{a.HoraIngreso}</td>
               </tr>
             ))}
           </tbody>

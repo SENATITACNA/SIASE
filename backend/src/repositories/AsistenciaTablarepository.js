@@ -8,6 +8,7 @@ const obtenerAsistenciasTablaRepo = async (filtros = {}) => {
       da.idsenati,
       CONCAT(da.nombres, ' ', da.apellidos) AS NombreCompleto,
       c.nombre AS Carrera,
+      da.semestre AS Semestre,
       at.fecha AS Fecha,
       at.hora_ingreso AS HoraIngreso
     FROM asistencia at
