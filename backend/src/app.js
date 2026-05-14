@@ -31,8 +31,6 @@ const asistenciaRoutes = require("./routes/asistencia.routes");
 
 app.use("/login", loginRoutes);
 
-const errorMiddleware = require("./middlewares/error.middleware");
-
 app.use("/api/alumnos", alumnosRoutes);
 app.use("/api/instructor", instructorRoutes);
 app.use("/api/registro_dispositivo", registroDispositivoRoutes);
