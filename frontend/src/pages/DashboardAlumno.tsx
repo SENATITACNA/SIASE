@@ -249,7 +249,7 @@ export default function DashboardAlumno() {
                     <Plus size={18} />
                     Registrar Dispositivo
                   </button>
-
+              
                   {/* Botón enviar solicitud de ingreso */}
                   <button
                     className="btn-accion-alumno btn-solicitar"

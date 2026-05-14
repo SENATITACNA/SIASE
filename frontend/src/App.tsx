@@ -6,6 +6,7 @@ import QRVigilante from "./pages/QRVigilante";
 import QRAlumno from "./pages/QRAlumno";
 import AsistenciaAlumno from "./pages/AsistenciaAlumno";
 import ProtectedRoute from "./components/ProtectedRoute";
+import DatosAlumno from "./pages/DatosAlumno";
 
 function App() {
   return (
@@ -54,9 +55,13 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/datos-alumno"
+          element={<DatosAlumno />}
+        />
       </Routes>
     </BrowserRouter>
   );
 }
 
-export default App;
+export default App;

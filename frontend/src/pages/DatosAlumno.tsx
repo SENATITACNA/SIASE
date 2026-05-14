@@ -1,0 +1,59 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import NavbarAlumno from "../components/NavbarAlumno";
+import AlumnoForm from "../components/AlumnoForm";
+
+import { obtenerAlumno }
+from "../services/alumnoService";
+
+import type { Alumno }
+from "../types/alumnos";
+
+import "../styles/estudiante.css";
+
+function DatosAlumno() {
+
+  const [alumno, setAlumno] =
+    useState<Alumno | null>(null);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+
+    const userData =
+      localStorage.getItem("user");
+
+    if (!userData) {
+      navigate("/login");
+      return;
+    }
+
+    const user = JSON.parse(userData);
+
+    obtenerAlumno(user.id)
+      .then((data) => setAlumno(data))
+      .catch(() => navigate("/login"));
+
+  }, [navigate]);
+
+  if (!alumno) {
+    return <p>Cargando...</p>;
+  }
+
+  return (
+    <div className="layout-wrapper">
+
+      <NavbarAlumno />
+
+      <div className="contenedor-estudiante">
+
+        <AlumnoForm alumno={alumno} />
+
+      </div>
+
+    </div>
+  );
+}
+
+export default DatosAlumno;

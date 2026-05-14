@@ -24,6 +24,7 @@ const NavbarAlumno = () => {
             <span className="nav-item active" onClick={() => navigate('/dashboard-alumno')}>Dashboard</span>
             <span className="nav-item" onClick={() => navigate('/qr-alumno')}>Escáner de QR</span>
             <span className="nav-item" onClick={() => navigate('/asistencia-alumno')}>Asistencia</span>
+            <span className="nav-item" onClick={() => navigate('/datos-alumno')}>Datos Alumno</span>
           </div>
 
           <button className="navbar-logout logout-btn" onClick={handleLogout} title="Cerrar sesión">
