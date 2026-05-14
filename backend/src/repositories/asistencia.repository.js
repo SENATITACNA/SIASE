@@ -58,8 +58,33 @@ const obtenerAsistenciasRepo = async (filtros) => {
     return result;
 };
 
+const obtenerAsistenciaPorAlumnoRepo = async (alumnoId) => {
+    const sql = `
+        SELECT
+            a.id,
+            a.fecha,
+            a.hora_ingreso,
+            a.hora_salida,
+            COALESCE((
+                SELECT CONCAT(d.tipo, ' ', d.marca, ' ', d.modelo)
+                FROM registro_dispositivo r
+                JOIN dispositivos_x_alumno d ON r.objeto_id = d.id
+                WHERE r.alumno_id = a.alumno_id 
+                  AND DATE(r.fecha_entrada) = DATE(a.fecha)
+                ORDER BY r.id DESC 
+                LIMIT 1
+            ), 'Sin dispositivo') AS dispositivo
+        FROM asistencia a
+        WHERE a.alumno_id = ?
+        ORDER BY a.fecha DESC, a.hora_ingreso DESC
+    `;
+    const [rows] = await db.promise().query(sql, [alumnoId]);
+    return rows;
+};
+
 module.exports = {
     registrarAsistencia,
     obtenerUltimoEscaneoRepo,
-    obtenerAsistenciasRepo
+    obtenerAsistenciasRepo,
+    obtenerAsistenciaPorAlumnoRepo
 };
