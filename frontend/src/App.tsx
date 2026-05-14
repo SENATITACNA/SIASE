@@ -14,7 +14,7 @@ function App() {
         <Route path="/dashboard-vigilante" element={<DashboardVigilante />} />
         <Route path="/dashboard-alumno" element={<DashboardAlumno />} />
         <Route path="/qr-vigilante" element={<QRVigilante />} />
-        <Route path="/asistencia" element={<AsistenciaList/>} />
+        <Route path="/asistencia" element={<AsistenciaLista/>} />
       </Routes>
     </BrowserRouter>
   );

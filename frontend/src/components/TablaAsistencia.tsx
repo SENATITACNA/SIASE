@@ -8,30 +8,49 @@ const TablaAsistencia = ({ asistencias }: Props) => {
 
   return (
 
-    <table>
-      <thead>
-        <tr>
-          <th>Fecha</th>
-          <th>Hora ingreso</th>
-          <th>Hora salida</th>
-          <th>Vigilante</th>
-          <th>Equipo</th>
-        </tr>
-      </thead>
-      <tbody>
-        {asistencias.map((item) => (
-          <tr key={item.id}>
-            <td>{item.fecha}</td>
-            <td>{item.hora_ingreso}</td>
-            <td>{item.hora_salida}</td>
-            <td>{item.vigilante}</td>
-            <td>
-              {item.equipo || "Sin equipo"}
-            </td>
+    <div className="tabla-container">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Hora ingreso</th>
+            <th>Dispositivo</th>
+            <th>Vigilante</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+
+        <tbody>
+
+          {asistencias.map((item) => (
+
+            <tr key={item.id}>
+
+              <td>
+                {new Date(item.fecha)
+                  .toLocaleDateString()}
+              </td>
+
+              <td>{item.hora_ingreso}</td>
+              <td>
+                {item.equipo
+                  ? `${item.equipo} ${item.marca || ""} ${item.modelo || ""}`
+                  : "Sin equipo"
+                }
+              </td>
+
+              <td>{item.vigilante}</td>
+
+            </tr>
+
+          ))}
+
+        </tbody>
+
+      </table>
+
+    </div>
 
   );
 
