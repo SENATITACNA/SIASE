@@ -54,7 +54,22 @@ const obtenerAsistenciasRepo = async (filtros) => {
       params.push(`%${filtros.alumno}%`);
     }
     
-    const [result] = await db.promise().query(sql, params);
+   const [result] = await db.promise().query(
+  `SELECT 
+      a.id,
+      a.fecha,
+      a.hora_ingreso,
+      a.hora_salida,
+      CONCAT(al.nombres, ' ', al.apellidos) AS alumno,
+      CONCAT(v.nombre, ' ', v.apellido) AS guardia,
+      c.nombre AS carrera
+   FROM asistencia a
+   JOIN datos_alumnos al ON a.alumno_id = al.id
+   JOIN vigilante v ON a.guardia_id = v.id
+   JOIN carreras c ON al.carrera_id = c.id
+   WHERE 1=1`,
+  params
+);
     return result;
 };
 
