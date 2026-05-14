@@ -14,22 +14,31 @@ export default function ResultadosBusqueda({ alumnos, selectedAlumno, onSelect }
         <div className="resultados-grid">
           {alumnos.map((alumno: Alumno) => {
             const isSelected = selectedAlumno?.id === alumno.id;
-            const isIngreso = alumno.estado === 1;
-            const estadoText = isIngreso ? 'INGRESO' : 'SALIDA';
+            
+            const getEstadoConfig = (estado?: number) => {
+              switch (estado) {
+                case 0: return { label: 'EN ESPERA', class: 'espera' };
+                case 1: return { label: 'INGRESO', class: 'ingreso' };
+                case 2: return { label: 'SALIDA', class: 'salida' };
+                default: return { label: 'N/A', class: '' };
+              }
+            };
+            
+            const config = getEstadoConfig(alumno.estado);
             
             return (
               <div 
                 key={alumno.id}
-                className={`alumno-card ${isSelected ? 'selected' : ''}`}
+                className={`alumno-card ${isSelected ? 'selected' : ''} ${alumno.estado === 2 ? 'finalized' : ''}`}
                 onClick={() => onSelect(alumno)}
               >
                 <div className="card-header">
                   <span className="badge-id">
                     {alumno.idsenati}
                   </span>
-                  <span className={`badge-status ${isIngreso ? 'ingreso' : 'salida'}`}>
-                    <span className={`status-dot ${isIngreso ? 'ingreso' : 'salida'}`}></span>
-                    {estadoText}
+                  <span className={`badge-status ${config.class}`}>
+                    <span className={`status-dot ${config.class}`}></span>
+                    {config.label}
                   </span>
                 </div>
                 
@@ -43,7 +52,7 @@ export default function ResultadosBusqueda({ alumnos, selectedAlumno, onSelect }
                 <div className="card-footer">
                   <div className="date-info">
                     <Calendar className="date-icon" />
-                    <span>{new Date(alumno.fecha_envio).toLocaleString()}</span>
+                    <span>{new Date(alumno.fecha_envio ?? '').toLocaleString()}</span>
                   </div>
                   <ChevronRight className="chevron-icon" />
                 </div>

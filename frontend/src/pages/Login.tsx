@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import senatiLogo from "../assets/Senati.png";
+import { API_BASE } from "../services/api";
 import "../styles/Login.css";
 
 function Login() {
@@ -19,7 +20,7 @@ function Login() {
     }
 
     try {
-      const response = await fetch("/login", {
+      const response = await fetch(`${API_BASE}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,7 +35,8 @@ function Login() {
       const data = await response.json();
 
       if (response.ok && data.success) {
-        localStorage.setItem("user", JSON.stringify(data.user));
+        // Persist role alongside user data so protected routes can check it
+        localStorage.setItem("user", JSON.stringify({ ...data.user, role: data.role }));
         navigate(data.redirectUrl);
       } else {
         alert(data.error || "Error al iniciar sesión");

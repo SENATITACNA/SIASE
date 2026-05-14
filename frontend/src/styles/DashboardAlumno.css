@@ -1,0 +1,446 @@
+/* =========================================
+   Dashboard Alumno — Layout y paneles
+   ========================================= */
+
+/* ---- Panel: Información del alumno (barra derecha) ---- */
+.alumno-info-panel {
+  width: 280px;
+  flex-shrink: 0;
+  background-color: #F4F7FA;
+  padding: 28px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+  border-left: 1px solid #E5E7EB;
+}
+
+.alumno-info-panel .avatar-container {
+  margin-bottom: 20px;
+}
+
+.alumno-info-panel .avatar {
+  width: 88px;
+  height: 88px;
+}
+
+.alumno-info-panel .avatar-icon {
+  width: 48px;
+  height: 48px;
+}
+
+.alumno-info-panel .alumno-info-list {
+  gap: 16px;
+}
+
+/* ---- Panel: Lista de dispositivos ---- */
+.dispositivos-panel {
+  flex: 1;
+  overflow: hidden;
+}
+
+.dispositivos-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 768px) {
+  .dispositivos-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.dispositivo-card {
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 18px 20px;
+  cursor: pointer;
+  background-color: var(--color-white);
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dispositivo-card:hover {
+  border-color: var(--color-nav-bg);
+  box-shadow: 0 2px 8px rgba(38,65,134,0.1);
+}
+
+.dispositivo-card.selected {
+  border-color: var(--color-nav-bg);
+  box-shadow: 0 4px 12px rgba(38,65,134,0.15);
+  outline: 1px solid var(--color-nav-bg);
+}
+
+.disp-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.disp-tipo-badge {
+  background-color: #EFF6FF;
+  color: var(--color-nav-bg);
+  font-size: 10px;
+  font-weight: bold;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.disp-estado-badge {
+  font-size: 10px;
+  font-weight: bold;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.disp-estado-badge.activo {
+  background-color: #F0FDF4;
+  color: #15803D;
+}
+
+.disp-estado-badge.inactivo {
+  background-color: #FEF2F2;
+  color: #B91C1C;
+}
+
+.disp-name {
+  font-weight: bold;
+  font-size: var(--text-subtitle);
+  color: var(--color-nav-bg);
+}
+
+.disp-serie {
+  font-size: 11px;
+  color: var(--color-secondary-text);
+  font-family: monospace;
+}
+
+.disp-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #9CA3AF;
+  font-size: 12px;
+}
+
+.disp-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  gap: 12px;
+  opacity: 0.6;
+  text-align: center;
+}
+
+.disp-empty-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--color-primary);
+}
+
+.disp-empty-text {
+  font-size: var(--text-body);
+  font-weight: 600;
+}
+
+/* ---- Panel: Acciones del alumno (reemplaza EstadoEntrada) ---- */
+.acciones-panel {
+  justify-content: space-between;
+  height: 100%;
+}
+
+.acciones-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex: 1;
+  margin-top: 8px;
+}
+
+.btn-accion-alumno {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 240px;
+  height: 48px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: var(--text-body);
+  letter-spacing: 0.03em;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+}
+
+.btn-accion-alumno:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none !important;
+}
+
+.btn-registrar {
+  background-color: var(--color-nav-bg);
+  color: var(--color-white);
+}
+
+.btn-registrar:not(:disabled):hover {
+  background-color: #1a3070;
+  transform: translateY(-2px);
+}
+
+.btn-solicitar {
+  background-color: var(--color-btn-green);
+  color: #1a3a1a;
+  border: 1px solid #15803D;
+}
+
+.btn-solicitar:not(:disabled):hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.solicitud-estado {
+  text-align: center;
+  font-size: var(--text-detail);
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background-color: #F9FAFB;
+  border: 1px solid #F3F4F6;
+  color: var(--color-secondary-text);
+}
+
+.solicitud-estado.en-espera {
+  background-color: #FFFBEB;
+  border-color: #FDE68A;
+  color: #92400E;
+}
+
+.solicitud-estado.aprobado {
+  background-color: #F0FDF4;
+  border-color: #86EFAC;
+  color: #15803D;
+}
+
+/* ---- Modal: Registro de dispositivo ---- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 16px;
+  backdrop-filter: blur(2px);
+}
+
+.modal-card {
+  background-color: var(--color-white);
+  border-radius: 16px;
+  padding: 32px;
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  animation: modalIn 0.2s ease-out;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.modal-title {
+  font-size: var(--text-main-title);
+  font-weight: bold;
+  color: var(--color-nav-bg);
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #9CA3AF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.modal-close-btn:hover {
+  background-color: #F3F4F6;
+  color: #374151;
+}
+
+.modal-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.modal-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modal-form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.modal-label {
+  font-size: var(--text-detail);
+  font-weight: bold;
+  color: var(--color-nav-bg);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.modal-input,
+.modal-textarea,
+.modal-select {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  font-size: var(--text-body);
+  font-family: var(--font-sans);
+  color: var(--color-black-text);
+  background-color: var(--color-white);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.modal-input:focus,
+.modal-textarea:focus,
+.modal-select:focus {
+  border-color: var(--color-nav-bg);
+  box-shadow: 0 0 0 3px rgba(38,65,134,0.1);
+}
+
+.modal-input:disabled {
+  background-color: #F9FAFB;
+  color: var(--color-secondary-text);
+  cursor: not-allowed;
+}
+
+.modal-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  justify-content: flex-end;
+}
+
+.btn-modal-cancel {
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: 1px solid #D1D5DB;
+  background: var(--color-white);
+  color: var(--color-secondary-text);
+  font-weight: 600;
+  font-size: var(--text-body);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-modal-cancel:hover {
+  background-color: #F3F4F6;
+}
+
+.btn-modal-submit {
+  padding: 10px 32px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--color-nav-bg);
+  color: var(--color-white);
+  font-weight: bold;
+  font-size: var(--text-body);
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 3px 8px rgba(38,65,134,0.3);
+}
+
+.btn-modal-submit:hover {
+  background-color: #1a3070;
+  transform: translateY(-1px);
+}
+
+.btn-modal-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Barra superior alumno */
+.alumno-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  border-bottom: 1px solid #E5E7EB;
+  background-color: var(--color-white);
+  flex-shrink: 0;
+}
+
+.alumno-topbar-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.alumno-topbar-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--color-nav-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.alumno-topbar-name {
+  font-weight: bold;
+  font-size: var(--text-body);
+  color: var(--color-black-text);
+  text-transform: uppercase;
+}
+
+.alumno-topbar-sub {
+  font-size: var(--text-detail);
+  color: var(--color-secondary-text);
+}

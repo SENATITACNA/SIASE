@@ -44,7 +44,7 @@ class VigilanteRepository {
 
     async getVigilantePorId(vigilanteId) {
         const query = `
-            SELECT guardia_id AS vigilante_id, nombre, apellido, turno
+            SELECT id, guardia_id AS vigilante_id, nombre, apellido, turno
             FROM vigilante
             WHERE guardia_id = ?
         `;
