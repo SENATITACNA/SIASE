@@ -60,12 +60,9 @@ const obtenerAsistenciasRepo = async (filtros) => {
       a.fecha,
       a.hora_ingreso,
       a.hora_salida,
-      al.nombres,
-      al.apellidos
+      CONCAT(al.nombres, ' ', al.apellidos) AS alumno
    FROM asistencia a
-   JOIN datos_alumnos al ON a.alumno_id = al.id
-   WHERE 1=1`,
-  params
+   JOIN datos_alumnos al ON a.alumno_id = al.id`
 );
     return result;
 };
