@@ -1,9 +1,25 @@
-const asistenciaRepository = require("../repositories/asistencia.repository");
+const { obtenerAsistenciaAlumnoRepo } = require("../repositories/asistencia.repository");
 
-const obtenerAsistencias = async (filtros) => {
-  return await asistenciaRepository.obtenerAsistenciasRepo(filtros);
+const obtenerAsistenciasService =
+async (filtros) => {
+
+  if (!filtros.alumno_id) {
+
+    throw new Error(
+      "El alumno_id es obligatorio"
+    );
+
+  }
+
+  const result =
+    await obtenerAsistenciaAlumnoRepo(
+      filtros
+    );
+
+  return result;
+
 };
 
 module.exports = {
-  obtenerAsistencias,
+  obtenerAsistenciasService
 };
