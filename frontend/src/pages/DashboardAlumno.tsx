@@ -6,7 +6,6 @@ const DashboardAlumno = () => {
   const navigate = useNavigate();
   const [nombreAlumno, setNombreAlumno] = useState<string>("Cargando...");
 
-  // Helper para leer la cookie
   const getCookie = (name: string) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
@@ -22,31 +21,23 @@ const DashboardAlumno = () => {
   };
 
   useEffect(() => {
-    // 1. Verificamos si existe la sesión
     const session = getCookie('user_session');
 
-    // Si no hay sesión, al login
     if (!session) {
       navigate("/login");
       return;
     }
 
-    // 2. Seguridad extra: Si tiene sesión pero NO es alumno, lo mandamos a su lugar
     if (session.rol !== "alumno") {
       navigate("/dashboard-vigilante");
       return;
     }
-
-    // 3. Si todo está bien, guardamos su nombre para saludarlo
     setNombreAlumno(session.nombre);
   }, [navigate]);
 
   const handleLogout = () => {
-    // Borramos la cookie de 30 días dándole fecha del pasado
     document.cookie = "user_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    localStorage.removeItem("user");
-    
-    // Redirigimos al login
+    localStorage.r
     navigate("/login");
   };
 
@@ -62,7 +53,7 @@ const DashboardAlumno = () => {
           style={{ 
             marginTop: "20px", 
             padding: "10px 20px",
-            backgroundColor: "#dc3545", // Un color rojito para el botón de salir
+            backgroundColor: "#dc3545", 
             color: "white",
             border: "none",
             borderRadius: "5px",
@@ -75,5 +66,5 @@ const DashboardAlumno = () => {
     </div>
   );
 };
-
+//crear luego un css 
 export default DashboardAlumno;
