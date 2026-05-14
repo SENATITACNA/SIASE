@@ -48,6 +48,17 @@
   outline: 1px solid var(--color-primary);
 }
 
+.alumno-card.finalized {
+  opacity: 0.6;
+  filter: grayscale(0.5);
+  background-color: #FDFDFD;
+}
+
+.alumno-card.finalized:hover {
+  opacity: 0.8;
+  filter: grayscale(0.2);
+}
+
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -86,6 +97,11 @@
   color: #B91C1C;
 }
 
+.badge-status.espera {
+  background-color: #FFFBEB;
+  color: #92400E;
+}
+
 .status-dot {
   width: 6px;
   height: 6px;
@@ -94,6 +110,7 @@
 
 .status-dot.ingreso { background-color: #22C55E; }
 .status-dot.salida { background-color: #EF4444; }
+.status-dot.espera { background-color: #F59E0B; }
 
 .card-body {
   margin-bottom: 24px;
