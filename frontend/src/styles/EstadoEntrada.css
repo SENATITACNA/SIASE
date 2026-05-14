@@ -89,3 +89,7 @@
 .registro-estado.salida {
   color: #DC2626;
 }
+
+.registro-estado.espera {
+  color: #D97706; /* Amber-600 */
+}
