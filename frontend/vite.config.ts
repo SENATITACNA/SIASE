@@ -9,7 +9,6 @@ export default defineConfig({
   server: {
     port: 4000,
     host: true,
-    https: true,
     proxy: {
       '/login': BACKEND,
       '/api': BACKEND
