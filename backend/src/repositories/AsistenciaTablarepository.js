@@ -1,56 +1,50 @@
 const db = require("../config/db");
 
-const obtenerAsistenciasTablaRepo = async (filtros = {}) => {
-  let sql = `
-    SELECT 
-      at.id,
-      da.idsenati,
-      CONCAT(da.nombres, ' ', da.apellidos) AS NombreCompleto,
-      c.nombre AS Carrera,
-      da.semestre AS Semestre,
-      at.fecha AS Fecha,
-      at.hora_ingreso AS HoraIngreso
-    FROM asistencia at
-    INNER JOIN datos_alumnos da ON at.alumno_id = da.id
-    INNER JOIN carreras c ON da.carrera_id = c.id
-    WHERE 1=1
-  `;
+const obtenerAsistenciasTablaRepo = async () => {
 
-  const params = [];
+  // 1. llamar API de tu compañero
+  const response = await fetch("http://localhost:3000/api/asistencia");
+  const asistencias = await response.json();
 
-  if (filtros.guardia) {
-    sql += " AND at.guardia_id = ?";
-    params.push(filtros.guardia);
-  }
+  // 2. recorrer y juntar datos extras
+  const resultado = await Promise.all(
 
-  if (filtros.fecha) {
-    sql += " AND at.fecha = ?";
-    params.push(filtros.fecha);
-  }
+    asistencias.map(async (a) => {
 
-  if (filtros.idsenati) {
-    sql += " AND da.idsenati = ?";
-    params.push(filtros.idsenati);
-  }
+      // buscar idsenati y semestre
+      const sql = `
+        SELECT 
+          idsenati,
+          semestre
+        FROM datos_alumnos
+        WHERE CONCAT(nombres, ' ', apellidos) = ?
+      `;
 
-  sql += " ORDER BY at.fecha DESC, at.hora_ingreso DESC";
+      const [rows] = await db.promise().query(sql, [a.alumno]);
 
-  const [rows] = await db.promise().query(sql, params);
-  return rows;
-};
+      const extra = rows[0] || {};
 
-const obtenerAsistenciaTablaById = async (id) => {
-  const sql = `
-    SELECT * 
-    FROM asistencia
-    WHERE id = ?
-  `;
+      // 3. unir todo
+      return {
+        id: a.id,
+        idsenati: extra.idsenati || "N/A",
+        semestre: extra.semestre || "N/A",
 
-  const [rows] = await db.promise().query(sql, [id]);
-  return rows[0];
+        alumno: a.alumno,
+        guardia: a.guardia,
+        carrera: a.carrera,
+
+        fecha: a.fecha,
+        hora_ingreso: a.hora_ingreso,
+        hora_salida: a.hora_salida
+      };
+    })
+
+  );
+
+  return resultado;
 };
 
 module.exports = {
-  obtenerAsistenciasTablaRepo,
-  obtenerAsistenciaTablaById
+  obtenerAsistenciasTablaRepo
 };

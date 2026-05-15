@@ -23,7 +23,7 @@ const ListaEstudiantes: React.FC = () => {
   const [selectedAlumno, setSelectedAlumno] = useState<any>(null);
 
   useEffect(() => {
-    fetch("http://80.241.217.53:3000/api/asistencia-tabla")
+    fetch("http://localhost:3000/api/asistencia-tabla")
       .then((res) => res.json())
       .then((data) => {
         if (data.data) {
