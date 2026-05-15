@@ -3,7 +3,9 @@ import Login from "./pages/Login";
 import DashboardVigilante from "./pages/DashboardVigilante";
 import DashboardAlumno from "./pages/DashboardAlumno";
 import QRVigilante from "./pages/QRVigilante";
-import ListaEstudiantes from "./pages/ListaEstudiantes";
+import QRAlumno from "./pages/QRAlumno";
+import AsistenciaAlumno from "./pages/AsistenciaAlumno";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -11,10 +13,47 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard-vigilante" element={<DashboardVigilante />} />
-        <Route path="/dashboard-alumno" element={<DashboardAlumno />} />
-        <Route path="/lista-estudiantes" element={<ListaEstudiantes />} />
-        <Route path="/qr-vigilante" element={<QRVigilante />} />
+
+        <Route
+          path="/dashboard-vigilante"
+          element={
+            <ProtectedRoute requiredRole="vigilante">
+              <DashboardVigilante />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard-alumno"
+          element={
+            <ProtectedRoute requiredRole="alumno">
+              <DashboardAlumno />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard-vigilante/qr-vigilante"
+          element={
+            <ProtectedRoute requiredRole="vigilante">
+              <QRVigilante />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/qr-alumno"
+          element={
+            <ProtectedRoute requiredRole="alumno">
+              <QRAlumno />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/asistencia-alumno"
+          element={
+            <ProtectedRoute requiredRole="alumno">
+              <AsistenciaAlumno />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
