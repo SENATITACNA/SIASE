@@ -18,7 +18,7 @@ const EscanerAlumno: React.FC = () => {
                 const config = { fps: 15, qrbox: { width: 250, height: 250 } };
 
                 await html5QrCode.start(
-                    { facingMode: "environment" }, 
+                    { facingMode: "environment" },
                     config,
                     async (decodedText) => {
                         // Bloqueo para procesar solo una vez
