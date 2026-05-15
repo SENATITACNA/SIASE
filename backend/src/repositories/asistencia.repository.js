@@ -86,5 +86,5 @@ module.exports = {
     registrarAsistencia,
     obtenerUltimoEscaneoRepo,
     obtenerAsistenciasRepo,
-    obtenerAsistenciaAlumnoRepo
+    obtenerAsistenciaPorAlumnoRepo
 };
