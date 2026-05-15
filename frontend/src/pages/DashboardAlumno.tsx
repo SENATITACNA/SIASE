@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Laptop, MonitorSmartphone, Plus, Send, ChevronRight, QrCode } from 'lucide-react'; // Se añadió QrCode
+import { User, Laptop, MonitorSmartphone, Plus, Send, ChevronRight, QrCode } from 'lucide-react';
 
 import NavbarAlumno from '../components/NavbarAlumno';
 import DetallesItem from '../components/DetallesItem';
@@ -267,7 +267,6 @@ export default function DashboardAlumno() {
                     {enviandoSolicitud ? 'Enviando…' : 'Solicitar Ingreso'}
                   </button>
 
-                  {/* NUEVO: Botón Escáner QR */}
                   <button 
                     className="btn-accion-alumno btn-escaner" 
                     onClick={() => navigate('/escaner-alumno')}
@@ -277,7 +276,6 @@ export default function DashboardAlumno() {
                     Escaneo QR
                   </button>
 
-                  {/* Estado de la solicitud activa */}
                   {solicitudActiva && (
                     <div className={`solicitud-estado ${ESTADO_CLASS[solicitudActiva.estado] ?? ''}`}>
                       Último estado: <strong>{ESTADO_LABEL[solicitudActiva.estado] ?? 'Desconocido'}</strong>

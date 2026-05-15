@@ -12,11 +12,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Redirección inicial */}
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<Login />} />
 
-        {/* Rutas de Vigilante */}
         <Route
           path="/dashboard-vigilante"
           element={
@@ -34,7 +32,6 @@ function App() {
           }
         />
 
-        {/* Rutas de Alumno */}
         <Route
           path="/dashboard-alumno"
           element={
@@ -44,7 +41,6 @@ function App() {
           }
         />
         
-        {/* Ruta para mostrar el QR propio del alumno */}
         <Route
           path="/qr-alumno"
           element={
@@ -54,7 +50,6 @@ function App() {
           }
         />
 
-        {/* Ruta para el ESCÁNER de la cámara */}
         <Route
           path="/escaner-alumno"
           element={
@@ -73,7 +68,6 @@ function App() {
           }
         />
 
-        {/* Catch-all: Redirigir a login si la ruta no existe */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>

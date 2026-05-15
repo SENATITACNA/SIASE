@@ -7,7 +7,7 @@ const EscanerAlumno: React.FC = () => {
     const [mensaje, setMensaje] = useState<string>("Iniciando cámara...");
     const [escaneado, setEscaneado] = useState<boolean>(false);
     const scannerRef = useRef<Html5Qrcode | null>(null);
-    const procesadoRef = useRef<boolean>(false); // Evita múltiples escaneos simultáneos
+    const procesadoRef = useRef<boolean>(false);
 
     useEffect(() => {
         const startCamera = async () => {
@@ -21,24 +21,21 @@ const EscanerAlumno: React.FC = () => {
                     { facingMode: "environment" },
                     config,
                     async (decodedText) => {
-                        // Bloqueo para procesar solo una vez
                         if (procesadoRef.current) return;
                         procesadoRef.current = true;
 
                         setMensaje("Procesando...");
                         console.log("Código QR:", decodedText);
 
-                        // 1. Detener la cámara inmediatamente
                         if (scannerRef.current && scannerRef.current.isScanning) {
                             await scannerRef.current.stop();
                             scannerRef.current.clear();
                         }
 
-                        // 2. Actualizar estado visual
                         setEscaneado(true);
                         setMensaje("Asistencia Registrada");
                     },
-                    (_errorMessage) => { /* Escaneando... */ }
+                    (_errorMessage) => {  }
                 );
                 
                 setMensaje("Esperando código...");
@@ -64,7 +61,6 @@ const EscanerAlumno: React.FC = () => {
                 <img src={senatiLogo} alt="SENATI" className="logo-senati" />
                 <h2 className="titulo-escaner">Escaneo de Asistencia</h2>
                 
-                {/* Ocultar el visor si ya se escaneó con éxito */}
                 {!escaneado && (
                     <div className="escaner-viewfinder">
                         <div id="reader"></div>
