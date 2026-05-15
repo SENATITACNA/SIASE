@@ -1,17 +1,3 @@
-<<<<<<< HEAD
-export interface RegistroAsistencia {
-  id: string;
-  fecha: string;
-  horaIngreso: string;
-  dispositivo: string;
-  vigilante: string;
-}
-
-export interface FiltrosAsistencia {
-  fecha: string;
-  dispositivo: string;
-  vigilante: string;
-=======
 export interface Asistencia {
   id: number;
   fecha: string;
@@ -27,5 +13,4 @@ export interface FiltrosAsistencia {
   fecha?: string;
   equipo?: string;
   guardia?: string;
->>>>>>> 0b5b63a4e77bfd0cc06e55ab2867f3a62ccd5ecb
 }
