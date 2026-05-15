@@ -1,6 +1,4 @@
-const {
-  obtenerAsistenciaAlumnoRepo
-} = require("../repositories/asistencia.repository");
+const { obtenerAsistenciaAlumnoRepo } = require("../repositories/asistencia.repository");
 
 const obtenerAsistenciasService =
 async (filtros) => {

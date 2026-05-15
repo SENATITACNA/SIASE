@@ -1,15 +1,9 @@
-const { obtenerAsistenciasRepo } = require("../repositories/asistencia.repository");
 const { obtenerAsistenciasService } = require("../services/asistencia.service");
 
 const getAsistencias = async (req, res) => {
 
   try {
-
-    const result =
-      await obtenerAsistenciasService(
-        req.query
-      );
-
+    const result = await asistenciaService.obtenerAsistencias(req.query);
     res.json(result);
 
   } catch (err) {
