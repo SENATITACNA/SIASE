@@ -22,7 +22,7 @@ const NavbarAlumno = () => {
         <div className="navbar-menu">
           <div className="nav-links">
             <span className="nav-item active" onClick={() => navigate('/dashboard-alumno')}>Dashboard</span>
-            <span className="nav-item" onClick={() => navigate('/qr-alumno')}>Escáner de QR</span>
+            <span className="nav-item" onClick={() => navigate('/escaner-alumno')}>Escáner de QR</span>
             <span className="nav-item" onClick={() => navigate('/asistencia-alumno')}>Asistencia</span>
           </div>
 

@@ -7,6 +7,7 @@ import QRAlumno from "./pages/QRAlumno";
 import AsistenciaAlumno from "./pages/AsistenciaAlumno";
 import ListaEstudiantes from "./pages/ListaEstudiantes";
 import ProtectedRoute from "./components/ProtectedRoute";
+import EscanerAlumno from "./pages/EscanerAlumno";
 
 function App() {
   return (
@@ -24,14 +25,6 @@ function App() {
           }
         />
         <Route
-          path="/dashboard-alumno"
-          element={
-            <ProtectedRoute requiredRole="alumno">
-              <DashboardAlumno />
-            </ProtectedRoute>
-          }
-        />
-        <Route
           path="/dashboard-vigilante/qr-vigilante"
           element={
             <ProtectedRoute requiredRole="vigilante">
@@ -39,6 +32,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/dashboard-alumno"
+          element={
+            <ProtectedRoute requiredRole="alumno">
+              <DashboardAlumno />
+            </ProtectedRoute>
+          }
+        />
+        
         <Route
           path="/qr-alumno"
           element={
@@ -47,6 +50,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/escaner-alumno"
+          element={
+            <ProtectedRoute requiredRole="alumno">
+              <EscanerAlumno />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/asistencia-alumno"
           element={
@@ -63,6 +76,8 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
   );
