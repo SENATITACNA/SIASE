@@ -118,6 +118,7 @@ function DashboardVigilante() {
     }
   };
 
+
   return (
     <div className="layout-wrapper">
       <Navbar />
