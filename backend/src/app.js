@@ -31,6 +31,7 @@ const registroDispositivoRoutes = require("./routes/registro_dispositivo.routes"
 const vigilanteRoutes = require("./routes/vigilante.routes");
 const tokensVigilanteRoutes = require("./routes/tokens_vigilante.routes");
 const asistenciaRoutes = require("./routes/asistencia.routes");
+const AsistenciaTablaRoutes = require("./routes/AsistenciaTabla.routes");
 
 app.use("/login", loginRoutes);
 
@@ -40,6 +41,7 @@ app.use("/api/registro_dispositivo", registroDispositivoRoutes);
 app.use("/api/vigilantes", vigilanteRoutes);
 app.use("/api/tokens_vigilante", tokensVigilanteRoutes);
 app.use("/api/asistencia", asistenciaRoutes);
+app.use("/api/asistencia-tabla", AsistenciaTablaRoutes);
 
 app.use((err, req, res, next) => {
   console.error("Error no controlado:", err.message);
