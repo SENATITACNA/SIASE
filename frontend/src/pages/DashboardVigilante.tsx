@@ -34,7 +34,10 @@ function DashboardVigilante() {
   const [guardia, setGuardia] = useState({ nombre: "Cargando...", rol: "Oficial de Guardia", turno: "", id: "" });
 
   const fetchRegistros = () => {
-    fetch(`${API_BASE}/api/registro_dispositivo`)
+    fetch(`${API_BASE}/api/registro_dispositivo`, {
+    method: "GET",
+    credentials: "include" 
+  })
       .then(res => res.json())
       .then(data => {
         const mapped = data.map((r: any) => ({
@@ -57,7 +60,10 @@ function DashboardVigilante() {
     if (userStr) {
       const user = JSON.parse(userStr);
       const vigilanteId = user.guardia_id ?? user.id;
-      fetch(`${API_BASE}/api/vigilantes/${vigilanteId}`)
+      fetch(`${API_BASE}/api/vigilantes/${vigilanteId}`, {
+      method: "GET",
+      credentials: "include" 
+  })
         .then(res => res.json())
         .then(data => {
           if (data && data.vigilante_id) {
@@ -97,7 +103,10 @@ function DashboardVigilante() {
     });
 
     if (registro.alumno_id) {
-      fetch(`${API_BASE}/api/alumnos/${registro.alumno_id}`)
+      fetch(`${API_BASE}/api/alumnos/${registro.alumno_id}`, {
+      method: "GET",
+      credentials: "include" 
+        })
         .then(res => res.json())
         .then(alumnoData => {
           setSelectedAlumno(prev => {

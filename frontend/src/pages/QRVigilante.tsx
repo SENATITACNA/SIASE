@@ -26,14 +26,20 @@ const QRVigilante = () => {
   const cargarDatosQR = async () => {
     if (!guardiaId) return;
     try {
-      const resTokens = await fetch(`${API_BASE}/api/tokens_vigilante/activos/${guardiaId}`);
+      const resTokens = await fetch(`${API_BASE}/api/tokens_vigilante/activos/${guardiaId}`, {
+    method: "GET",
+    credentials: "include" 
+  });
       const dataTokens = await resTokens.json();
       
       if (Array.isArray(dataTokens)) {
         setTokens(dataTokens.map((t: any) => t.token));
       }
 
-      const resUltimo = await fetch(`${API_BASE}/api/tokens_vigilante/ultimo-escaneo/${guardiaId}`);
+      const resUltimo = await fetch(`${API_BASE}/api/tokens_vigilante/ultimo-escaneo/${guardiaId}`, {
+    method: "GET",
+    credentials: "include" 
+  });
       const dataUltimo = await resUltimo.json();
       
       if (dataUltimo && (!ultimoEscaneo || dataUltimo.asistencia_id !== ultimoEscaneo.asistencia_id)) {
@@ -51,6 +57,7 @@ const QRVigilante = () => {
     try {
       await fetch(`${API_BASE}/api/tokens_vigilante/rotar`, {
         method: "POST",
+        credentials: 'include',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ guardia_id: guardiaId }),
       });
@@ -64,6 +71,7 @@ const QRVigilante = () => {
     if (guardiaId) {
       fetch(`${API_BASE}/api/tokens_vigilante/inicializar`, {
         method: "POST",
+        credentials: 'include',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ guardia_id: guardiaId }),
       }).then(() => cargarDatosQR());

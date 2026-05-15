@@ -100,6 +100,7 @@ export default function DashboardAlumno() {
       // Usamos instructor_id=1 como default; en un flujo real se selecciona del alumno
       const resp = await fetch(`${API_BASE}/api/registro_dispositivo/solicitud-ingreso`, {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           alumno_id: alumno.id,

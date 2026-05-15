@@ -19,6 +19,7 @@ export default function EstadoEntrada({ alumno, guardiaId, onRefresh }: Props) {
     try {
       const resp = await fetch(`${API_BASE}/api/registro_dispositivo/${alumno.id}/marcar-entrada`, {
         method: 'PUT',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ guardia_id: guardiaId })
       });
@@ -39,7 +40,8 @@ export default function EstadoEntrada({ alumno, guardiaId, onRefresh }: Props) {
     setLoading(true);
     try {
       const resp = await fetch(`${API_BASE}/api/registro_dispositivo/${alumno.id}/marcar-salida`, {
-        method: 'PUT'
+        method: 'PUT',
+        credentials: "include"
       });
       if (resp.ok) {
         if (onRefresh) onRefresh();
