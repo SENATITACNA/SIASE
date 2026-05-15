@@ -16,7 +16,7 @@ const obtenerUltimoEscaneoRepo = async (guardia_id) => {
         ORDER BY a.id DESC
         LIMIT 1
     `;
-    const [rows] = await db.query(sql, [guardia_id]);
+    const [rows] = await db.promise().query(sql, [guardia_id]);
     return rows;
 };
 

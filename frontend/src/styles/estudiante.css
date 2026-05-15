@@ -1,0 +1,176 @@
+.contenedor-estudiante {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  min-height: 100vh;
+  background: #f8fafc;
+}
+
+.card-estudiante {
+  width: 680px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+
+/* Header */
+.header-form {
+  padding: 32px 32px 24px 32px;
+  border-bottom: 1px solid #e2e8f0;
+  background: white;
+}
+
+.titulo-alumno {
+  margin: 0 0 6px 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: #1e293b;
+  letter-spacing: -0.2px;
+}
+
+.subtitulo {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* Secciones */
+.seccion {
+  padding: 24px 32px;
+  border-bottom: 1px solid #eef2f6;
+}
+
+.seccion:last-of-type {
+  border-bottom: none;
+}
+
+.seccion-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.seccion-numero {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+}
+
+.seccion-titulo {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.seccion-contenido {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dos-columnas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 24px;
+}
+
+/* Campos */
+.grupo-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.grupo-info label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.dato {
+  background: #f8fafc;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #0f172a;
+  border: 1px solid #e2e8f0;
+  line-height: 1.4;
+}
+
+/* Estilos específicos */
+.dato.id-senati {
+  font-family: 'SF Mono', 'Courier New', monospace;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+}
+
+.dato.semestre {
+  display: inline-block;
+  width: fit-content;
+  background: #f1f5f9;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+/* Footer */
+.footer-form {
+  padding: 16px 32px;
+  background: #fafbfc;
+  border-top: 1px solid #eef2f6;
+}
+
+.meta-info {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+}
+
+.meta-label {
+  color: #10b981;
+  font-weight: 500;
+  background: #ecfdf5;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.meta-fecha {
+  color: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  .contenedor-estudiante {
+    padding: 20px;
+  }
+  
+  .card-estudiante {
+    width: 100%;
+  }
+  
+  .header-form,
+  .seccion,
+  .footer-form {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  
+  .dos-columnas {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
