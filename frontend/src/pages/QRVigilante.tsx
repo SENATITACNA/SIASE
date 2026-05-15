@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
-import { ArrowLeft, CheckCircle } from "lucide-react";
+import { ArrowLeft, CheckCircle, RefreshCw } from "lucide-react";
 import Navbar from "../components/Navbar";
 import { API_BASE } from "../services/api";
 import "../styles/App.css";
+import "../styles/QRVigilante.css";
 
 const QRVigilante = () => {
   const navigate = useNavigate();
@@ -114,30 +115,38 @@ const QRVigilante = () => {
       <div className="app-container">
         <div className="main-content">
           <div className="content-area" style={{ alignItems: "center" }}>
-            
-            <div className="card-panel" style={{ maxWidth: "500px", width: "100%", textAlign: "center" }}>
+
+            <div className="card-panel qr-card">
               <div className="card-title center">
                 <span className="title-dot" />
                 CÓDIGO QR DE ASISTENCIA
               </div>
 
-              <div style={{ background: "white", padding: "20px", borderRadius: "12px", display: "inline-block", boxShadow: "0 4px 12px rgba(0,0,0,0.1)" }}>
+              {/* Contenedor del QR */}
+              <div className="qr-code-wrapper">
                 {loading ? (
-                  <div style={{ width: 250, height: 250, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    Cargando...
+                  <div className="qr-placeholder">
+                    <RefreshCw size={32} className="qr-loading-icon" />
+                    <span>Cargando...</span>
                   </div>
                 ) : (
                   tokens.length > 0 ? (
-                    <QRCodeSVG value={tokens[0]} size={250} level="H" />
+                    <QRCodeSVG
+                      value={tokens[0]}
+                      size={Math.min(window.innerWidth * 0.7, 250)}
+                      level="H"
+                      style={{ display: 'block' }}
+                    />
                   ) : (
-                    <div style={{ width: 250, height: 250, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      Generando nuevo código...
+                    <div className="qr-placeholder">
+                      <RefreshCw size={32} className="qr-loading-icon" />
+                      <span>Generando nuevo código...</span>
                     </div>
                   )
                 )}
               </div>
 
-              <p style={{ margin: "20px 0", color: "var(--color-secondary-text)", fontSize: "0.9rem" }}>
+              <p className="qr-hint">
                 El código se actualiza automáticamente por seguridad.
               </p>
 
@@ -149,7 +158,7 @@ const QRVigilante = () => {
             </div>
 
             {ultimoEscaneo && (
-              <div className="card-panel" style={{ maxWidth: "500px", width: "100%", marginTop: "20px", borderColor: "var(--color-btn-green)" }}>
+              <div className="card-panel qr-last-scan">
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", color: "#15803D" }}>
                   <CheckCircle size={24} />
                   <div style={{ textAlign: "left" }}>
@@ -172,4 +181,4 @@ const QRVigilante = () => {
   );
 };
 
-export default QRVigilante;
+export default QRVigilante;
