@@ -8,7 +8,11 @@ app.use(helmet());
 
 const allowedOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim())
-  : ["http://localhost:5173"];
+  : [
+      "http://localhost:5173",
+      "http://80.241.217.53:4000",
+      "http://80.241.217.53"
+    ];
 
 app.use(
   cors({
