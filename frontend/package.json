@@ -11,9 +11,17 @@
   },
   "dependencies": {
     "express": "^5.2.1",
+<<<<<<< HEAD
     "mysql2": "^3.22.3",
+=======
+    "html5-qrcode": "^2.3.8",
+    "lucide-react": "^1.16.0",
+    "mysql2": "^3.22.3",
+    "qrcode.react": "^4.2.0",
+>>>>>>> 82b9da9db1fbe98a3c17afc1eaf1281cf60502c4
     "react": "^19.2.5",
-    "react-dom": "^19.2.5"
+    "react-dom": "^19.2.5",
+    "react-router-dom": "^7.15.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
