@@ -16,11 +16,17 @@ export default function EstadoEntrada({ alumno, guardiaId, onRefresh }: Props) {
   const handleEntrada = async () => {
     if (!alumno || !guardiaId) return;
     setLoading(true);
+
+    // 1. Recuperamos el token almacenado
+    const token = localStorage.getItem("auth_token");
+
     try {
       const resp = await fetch(`${API_BASE}/api/registro_dispositivo/${alumno.id}/marcar-entrada`, {
         method: 'PUT',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // Inyectamos el token en la cabecera
+        },
         body: JSON.stringify({ guardia_id: guardiaId })
       });
       if (resp.ok) {
@@ -38,10 +44,17 @@ export default function EstadoEntrada({ alumno, guardiaId, onRefresh }: Props) {
   const handleSalida = async () => {
     if (!alumno) return;
     setLoading(true);
+
+    // 2. Recuperamos el token almacenado
+    const token = localStorage.getItem("auth_token");
+
     try {
       const resp = await fetch(`${API_BASE}/api/registro_dispositivo/${alumno.id}/marcar-salida`, {
         method: 'PUT',
-        credentials: "include"
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // Inyectamos el token en la cabecera
+        }
       });
       if (resp.ok) {
         if (onRefresh) onRefresh();
@@ -66,7 +79,7 @@ export default function EstadoEntrada({ alumno, guardiaId, onRefresh }: Props) {
 
   const getEstadoClass = (estado?: number) => {
     switch (estado) {
-      case 0: return 'espera'; // Necesitaremos agregar esto al CSS
+      case 0: return 'espera'; 
       case 1: return 'ingreso';
       case 2: return 'salida';
       default: return '';

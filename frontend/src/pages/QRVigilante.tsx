@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { QRCodeSVG } from "qrcode.react";
-import { RefreshCw, ArrowLeft, CheckCircle } from "lucide-react";
+import { ArrowLeft, CheckCircle } from "lucide-react";
 import Navbar from "../components/Navbar";
 import { API_BASE } from "../services/api";
 import "../styles/App.css";
@@ -25,21 +25,33 @@ const QRVigilante = () => {
 
   const cargarDatosQR = async () => {
     if (!guardiaId) return;
+    
+    // 1. Recuperamos el token de autenticación para esta ráfaga de peticiones
+    const token = localStorage.getItem("auth_token");
+
     try {
+      // Petición de Tokens Activos
       const resTokens = await fetch(`${API_BASE}/api/tokens_vigilante/activos/${guardiaId}`, {
-    method: "GET",
-    credentials: "include" 
-  });
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` // Encabezado de seguridad añadido
+        }
+      });
       const dataTokens = await resTokens.json();
       
       if (Array.isArray(dataTokens)) {
         setTokens(dataTokens.map((t: any) => t.token));
       }
 
+      // Petición del Último Escaneo
       const resUltimo = await fetch(`${API_BASE}/api/tokens_vigilante/ultimo-escaneo/${guardiaId}`, {
-    method: "GET",
-    credentials: "include" 
-  });
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` // Corregido: 'token' ahora sí está definido en el ámbito
+        } 
+      });
       const dataUltimo = await resUltimo.json();
       
       if (dataUltimo && (!ultimoEscaneo || dataUltimo.asistencia_id !== ultimoEscaneo.asistencia_id)) {
@@ -54,11 +66,15 @@ const QRVigilante = () => {
 
   const handleRotarToken = async () => {
     if (!guardiaId) return;
+    const token = localStorage.getItem("auth_token");
+
     try {
       await fetch(`${API_BASE}/api/tokens_vigilante/rotar`, {
         method: "POST",
-        credentials: 'include',
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` // Encabezado de seguridad añadido
+        },
         body: JSON.stringify({ guardia_id: guardiaId }),
       });
       await cargarDatosQR();
@@ -69,16 +85,21 @@ const QRVigilante = () => {
 
   useEffect(() => {
     if (guardiaId) {
+      const token = localStorage.getItem("auth_token");
+
+      // Inicialización del token en el primer montaje
       fetch(`${API_BASE}/api/tokens_vigilante/inicializar`, {
         method: "POST",
-        credentials: 'include',
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` // Encabezado de seguridad añadido
+        },
         body: JSON.stringify({ guardia_id: guardiaId }),
       }).then(() => cargarDatosQR());
 
+      // Intervalos de actualización automática
       const intervalEscaneo = setInterval(cargarDatosQR, 2000);
-
-      const intervalRotacion = setInterval(handleRotarToken, 5000);
+      const intervalRotacion = setInterval(handleRotarToken, 30000);
 
       return () => {
         clearInterval(intervalEscaneo);
