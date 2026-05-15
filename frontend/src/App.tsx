@@ -5,6 +5,7 @@ import DashboardAlumno from "./pages/DashboardAlumno";
 import QRVigilante from "./pages/QRVigilante";
 import QRAlumno from "./pages/QRAlumno";
 import AsistenciaAlumno from "./pages/AsistenciaAlumno";
+import ListaEstudiantes from "./pages/ListaEstudiantes";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -51,6 +52,14 @@ function App() {
           element={
             <ProtectedRoute requiredRole="alumno">
               <AsistenciaAlumno />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ListaEstudiantes"
+          element={
+            <ProtectedRoute requiredRole="vigilante">
+              <ListaEstudiantes />
             </ProtectedRoute>
           }
         />

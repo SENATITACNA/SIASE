@@ -1,6 +1,8 @@
 // src/components/ListaEstudiantes.tsx
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import BarraLateral from "../components/BarraLateral";
+import NavegacionSuperior from "../components/NavegacionSuperior";
+import Navbar from "../components/Navbar";
 import "../styles/lista.css";
 
 interface RegistroAsistencia {
@@ -14,12 +16,11 @@ interface RegistroAsistencia {
 }
 
 const ListaEstudiantes: React.FC = () => {
-  const navigate = useNavigate();
-  const [dni, setDni] = useState<string>("");
   const [asistencia, setAsistencia] = useState<RegistroAsistencia[]>([]);
   const [filtroMes, setFiltroMes] = useState<string>("");
   const [filtroCarrera, setFiltroCarrera] = useState<string>("");
-  const [filtroIdsenati, setFiltroIdsenati] = useState<string>("");
+  const [filtroId, setFiltroId] = useState<string>("");
+  const [selectedAlumno, setSelectedAlumno] = useState<any>(null);
 
   useEffect(() => {
     fetch("http://localhost:3000/api/asistencia-tabla")
@@ -29,106 +30,212 @@ const ListaEstudiantes: React.FC = () => {
           setAsistencia(data.data);
         }
       })
-      .catch((err) => console.error("Error al cargar asistencia:", err));
+      .catch((err) =>
+        console.error("Error al cargar asistencia:", err)
+      );
   }, []);
-
-  const registrarAsistencia = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!dni) return;
-    setFiltroIdsenati(dni);
-    setDni("");
-  };
 
   const registrosFiltrados = asistencia.filter((a) => {
     const fecha = new Date(a.Fecha);
     const mesRegistro = fecha.getMonth() + 1;
-    const coincideMes = filtroMes ? mesRegistro === parseInt(filtroMes) : true;
-    const coincideCarrera = filtroCarrera ? a.Carrera === filtroCarrera : true;
-    const coincideIdsenati = filtroIdsenati ? String(a.idsenati) === String(filtroIdsenati) : true;
-    // Semestre not available in backend data, so skip for now
-    return coincideMes && coincideCarrera && coincideIdsenati;
-  });
-  return (
-    <div className="lista-page">
-      <div className="lista-container">
-        <button
-          type="button"
-          className="btn-volver"
-          onClick={() => navigate("/dashboard-vigilante")}
-        >
-          Volver a Menú Principal
-        </button>
 
-        <section className="form-section">
-          <h2>Lista de Asistencia</h2>
-          <form onSubmit={registrarAsistencia}>
-          <label htmlFor="dni">ID SENATI:</label>
-          <input
-            type="text"
-            id="dni"
-            value={dni}
-            onChange={(e) => setDni(e.target.value)}
-            required
-            maxLength={8}
+    const coincideMes = filtroMes
+      ? mesRegistro === parseInt(filtroMes)
+      : true;
+
+    const coincideCarrera = filtroCarrera
+      ? a.Carrera === filtroCarrera
+      : true;
+
+    const coincideId = filtroId
+      ? a.idsenati.toLowerCase().includes(filtroId.toLowerCase())
+      : true;
+
+    return coincideMes && coincideCarrera && coincideId;
+  });
+
+  return (
+    <div className="layout-wrapper">
+
+      <Navbar />
+
+      <div className="app-container">
+
+        <BarraLateral alumno={selectedAlumno} />
+
+        <div className="main-content">
+
+          <NavegacionSuperior
+            guardia={{
+              nombre: "Sistema de Asistencia",
+              rol: "Panel de Vigilancia",
+              turno: "Turno Día",
+              id: "SENATI",
+            }}
+            onSearch={(term) => setFiltroId(term)}
           />
-          <button type="submit">Buscar</button>
-        </form>
-        <div className="filters">
-          <h3>Filtros</h3>
-          <label>
-            Mes:
-            <select value={filtroMes} onChange={(e) => setFiltroMes(e.target.value)}>
-              <option value="">Todos</option>
-              {[...Array(12)].map((_, i) => (
-                <option key={i + 1} value={i + 1}>
-                  {i + 1}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Carrera:
-            <select value={filtroCarrera} onChange={(e) => setFiltroCarrera(e.target.value)}>
-              <option value="">Todas</option>
-              <option value="Software">Software</option>
-              {/* Add more options as needed */}
-            </select>
-          </label>
-          {/* Removed semestre filter since not available in backend data */}
+
+          <div className="content-area">
+
+            {/* FILTROS */}
+            <section className="glass-card">
+
+              <h2 className="card-title-main">
+                Lista de Asistencia
+              </h2>
+
+              <div className="asistencia-stats-bar">
+
+                <div className="stat-box">
+                  <span className="stat-label">
+                    Registros Encontrados
+                  </span>
+
+                  <span className="stat-value">
+                    {registrosFiltrados.length}
+                  </span>
+                </div>
+
+              </div>
+
+              <div className="modern-filters">
+
+                <div className="filter-group">
+                  <label>Mes</label>
+
+                  <select
+                    className="modern-select"
+                    value={filtroMes}
+                    onChange={(e) =>
+                      setFiltroMes(e.target.value)
+                    }
+                  >
+                    <option value="">
+                      Todos los meses
+                    </option>
+
+                    <option value="1">Enero</option>
+                    <option value="2">Febrero</option>
+                    <option value="3">Marzo</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Mayo</option>
+                    <option value="6">Junio</option>
+                    <option value="7">Julio</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                  </select>
+                </div>
+
+                <div className="filter-group">
+                  <label>Carrera</label>
+
+                  <select
+                    className="modern-select"
+                    value={filtroCarrera}
+                    onChange={(e) =>
+                      setFiltroCarrera(e.target.value)
+                    }
+                  >
+                    <option value="">
+                      Todas las carreras
+                    </option>
+
+                    <option value="Ingeniería de Software con IA">
+                      Ingeniería de Software con IA
+                    </option>
+
+                    <option value="Diseño Grafico">
+                      Diseño Grafico
+                    </option>
+                  </select>
+                </div>
+
+              </div>
+
+            </section>
+
+            {/* TABLA */}
+            <section className="glass-card">
+
+              <h2 className="card-title-main">
+                Lista Registrada
+              </h2>
+
+              <div className="student-table-wrapper">
+
+                <table className="student-asistencia-table">
+
+                  <thead>
+                    <tr>
+                      <th>ID SENATI</th>
+                      <th>Nombre Completo</th>
+                      <th>Carrera</th>
+                      <th>Semestre</th>
+                      <th>Fecha</th>
+                      <th>Hora</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                    {registrosFiltrados.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan={6}
+                          className="empty-row"
+                        >
+                          No hay registros encontrados
+                        </td>
+                      </tr>
+                    ) : (
+                      registrosFiltrados.map((a) => (
+                        <tr
+                          key={a.id}
+                          onClick={() =>
+                            setSelectedAlumno({
+                              nombre: a.NombreCompleto,
+                              carrera: a.Carrera,
+                              semestre:
+                                a.Semestre ?? "N/A",
+                              idsenati: a.idsenati,
+                              fecha: a.Fecha,
+                              hora: a.HoraIngreso,
+                            })
+                          }
+                          style={{ cursor: "pointer" }}
+                        >
+                          <td>{a.idsenati}</td>
+                          <td>{a.NombreCompleto}</td>
+                          <td>{a.Carrera}</td>
+                          <td>
+                            {a.Semestre ?? "N/A"}
+                          </td>
+                          <td>{a.Fecha}</td>
+
+                          <td className="time-highlight">
+                            {a.HoraIngreso}
+                          </td>
+                        </tr>
+                      ))
+                    )}
+
+                  </tbody>
+
+                </table>
+
+              </div>
+
+            </section>
+
+          </div>
+
         </div>
-      </section>
-      <section className="list-section">
-        <h2>Lista Registrada</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>ID SENATI</th>
-              <th>Nombre Completo</th>
-              <th>Carrera</th>
-              <th>Semestre</th>
-              <th>Fecha de Ingreso</th>
-              <th>Hora de Ingreso</th>
-            </tr>
-          </thead>
-          <tbody>
-            {registrosFiltrados.map((a) => (
-              <tr key={a.id}>
-                <td>{a.idsenati}</td>
-                <td>{a.NombreCompleto}</td>
-                <td>{a.Carrera}</td>
-                <td>{a.Semestre ?? "N/A"}</td>
-                <td>{a.Fecha}</td>
-                <td>{a.HoraIngreso}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
-      <footer>
-        <p>SENATI</p>
-      </footer>
+      </div>
     </div>
-  </div>
   );
 };
+
 export default ListaEstudiantes;
