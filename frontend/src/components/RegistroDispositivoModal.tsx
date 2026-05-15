@@ -34,22 +34,27 @@ export default function RegistroDispositivoModal({
   });
 
   useEffect(() => {
-  fetch(`${API_BASE}/api/instructor`, {
-    method: "GET",
-    // CRÍTICO: Indica al navegador que envíe las cookies guardadas
-    credentials: "include" 
-  })
-    .then(r => {
-      if (!r.ok) {
-        throw new Error(`Error en el servidor: ${r.status}`);
+    // 1. Recuperamos el token para autorizar la carga de instructores
+    const token = localStorage.getItem("auth_token");
+
+    fetch(`${API_BASE}/api/instructor`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}` // Encabezado de seguridad añadido
       }
-      return r.json();
     })
-    .then(setInstructores)
-    .catch(error => {
-      console.error("Error al cargar los instructores:", error);
-    });
-}, []);
+      .then(r => {
+        if (!r.ok) {
+          throw new Error(`Error en el servidor: ${r.status}`);
+        }
+        return r.json();
+      })
+      .then(setInstructores)
+      .catch(error => {
+        console.error("Error al cargar los instructores:", error);
+      });
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -69,11 +74,17 @@ export default function RegistroDispositivoModal({
     }
 
     setLoading(true);
+
+    // 2. Recuperamos el token para autorizar la inserción del dispositivo
+    const token = localStorage.getItem("auth_token");
+
     try {
       const response = await fetch(`${API_BASE}/api/registro_dispositivo`, {
         method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // Encabezado de seguridad añadido
+        },
         body: JSON.stringify({
           alumno_id: alumnoId,
           instructor_id: Number(formData.instructor_id),

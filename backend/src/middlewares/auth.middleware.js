@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 exports.verifyToken = (req, res, next) => {
-  const token = req.cookies.auth_token;
+  const token = req.cookies.auth_token || req.headers['authorization']?.split(' ')[1];
 
   if (!token) {
     return res.status(403).json({ success: false, error: "No se proporcionó un token de autenticación" });

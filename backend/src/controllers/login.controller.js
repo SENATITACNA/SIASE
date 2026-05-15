@@ -13,6 +13,7 @@ exports.login = async (req, res) => {
       { expiresIn: "1d" }
     );
 
+    // Mantenemos la cookie por compatibilidad en local si lo deseas
     res.cookie("auth_token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -20,7 +21,12 @@ exports.login = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000 // 1 día
     });
 
-    return res.json(result);
+    // MODIFICACIÓN CRÍTICA: Adjuntamos el token directamente en la respuesta JSON
+    return res.json({
+      ...result, // Esto arrastra data.success, data.user, data.role, data.redirectUrl intactos
+      token: token // <-- Ahora React lo puede leer y guardar en localStorage
+    });
+
   } catch (error) {
     if (error.message === "Faltan credenciales") {
       return res.status(400).json({ success: false, error: error.message });

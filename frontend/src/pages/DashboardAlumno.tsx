@@ -15,7 +15,6 @@ import '../styles/DetallesItem.css';
 import '../styles/EstadoEntrada.css';
 import '../styles/BarraLateral.css';
 
-
 /* ---- Tipos locales ---- */
 interface Dispositivo {
   id: number;
@@ -70,22 +69,50 @@ export default function DashboardAlumno() {
 
     const user = JSON.parse(userData);
     obtenerAlumno(user.id)
-      .then(data => { setAlumno(data); fetchDispositivos(user.id); fetchSolicitudes(user.id); })
+      .then(data => { 
+        setAlumno(data); 
+        fetchDispositivos(user.id); 
+        fetchSolicitudes(user.id); 
+      })
       .catch(() => navigate('/login'));
   }, [navigate]);
 
-  const fetchDispositivos = (id: number) => {
-    fetch(`${API_BASE}/api/registro_dispositivo/alumno/${id}/dispositivos`)
-      .then(r => r.json())
-      .then(setDispositivos)
-      .catch(console.error);
+  const fetchDispositivos = async (id: number) => {
+    const token = localStorage.getItem("auth_token");
+    try {
+      const resp = await fetch(`${API_BASE}/api/registro_dispositivo/alumno/${id}/dispositivos`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        setDispositivos(data);
+      }
+    } catch (error) {
+      console.error("Error al buscar dispositivos:", error);
+    }
   };
 
-  const fetchSolicitudes = (id: number) => {
-    fetch(`${API_BASE}/api/registro_dispositivo/alumno/${id}/solicitudes`)
-      .then(r => r.json())
-      .then(setSolicitudes)
-      .catch(console.error);
+  const fetchSolicitudes = async (id: number) => {
+    const token = localStorage.getItem("auth_token");
+    try {
+      const resp = await fetch(`${API_BASE}/api/registro_dispositivo/alumno/${id}/solicitudes`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        setSolicitudes(data);
+      }
+    } catch (error) {
+      console.error("Error al buscar solicitudes:", error);
+    }
   };
 
   const handleRegistroExitoso = () => {
@@ -96,12 +123,17 @@ export default function DashboardAlumno() {
   const handleEnviarSolicitud = async () => {
     if (!selectedDispositivo || !alumno) return;
     setEnviandoSolicitud(true);
+
+    const token = localStorage.getItem("auth_token");
+
     try {
       // Usamos instructor_id=1 como default; en un flujo real se selecciona del alumno
       const resp = await fetch(`${API_BASE}/api/registro_dispositivo/solicitud-ingreso`, {
         method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
           alumno_id: alumno.id,
           dispositivo_id: selectedDispositivo.id,

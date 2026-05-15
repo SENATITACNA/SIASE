@@ -43,6 +43,10 @@ const usarToken = async (token, alumno_id, conn) => {
     return result.affectedRows;
 };
 
+const iniciar = async () => await db.promise().query("START TRANSACTION");
+const confirmar = async () => await db.promise().query("COMMIT");
+const cancelar = async () => await db.promise().query("ROLLBACK");
+
 module.exports = {
     obtenerConexion,
     contarActivos,
