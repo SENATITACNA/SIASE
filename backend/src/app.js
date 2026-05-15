@@ -4,6 +4,10 @@ const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const app = express();
 
+// Configurar para confiar en el proxy inverso (Nginx, etc.)
+// Esto permite que express-rate-limit use la IP real del cliente en lugar de la IP del proxy
+app.set("trust proxy", 1);
+
 app.use(helmet());
 
 const allowedOrigins = process.env.CORS_ORIGIN
