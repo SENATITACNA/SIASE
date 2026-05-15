@@ -1,14 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const vigilanteController = require("../controllers/vigilante.controller");
+const { verifyToken } = require("../middlewares/auth.middleware");
+const { verifyRole } = require("../middlewares/role.middleware");
 
-router.get(
-  "/alumnos",
-  vigilanteController.getAlumnos.bind(vigilanteController),
-);
+// Todas las rutas de vigilante requieren autenticación
+router.use(verifyToken);
 
 router.put(
   "/registro/:id/estado",
+  verifyRole("vigilante"),
   vigilanteController.putEstadoRegistro.bind(vigilanteController),
 );
 
