@@ -9,7 +9,9 @@ app.use(helmet());
 const allowedOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(",").map((o) => o.trim())
   : [
-      "http://localhost:5173",
+      "http://localhost:5173", // Vite default port
+      "http://localhost:4000", // Puerto configurado en vite.config.ts
+      "http://localhost:3000",
       "http://80.241.217.53:4000",
       "http://80.241.217.53"
     ];
