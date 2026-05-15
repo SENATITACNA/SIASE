@@ -20,3 +20,4 @@ const AsistenciaCard_vista_estudiante = ({ registro, onClick }) => {
 };
 
 export default AsistenciaCard_vista_estudiante;
+/* */

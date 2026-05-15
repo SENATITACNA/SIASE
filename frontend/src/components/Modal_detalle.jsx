@@ -31,3 +31,4 @@ const Modal_detalle = ({ isOpen, onClose, data }) => {
 
 export default Modal_detalle;
 
+/* */
