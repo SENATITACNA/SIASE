@@ -10,18 +10,13 @@ async (filtros) => {
     throw new Error(
       "El alumno_id es obligatorio"
     );
-
   }
-
   const result =
     await obtenerAsistenciaAlumnoRepo(
       filtros
     );
-
   return result;
-
 };
-
 module.exports = {
   obtenerAsistenciasService
 };

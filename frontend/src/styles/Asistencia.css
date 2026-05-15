@@ -1,0 +1,65 @@
+.filtros-container {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filtros-container input {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  outline: none;
+  min-width: 200px;
+}
+
+.filtros-container button {
+  background: #08c0cb;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.filtros-container button:hover {
+  background: #02bbf3;
+}
+
+.tabla-container {
+  overflow-x: auto;
+}
+
+.tabla-asistencia {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.tabla-asistencia thead {
+  background: #264186;
+  color: white;
+}
+
+.tabla-asistencia th {
+  padding: 16px;
+  text-align: left;
+}
+
+.tabla-asistencia td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.tabla-asistencia tbody tr:hover {
+  background: #f3f4f6;
+}
+
+.sin-datos {
+  text-align: center;
+  padding: 30px;
+  color: #7992a6;
+}
