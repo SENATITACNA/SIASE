@@ -1,6 +1,5 @@
 const db = require("../config/db");
 
-// LISTAR ASISTENCIAS (con filtros)
 const obtenerAsistenciasTablaRepo = async (filtros = {}) => {
   let sql = `
     SELECT 
@@ -40,7 +39,6 @@ const obtenerAsistenciasTablaRepo = async (filtros = {}) => {
   return rows;
 };
 
-// OBTENER POR ID
 const obtenerAsistenciaTablaById = async (id) => {
   const sql = `
     SELECT * 

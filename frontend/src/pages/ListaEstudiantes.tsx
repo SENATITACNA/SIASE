@@ -23,7 +23,7 @@ const ListaEstudiantes: React.FC = () => {
   const [selectedAlumno, setSelectedAlumno] = useState<any>(null);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/asistencia-tabla")
+    fetch("http://80.241.217.53:3000/api/asistencia-tabla")
       .then((res) => res.json())
       .then((data) => {
         if (data.data) {
@@ -77,7 +77,6 @@ const ListaEstudiantes: React.FC = () => {
 
           <div className="content-area">
 
-            {/* FILTROS */}
             <section className="glass-card">
 
               <h2 className="card-title-main">
@@ -157,7 +156,6 @@ const ListaEstudiantes: React.FC = () => {
 
             </section>
 
-            {/* TABLA */}
             <section className="glass-card">
 
               <h2 className="card-title-main">
