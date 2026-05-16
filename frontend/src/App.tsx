@@ -8,6 +8,7 @@ import AsistenciaAlumno from "./pages/AsistenciaAlumno";
 import ListaEstudiantes from "./pages/ListaEstudiantes";
 import ProtectedRoute from "./components/ProtectedRoute";
 import EscanerAlumno from "./pages/EscanerAlumno";
+import DatosAlumno from "./pages/DatosAlumno";
 
 function App() {
   return (
@@ -76,6 +77,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/datos-alumno" element={<DatosAlumno />} />
 
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>

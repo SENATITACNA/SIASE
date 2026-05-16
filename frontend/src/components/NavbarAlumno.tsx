@@ -19,6 +19,7 @@ const NavbarAlumno = () => {
     { title: 'Dashboard', path: '/dashboard-alumno' },
     { title: 'Escáner QR', path: '/escaner-alumno' },
     { title: 'Asistencia', path: '/asistencia-alumno' },
+    { title: 'Datos Alumno', path: '/datos-alumno' },
   ];
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
