@@ -30,17 +30,12 @@ const EscanerAlumno: React.FC = () => {
         setErrorCamara(null);
         setMensaje("Solicitando acceso a la cámara...");
 
-        // 1. Solicitar permiso de cámara explícitamente primero
-        //    Esto es CRÍTICO en iOS Safari: la llamada a getUserMedia
-        //    debe ocurrir para que el navegador muestre el diálogo de permisos.
         let stream: MediaStream | null = null;
         try {
             stream = await navigator.mediaDevices.getUserMedia({
                 video: { facingMode: "environment" }
             });
         } catch (permErr: any) {
-            // Si "environment" falla (OverconstrainedError en algunos iOS),
-            // intentar sin restricción de facingMode
             try {
                 stream = await navigator.mediaDevices.getUserMedia({ video: true });
             } catch (fallbackErr: any) {
@@ -65,50 +60,42 @@ const EscanerAlumno: React.FC = () => {
             }
         }
 
-        // 2. Liberar el stream inmediatamente — html5-qrcode creará el suyo.
-        //    Solo necesitábamos el getUserMedia para activar el diálogo de permisos.
         if (stream) {
             stream.getTracks().forEach(track => track.stop());
         }
 
         if (!mountedRef.current) return;
 
-        // 3. Limpiar instancia previa si existe
         await stopScanner();
 
         try {
             const html5QrCode = new Html5Qrcode("reader");
             scannerRef.current = html5QrCode;
 
-            // Adaptamos el qrbox al tamaño de pantalla
             const viewfinderSize = Math.min(window.innerWidth * 0.7, 230);
             const config = {
                 fps: 10,
                 qrbox: { width: viewfinderSize, height: viewfinderSize },
-                // NO incluir aspectRatio — iOS Safari lo rechaza con OverconstrainedError
             };
 
-            // Intentar con cámara trasera primero
             try {
                 await html5QrCode.start(
                     { facingMode: "environment" },
                     config,
                     handleScanSuccess,
-                    () => { /* ignorar errores por frame */ }
+                    () => {}
                 );
             } catch (envErr: any) {
                 console.warn("Cámara trasera no disponible, intentando con cualquier cámara:", envErr);
-                // Fallback: intentar con la cámara frontal o la primera disponible
                 try {
                     const devices = await Html5Qrcode.getCameras();
                     if (devices && devices.length > 0) {
-                        // Preferir la última cámara (usualmente la trasera en móviles)
                         const cameraId = devices[devices.length - 1].id;
                         await html5QrCode.start(
                             cameraId,
                             config,
                             handleScanSuccess,
-                            () => { /* ignorar errores por frame */ }
+                            () => {}
                         );
                     } else {
                         throw new Error("No se encontraron cámaras disponibles");
@@ -145,17 +132,14 @@ const EscanerAlumno: React.FC = () => {
         }
     }, []);
 
-    // Callback de escaneo exitoso — extraído para reutilizar en ambos intentos de start()
     const handleScanSuccess = useCallback(async (decodedText: string) => {
         if (procesadoRef.current) return;
         procesadoRef.current = true;
 
         setMensaje("Procesando...");
 
-        // Detener cámara
         await stopScanner();
 
-        // Registrar asistencia en el backend
         try {
             const token = localStorage.getItem("auth_token");
             const resp = await fetch(`${API_BASE}/api/asistencia/registrar`, {
@@ -181,7 +165,6 @@ const EscanerAlumno: React.FC = () => {
         }
     }, [stopScanner]);
 
-    // Reintentar acceso a cámara
     const handleRetry = useCallback(() => {
         setErrorCamara(null);
         procesadoRef.current = false;
@@ -191,7 +174,6 @@ const EscanerAlumno: React.FC = () => {
     useEffect(() => {
         mountedRef.current = true;
 
-        // Dar tiempo al DOM para montar el div #reader
         const timer = setTimeout(startCamera, 500);
 
         return () => {
@@ -214,7 +196,6 @@ const EscanerAlumno: React.FC = () => {
                     </p>
                 )}
 
-                {/* Mensaje de error de permisos */}
                 {errorCamara && (
                     <div className="error-camara">
                         🔒 {errorCamara}
@@ -225,7 +206,6 @@ const EscanerAlumno: React.FC = () => {
                     </div>
                 )}
 
-                {/* Viewfinder de la cámara */}
                 {!escaneado && (
                     <div className="escaner-viewfinder" style={errorCamara ? { display: 'none' } : {}}>
                         <div id="reader"></div>
@@ -245,4 +225,4 @@ const EscanerAlumno: React.FC = () => {
     );
 };
 
-export default EscanerAlumno;
+export default EscanerAlumno;
