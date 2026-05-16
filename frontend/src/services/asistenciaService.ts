@@ -41,10 +41,12 @@ async (
     );
   }
 
-  const response =
-    await fetch(
-      `${API_URL}?${params.toString()}`
-    );
+  const response = await fetch(
+  `${API_URL}?${params.toString()}`,
+  {
+    credentials: "include"   // ← necesario para enviar la cookie del token
+  }
+);
 
   if (!response.ok) {
     throw new Error(

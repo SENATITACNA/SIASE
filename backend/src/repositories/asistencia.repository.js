@@ -59,27 +59,76 @@ const obtenerAsistenciasRepo = async (filtros) => {
     return result;
 };
 
-const obtenerAsistenciaPorAlumnoRepo = async (alumnoId) => {
-    const sql = `
+// En asistencia.repository.js — reemplaza solo esta función ✅
+const obtenerAsistenciaPorAlumnoRepo = async (alumnoId, filtros = {}) => {
+    let sql = `
         SELECT
             a.id,
             a.fecha,
             a.hora_ingreso,
-            a.hora_salida,
-            COALESCE((
-                SELECT CONCAT(d.tipo, ' ', d.marca, ' ', d.modelo)
+            CONCAT(v.nombre, ' ', v.apellido) AS vigilante,
+            (
+                SELECT d.tipo
                 FROM registro_dispositivo r
                 JOIN dispositivos_x_alumno d ON r.objeto_id = d.id
-                WHERE r.alumno_id = a.alumno_id 
+                WHERE r.alumno_id = a.alumno_id
                   AND DATE(r.fecha_entrada) = DATE(a.fecha)
-                ORDER BY r.id DESC 
-                LIMIT 1
-            ), 'Sin dispositivo') AS dispositivo
+                ORDER BY r.id DESC LIMIT 1
+            ) AS equipo,
+            (
+                SELECT d.marca
+                FROM registro_dispositivo r
+                JOIN dispositivos_x_alumno d ON r.objeto_id = d.id
+                WHERE r.alumno_id = a.alumno_id
+                  AND DATE(r.fecha_entrada) = DATE(a.fecha)
+                ORDER BY r.id DESC LIMIT 1
+            ) AS marca,
+            (
+                SELECT d.modelo
+                FROM registro_dispositivo r
+                JOIN dispositivos_x_alumno d ON r.objeto_id = d.id
+                WHERE r.alumno_id = a.alumno_id
+                  AND DATE(r.fecha_entrada) = DATE(a.fecha)
+                ORDER BY r.id DESC LIMIT 1
+            ) AS modelo
         FROM asistencia a
+        JOIN vigilante v ON a.guardia_id = v.id
         WHERE a.alumno_id = ?
-        ORDER BY a.fecha DESC, a.hora_ingreso DESC
     `;
-    const [rows] = await db.promise().query(sql, [alumnoId]);
+
+    const params = [alumnoId];
+
+    if (filtros.fecha) {
+        sql += " AND a.fecha = ?";
+        params.push(filtros.fecha);
+    }
+
+    if (filtros.guardia) {
+        sql += " AND CONCAT(v.nombre, ' ', v.apellido) LIKE ?";
+        params.push(`%${filtros.guardia}%`);
+    }
+
+    if (filtros.equipo) {
+        sql += `
+            AND EXISTS (
+                SELECT 1
+                FROM registro_dispositivo r
+                JOIN dispositivos_x_alumno d ON r.objeto_id = d.id
+                WHERE r.alumno_id = a.alumno_id
+                  AND DATE(r.fecha_entrada) = DATE(a.fecha)
+                  AND (d.tipo LIKE ? OR d.marca LIKE ? OR d.modelo LIKE ?)
+            )
+        `;
+        params.push(
+            `%${filtros.equipo}%`,
+            `%${filtros.equipo}%`,
+            `%${filtros.equipo}%`
+        );
+    }
+
+    sql += " ORDER BY a.fecha DESC, a.hora_ingreso DESC";
+
+    const [rows] = await db.promise().query(sql, params);
     return rows;
 };
 
