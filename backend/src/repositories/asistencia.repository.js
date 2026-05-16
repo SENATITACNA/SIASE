@@ -59,8 +59,28 @@ const obtenerAsistenciasRepo = async (filtros) => {
     return result;
 };
 
+const buscarTokenActivo = async (token, conn = null) => {
+    const q = conn || db.promise();
+    const [rows] = await q.query(
+        "SELECT id, guardia_id FROM tokens_vigilante WHERE token = ? AND estado = 'activo' LIMIT 1",
+        [token]
+    );
+    return rows.length > 0 ? rows[0] : null;
+};
+
+const marcarTokenUsado = async (token, alumno_id, conn = null) => {
+    const q = conn || db.promise();
+    const [result] = await q.query(
+        "UPDATE tokens_vigilante SET estado = 'usado', alumno_id = ? WHERE token = ? AND estado = 'activo'",
+        [alumno_id, token]
+    );
+    return result.affectedRows;
+};
+
 module.exports = {
     registrarAsistencia,
     obtenerUltimoEscaneoRepo,
-    obtenerAsistenciasRepo
+    obtenerAsistenciasRepo,
+    buscarTokenActivo,
+    marcarTokenUsado
 };
